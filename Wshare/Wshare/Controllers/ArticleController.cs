@@ -32,7 +32,7 @@ namespace Wshare.Controllers
                 return View();
             }
         }
-
+        [CheckLogin]
         // GET: Article/Edit/5
         public JsonResult Get(int id)
         {
