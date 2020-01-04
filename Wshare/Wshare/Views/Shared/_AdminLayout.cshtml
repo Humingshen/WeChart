@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/assets/libs/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Content/assets/module/admin.css" rel="stylesheet" />
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .ew-iframe-body {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body class="ew-iframe-body">
+    <!-- 页面加载loading -->
+    <div class="page-loading">
+        <div class="ball-loader">
+            <span></span><span></span><span></span><span></span>
+        </div>
+    </div>
+    @RenderBody()
+
+    <!-- js部分 -->
+    <script src="~/Content/assets/libs/layui/layui.js"></script>
+    <script src="~/Content/assets/js/common.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

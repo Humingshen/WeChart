@@ -1,0 +1,146 @@
+﻿
+@{
+    ViewBag.Title = "如何下载";
+}
+<style type="text/css">
+    .weui-cells:before{ border:0px;}
+</style>
+<div class="weui-actionsheet__title">
+    如何下载
+</div>
+<div class="weui-cells" style="border:0px;">
+    <div class="weui-cell" style="align-items: normal;">
+        <div class="weui-cell__hd">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII=" alt="" style="width: 80px; margin-right: 5px;display: block">
+        </div>
+        <div class="weui-cell__bd">
+            <p class="weui-cells__title">石油化工</p>
+            <img src="https://static.kancloud.cn/asset/app/images/banner/7.jpg?version=3a86eded99859e7aec1d" class="img-max" />
+            <ul class="weui-media-box__info">
+                <li class="weui-media-box__info__meta">被查看</li>
+                <li class="weui-media-box__info__meta">100 次</li>
+                <li class="weui-media-box__info__meta weui-media-box__info__meta_extra weui-cell_link">获取下载码</li>
+            </ul>
+        </div>
+    </div>
+    <div class="weui-cell" style="align-items: normal;">
+        <div class="weui-cell__hd">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII=" alt="" style="width: 80px; margin-right: 5px;display: block">
+        </div>
+        <div class="weui-cell__bd">
+            <p class="weui-cells__title">石油化工</p>
+            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1578143105679&di=6b7636943a7bd3bd92c01106511c0520&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01b4b758ee1e0ba8012049efece393.jpg%401280w_1l_2o_100sh.png" class="img-max">
+            <ul class="weui-media-box__info">
+                <li class="weui-media-box__info__meta">被查看</li>
+                <li class="weui-media-box__info__meta">100 次</li>
+                <li class="weui-media-box__info__meta weui-media-box__info__meta_extra weui-cell_link">获取下载码</li>
+            </ul>
+        </div>
+    </div>
+</div>
+@*<script type="text/javascript" src="https://weui.shanliwawa.top/js/lottie.js"></script>
+<lottie-player src="~/Content/lottie.json" background="transparent" speed="1" style="width:250px; height: 250px;" loop="" autoplay=""></lottie-player>*@
+
+@section scripts{
+    <script>
+        $(function () {
+
+
+            $(document).on("click", "#showToast", function () {
+                $.toast();
+
+                /*  说明:  默认已经完成,支持参数回调,以及时间
+                  $.toast("取消操作", function() {
+                      console.log("cancel");
+                  });
+                  $.toast("消息", 20000);
+                  */
+
+
+            });
+
+            $(document).on("click", "#show-toast-cancel", function () {
+                $.toast("取消操作", "cancel");
+            });
+            $(document).on("click", "#show-toast-3", function () {
+                $.toast("禁止操作", "forbidden");
+            });
+
+            $(document).on("click", "#text", function () {
+                $.toast.prototype.defaults.duration = 1000;//1秒
+                $.toast("我是文本", 'text');
+            });
+
+            $(document).on("click", "#showLoading", function () {
+                $.showLoading();
+
+                setTimeout(function () {
+                    $.hideLoading();
+                }, 3000)
+            });
+
+            $(document).on("click", ".weui-cell_link", function () {
+                $.alert("<b>D20200317-1234</b>", "资源下载码", function () {
+
+                });
+            });
+            $(document).on("click", "#sd2", function () {
+                $.confirm("您确定要删除吗?", "确认删除?", function () {
+                    $.toast("删除成功!");
+                }, function () {
+                    //取消操作
+                });
+            });
+            $(document).on("click", "#sd3", function () {
+                $.prompt({
+                    title: '标题',
+                    text: '内容文案',
+                    input: '输入框默认值',
+                    empty: false, // 是否允许为空
+                    onOK: function (input) {
+                        //点击确认
+                    },
+                    onCancel: function () {
+                        //点击取消
+                    }
+                });
+            });
+            $(document).on("click", "#sd4", function () {
+                $.modal({
+                    title: "Hello",
+                    text: "我是自定义的modal",
+                    buttons: [
+                        { text: "支付宝", onClick: function () { console.log(1) } },
+                        { text: "微信支付", onClick: function () { console.log(2) } },
+                        { text: "取消", className: "default", onClick: function () { console.log(3) } },
+                    ]
+                });
+            });
+
+            $(document).on("click", "#login", function () {
+                $.login({
+                    title: '标题',
+                    text: '内容文案',
+                    username: 'tom',  // 默认用户名
+                    password: 'tom',  // 默认密码
+                    onOK: function (username, password) {
+                        //点击确认
+                    },
+                    onCancel: function () {
+                        //点击取消
+                    }
+                });
+            });
+
+
+
+            $(document).on("click", "#sd5", function () {
+                $.toptip("错误提示", 2000);
+            });
+
+
+        });
+
+    </script>
+    
+}

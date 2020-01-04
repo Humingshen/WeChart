@@ -11,8 +11,7 @@ namespace Wshare.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class T_Article
     {
         public T_Article()

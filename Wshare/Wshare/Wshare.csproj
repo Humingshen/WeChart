@@ -52,9 +52,6 @@
     <Reference Include="JWT, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\JWT.5.3.1\lib\net46\JWT.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -152,9 +149,12 @@
     <Compile Include="App_Start\CheckLogin.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
+    <Compile Include="Controllers\DashBoardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JwtController.cs" />
+    <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -196,6 +196,46 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\assets\images\head.png" />
+    <Content Include="Content\assets\images\homepic1.png" />
+    <Content Include="Content\assets\images\homepic2.png" />
+    <Content Include="Content\assets\images\homepic3.png" />
+    <Content Include="Content\assets\images\homepic4.png" />
+    <Content Include="Content\assets\images\homepic5.png" />
+    <Content Include="Content\assets\images\homepic6.png" />
+    <Content Include="Content\assets\images\logo.png" />
+    <Content Include="Content\assets\js\common.js" />
+    <Content Include="Content\assets\libs\echarts\echarts.min.js" />
+    <Content Include="Content\assets\libs\echarts\echartsTheme.js" />
+    <Content Include="Content\assets\libs\layui\css\layui.css" />
+    <Content Include="Content\assets\libs\layui\css\modules\layer\default\icon.png" />
+    <Content Include="Content\assets\libs\layui\css\modules\layer\default\layer.css" />
+    <Content Include="Content\assets\libs\layui\css\modules\layer\default\loading-1.gif" />
+    <Content Include="Content\assets\libs\layui\css\modules\layer\default\loading-2.gif" />
+    <Content Include="Content\assets\libs\layui\layui - 复制.js" />
+    <Content Include="Content\assets\libs\layui\layui.js" />
+    <Content Include="Content\assets\libs\layui\lay\modules\element.js" />
+    <Content Include="Content\assets\libs\layui\lay\modules\form.js" />
+    <Content Include="Content\assets\libs\layui\lay\modules\jquery.js" />
+    <Content Include="Content\assets\libs\layui\lay\modules\layer.js" />
+    <Content Include="Content\assets\libs\layui\lay\modules\laypage.js" />
+    <Content Include="Content\assets\libs\layui\lay\modules\laytpl.js" />
+    <Content Include="Content\assets\libs\layui\lay\modules\table.js" />
+    <Content Include="Content\assets\libs\layui\lay\modules\util.js" />
+    <Content Include="Content\assets\module\admin-uc.js" />
+    <Content Include="Content\assets\module\admin.css" />
+    <Content Include="Content\assets\module\admin.js" />
+    <Content Include="Content\assets\module\contextMenu.js" />
+    <Content Include="Content\assets\module\index.js" />
+    <Content Include="Content\assets\module\tableX.js" />
+    <Content Include="Content\assets\module\zTree\css\zTreeStyle\img\line_conn.gif" />
+    <Content Include="Content\assets\module\zTree\css\zTreeStyle\img\zTreeStandard.png" />
+    <Content Include="Content\assets\module\zTree\css\zTreeStyle\zTreeStyle.css" />
+    <Content Include="Content\assets\module\zTree\zTree.js" />
+    <Content Include="Content\upload\t.jpg" />
+    <Content Include="Content\weui-1.1.2.css" />
+    <Content Include="Content\weui-1.1.2.min.css" />
+    <Content Include="Content\weuix.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="ApplicationInsights.config">
@@ -211,6 +251,9 @@
       <DependentUpon>Wshare.edmx</DependentUpon>
       <LastGenOutput>Wshare.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\weui-1.1.1.js" />
+    <Content Include="Scripts\weui-1.1.1.min.js" />
+    <Content Include="page\tpl\tpl-theme.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -226,8 +269,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\" />
-    <Folder Include="Views\Article\" />
+    <Folder Include="Content\images\" />
     <Folder Include="Views\Jwt\" />
   </ItemGroup>
   <ItemGroup>
@@ -246,6 +288,65 @@
     <Content Include="Models\Wshare.edmx.diagram">
       <DependentUpon>Wshare.edmx</DependentUpon>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Article\Detail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\lottie.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DashBoard\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\assets\libs\layui\font\iconfont.woff2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\assets\libs\layui\font\iconfont.ttf" />
+    <Content Include="Content\assets\libs\layui\font\iconfont.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\System\User.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\System\Role.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="json\role.json" />
+    <Content Include="json\user.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="json\authTree.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="json\ok.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\System\Article.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="json\syxj_list.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\System\Comment.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\System\Visitors.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\System\Authorize.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\System\File.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\System\DownLoad.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

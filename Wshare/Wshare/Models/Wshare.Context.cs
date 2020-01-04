@@ -18,7 +18,6 @@ namespace Wshare.Models
         public wshareEntities()
             : base("name=wshareEntities")
         {
-            this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

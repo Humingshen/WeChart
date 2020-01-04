@@ -11,7 +11,7 @@ namespace Wshare.Controllers
     public class ArticleController : Controller
     {
         // GET: Article
-        public ActionResult Index()
+        public ActionResult Detail(int id)
         {
             return View();
         }
