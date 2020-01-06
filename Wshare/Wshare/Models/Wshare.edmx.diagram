@@ -19,6 +19,9 @@
         <AssociationConnector Association="WshareModel.FK_T_Comment_T_User" ManuallyRouted="false" />
         <AssociationConnector Association="WshareModel.FK_T_Visitors_T_User" ManuallyRouted="false" />
         <AssociationConnector Association="WshareModel.FK_T_Visitors_T_User1" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="WshareModel.T_Admin" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="WshareModel.T_Tags" Width="1.5" PointX="5.375" PointY="3.75" />
+        <EntityTypeShape EntityType="WshareModel.T_Files" Width="1.5" PointX="7.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -19,6 +19,7 @@ namespace Wshare.Models
         public string Code { get; set; }
         public int State { get; set; }
         public System.DateTime Created { get; set; }
+        public int Tag { get; set; }
     
         public virtual T_User T_User { get; set; }
     }

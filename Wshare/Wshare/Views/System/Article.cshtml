@@ -4,14 +4,14 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <style type="text/css">
-     .tdImg {
-            width: 50px;
-            height: 50px;
-            max-width: none;
-            cursor: zoom-in;
-        }
-
+    .tdImg {
+        width: 50px;
+        height: 50px;
+        max-width: none;
+        cursor: zoom-in;
+    }
 </style>
+
 <!-- 正文开始 -->
 <div class="layui-fluid">
     <div class="layui-card">
@@ -22,7 +22,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label w-auto">名称：</label>
                         <div class="layui-input-inline mr0">
-                            <input name="experimentTypeName" class="layui-input" type="text" placeholder="输入名称" />
+                            <input name="keyword" class="layui-input" type="text" placeholder="输入关键词" />
                         </div>
                     </div>
                     <div class="layui-inline">
@@ -37,36 +37,82 @@
         </div>
     </div>
     <blockquote class="layui-elem-quote layui-text" style="margin-top: 15px;background: #fff;">
-        这个示例展示了两个关联表在同一个表单添加、修改的操作，添加时因主表还未添加，从表无法获得关联id，
-        所以实现了主表添加时前端对从表进行添加、修改、删除，主表修改时再使用后端对从表进行添加、修改、删除。
+        说明
     </blockquote>
 </div>
 
 <!-- 表格操作列 -->
 <script type="text/html" id="tableBar">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs test1" lay-event="upload">图文</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <!-- 表单弹窗 -->
 <script type="text/html" id="modelExpType">
     <form id="modelExpTypeForm" lay-filter="modelExpTypeForm" class="layui-form model-form">
-        <input name="experimentTypeId" type="hidden" />
+        <input name="id" type="hidden" />
         <div class="layui-form-item">
             <label class="layui-form-label">名称：</label>
             <div class="layui-input-block">
-                <input name="experimentTypeName" placeholder="输入名称" type="text" class="layui-input" maxlength="20"
+                <input name="title" placeholder="输入名称" type="text" class="layui-input" maxlength="20"
                        lay-verType="tips" lay-verify="required" />
             </div>
         </div>
-        <div class="layui-form-item" style="position: relative;">
-            <label class="layui-form-label">分类标签：</label>
+        <div class="layui-form-item">
+            <label class="layui-form-label">标签：</label>
             <div class="layui-input-block">
-                <table id="formSSXMTable" lay-filter="formSSXMTable"></table>
+                <input name="tags" type="text" class="layui-input"
+                       lay-verType="tips" lay-verify="" />
             </div>
-            <button class="layui-btn layui-btn-sm icon-btn" id="demoEDBtnAddComment"
-                    style="position: absolute; left: 20px;top: 60px;padding: 0 5px;" type="button">
-                <i class="layui-icon">&#xe654;</i>添加
-            </button>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">作者：</label>
+            <div class="layui-input-block">
+                <input name="author" placeholder="输入作者" type="text" class="layui-input" maxlength="20"
+                       lay-verType="tips" lay-verify="required" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">访客：</label>
+            <div class="layui-input-block">
+                <input name="visitors" placeholder="输入访客数量" type="number" class="layui-input"
+                       lay-verType="tips" lay-verify="required" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">摘要：</label>
+            <div class="layui-input-block">
+                <textarea name="subTitle" placeholder="输入摘要" class="layui-textarea" lay-vertype="tips" lay-verify="required" required=""></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">目标公开:</label>
+            <div class="layui-input-inline" style="display: block;width: auto;float: none;">
+                <input type="radio" name="state" value="0" title="不公开" checked=""><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon layui-anim-scaleSpring"></i><div>不公开</div></div>
+                <input type="radio" name="state" value="1" title="公开"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>公开</div></div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">创建时间：</label>
+            <div class="layui-input-block">
+                <input id="edtDateFormAdv1" name="created" type="text" placeholder="创建时间" class="layui-input  layer-date date-icon" autocomplete="off" lay-vertype="tips" lay-verify="required" required="" lay-key="2">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">更新时间：</label>
+            <div class="layui-input-block">
+                <input name="updated" type="datetime" class="layui-input layui-disabled"
+                       lay-verType="tips" lay-verify="" readonly="readonly" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">访客：</label>
+            <div class="layui-input-block">
+                <input name="visitors" placeholder="输入访客数量" type="number" class="layui-input"
+                       lay-verType="tips" lay-verify="required" />
+            </div>
         </div>
         <div class="layui-form-item text-right">
             <button class="layui-btn layui-btn-primary" type="button" ew-event="closePageDialog">取消</button>
@@ -77,6 +123,7 @@
 <!-- 表格操作列 -->
 <script type="text/html" id="ssxmTableBar">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="upload">封面</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <!-- 表格操作列 -->
@@ -105,10 +152,9 @@
     </form>
 </script>
 
-
 @section scripts{
     <script>
-        layui.use(['layer', 'form', 'table', 'util', 'admin', 'tableX'], function () {
+        layui.use(['layer', 'form', 'table', 'util', 'admin', 'tableX', 'laydate', 'element', 'upload', 'fileChoose'], function () {
             var $ = layui.jquery;
             var layer = layui.layer;
             var form = layui.form;
@@ -116,30 +162,38 @@
             var util = layui.util;
             var admin = layui.admin;
             var tableX = layui.tableX;
+            var laydate = layui.laydate;
+            var element = layui.element;
+            var upload = layui.upload;
+            var fileChoose = layui.fileChoose;
+
+
+            
 
             // 渲染表格
             var insTb = tableX.render({
                 elem: '#experimentTypeTable',
-                url: '../../json/syxj_list.json',
+                url: '/api/v1/articles',
                 page: true,
                 cellMinWidth: 100,
                 cols: [[
                     { type: 'numbers' },
                     {
                         align: 'center', templet: function (d) {
-                            // var url = d.imgUrl;
-                            var url = 'https://pic.qqtn.com/up/2018-9/15367146917869444.jpg';
+                            var url = d.cover;
+                            // var url = 'https://pic.qqtn.com/up/2018-9/15367146917869444.jpg';
                             return '<img src="' + url + '" class="tdImg" tb-img/>';
-                        }, title: '头像', width: 90, unresize: false
+                        }, title: '封面', width: 90, unresize: false
                     },
-                    { field: 'experimentTypeName', title: '名称', sort: true },
-                    { align: 'center', title: '标签', toolbar: '#tableBar2', minWidth: 140, width: 140 },
+                    { field: 'title', title: '标题', sort: true },
+                    { field: 'subTitle', title: '摘要' },
+                    { field: 'tags', title: '标签', minWidth: 140, width: 140 },
                     {
-                        field: 'createTime', title: '创建时间', sort: true, templet: function (d) {
+                        field: 'created', title: '创建时间', sort: true, templet: function (d) {
                             return util.toDateString(d.createTime);
                         }, width: 180
                     },
-                    { align: 'center', title: '操作', toolbar: '#tableBar', minWidth: 130, width: 130 }
+                    { align: 'center', title: '操作', toolbar: '#tableBar', minWidth: 130, width: 180 }
                 ]]
             });
 
@@ -155,12 +209,25 @@
 
             // 工具条点击事件
             table.on('tool(experimentTypeTable)', function (obj) {
+
                 var data = obj.data;
+                //alert(JSON.stringify(data));
                 var layEvent = obj.event;
                 if (layEvent == 'edit') {
                     showEditModel(data);
                 } else if (layEvent == 'del') {
-                    doDel(data.experimentTypeId);
+                    doDel(data.id);
+                } else if (layEvent == 'upload') {
+                    // 打开新的窗体
+                    layer.open({
+                        type: 2 //Page层类型
+                        , area: ['800px', '800px']
+                        , title: '你好，layer。'
+                        , shade: 0.6 //遮罩透明度
+                        , maxmin: true //允许全屏最小化
+                        , anim: 1 //0-6的动画形式，-1不开启
+                        , content: '/system/artEdit/' + data.id
+                    });
                 } else if (layEvent == 'look') {
                     var $a = $(obj.tr).find('a[lay-event="look"]');
                     var offset = $a.offset();
@@ -178,7 +245,7 @@
                         success: function () {
                             tableX.render({
                                 elem: '#lookSSXMTable',
-                                url: '../../json/syxj_list2.json?experimentTypeId=' + data.experimentTypeId,
+                                url: '../../json/syxj_list2.json?experimentTypeId=' + data.id,
                                 page: true,
                                 cellMinWidth: 100,
                                 cols: [[
@@ -196,33 +263,46 @@
                     });
                 }
             });
-
             // 显示表单弹窗
             function showEditModel(expTpe) {
+
                 admin.open({
                     type: 1,
-                    title: (expTpe ? '修改' : '添加') + '文章',
+                    title: (expTpe ? '修改' : '添加') + '文章主题',
                     content: $('#modelExpType').html(),
                     area: '700px',
                     success: function (layero, dIndex) {
-                        $(layero).children('.layui-layer-content').css('overflow', 'visible');
-                        var url = expTpe ? '../../json/ok.json' : '../../json/ok.json';
+                        var allDate = $(document).find('.layer-date')
+                        allDate.each(function (index, el) {
+                            $(this).removeAttr("lay-key")
+                            laydate.render({
+                                elem: this,
+                                format: 'yyyy-MM-dd'
+                            });
+                        });
+                        laydate.render({
+                            elem: '#edtDateFormAdv1', show: true //直接显示
+                        });
+
+                        //$(layero).children('.layui-layer-content').css('overflow', 'visible');
+                        var url = expTpe ? '/api/v1/article' : '/api/v1/article';
                         var isExpAdd = expTpe ? false : true;
                         // 回显数据
                         form.val('modelExpTypeForm', expTpe);
                         // 表单提交事件
                         form.on('submit(modelExpTypeSubmit)', function (data) {
-                            if (isExpAdd) {
-                                if (xxDataList.length <= 0) {
-                                    layer.tips('请添加文章', '#demoEDBtnAddComment', { tips: [1, '#ff4c4c'] });
-                                    return false;
-                                }
-                                var nList = admin.util.deepClone(xxDataList);
-                                for (var xi = 0; xi < nList.length; xi++) {
-                                    nList[xi].experimentId = undefined;
-                                }
-                                data.field.expListJson = JSON.stringify(nList);
-                            }
+
+                            //if (isExpAdd) {
+                            //    if (xxDataList.length <= 0) {
+                            //        layer.tips('请添加文章', '#demoEDBtnAddComment', { tips: [1, '#ff4c4c'] });
+                            //        return false;
+                            //    }
+                            //    var nList = admin.util.deepClone(xxDataList);
+                            //    for (var xi = 0; xi < nList.length; xi++) {
+                            //        nList[xi].experimentId = undefined;
+                            //    }
+                            //    data.field.expListJson = JSON.stringify(nList);
+                            //}
                             layer.load(2);
                             $.post(url, data.field, function (res) {
                                 layer.closeAll('loading');
@@ -236,142 +316,17 @@
                             }, 'json');
                             return false;
                         });
-                        //
-                        var xxDataList = [];
-                        var tbOptions = {
-                            elem: '#formSSXMTable',
-                            data: xxDataList,
-                            page: true,
-                            height: '350px;',
-                            cellMinWidth: 100,
-                            cols: [[
-                                { type: 'numbers' },
-                                { field: 'experimentName', title: '名称', sort: true },
-                                {
-                                    field: 'createTime', title: '创建时间', sort: true, templet: function (d) {
-                                        return util.toDateString(d.createTime);
-                                    }
-                                },
-                                { align: 'center', title: '操作', toolbar: '#ssxmTableBar', minWidth: 120, width: 120 }
-                            ]],
-                            size: ''
-                        };
-                        if (isExpAdd) {
-
-                        } else {
-                            tbOptions.data = undefined;
-                            tbOptions.url = '../../json/syxj_list2.json?experimentTypeId=' + expTpe.experimentTypeId;
-                        }
-                        var insTbSSXM = tableX.render(tbOptions);
-                        // 工具条点击事件
-                        table.on('tool(formSSXMTable)', function (obj) {
-                            var data = obj.data;
-                            var layEvent = obj.event;
-                            if (layEvent == 'edit') {
-                                showEditModel2(data);
-                            } else if (layEvent == 'del') {
-                                layer.confirm('确定要删除吗？', {
-                                    shade: .1,
-                                    skin: 'layui-layer-admin'
-                                }, function (i) {
-                                    layer.close(i);
-                                    if (isExpAdd) {  // 前端处理删除
-                                        for (var j = 0; j < xxDataList.length; j++) {
-                                            if (xxDataList[j].experimentId = data.experimentId) {
-                                                xxDataList.splice(j, 1);
-                                            }
-                                        }
-                                        insTbSSXM.reload({ data: xxDataList, page: { curr: 1 } });
-                                    } else {  // 后端处理删除
-                                        layer.load(2);
-                                        $.post('../../json/ok.json', {
-                                            experimentId: data.experimentId
-                                        }, function (res) {
-                                            layer.closeAll('loading');
-                                            if (res.code == 200) {
-                                                layer.msg(res.msg, { icon: 1 });
-                                                insTb.reload({ page: { curr: 1 } });
-                                                insTbSSXM.reload({ page: { curr: 1 } });
-                                            } else {
-                                                layer.msg(res.msg, { icon: 2 });
-                                            }
-                                        }, 'json');
-                                    }
-                                });
-                            }
-                        });
-                        //
-                        $('#demoEDBtnAddComment').click(function () {
-                            showEditModel2();
-                        });
-
-                        // 显示表单弹窗
-                        function showEditModel2(exp) {
-                            admin.open({
-                                type: 1,
-                                offset: '150px',
-                                title: (exp ? '修改' : '添加') + '文章',
-                                content: $('#modelExp').html(),
-                                success: function (layero, dIndex) {
-                                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
-                                    var url = exp ? '../../json/ok.json' : '../../json/ok.json';
-                                    // 回显数据
-                                    form.val('modelExpForm', exp);
-                                    // 表单提交事件
-                                    form.on('submit(modelExpSubmit)', function (data) {
-                                        if (isExpAdd) {  // 前端处理添加、修改
-                                            if (exp) {  // 前端修改
-                                                for (var i = 0; i < xxDataList.length; i++) {
-                                                    if (xxDataList[i].experimentName == data.field.experimentName && xxDataList[i].experimentId != data.field.experimentId) {
-                                                        layer.msg('名称已存在', { icon: 2 });
-                                                        return false;
-                                                    }
-                                                }
-                                                layer.close(dIndex);
-                                                for (var j = 0; j < xxDataList.length; j++) {
-                                                    if (xxDataList[j].experimentId == data.field.experimentId) {
-                                                        xxDataList[j].experimentName = data.field.experimentName;
-                                                    }
-                                                }
-                                                insTbSSXM.reload({ data: xxDataList, page: { curr: 1 } });
-                                            } else {  // 前端添加
-                                                for (var i = 0; i < xxDataList.length; i++) {
-                                                    if (xxDataList[i].experimentName == data.field.experimentName) {
-                                                        layer.msg('名称已存在', { icon: 2 });
-                                                        return false;
-                                                    }
-                                                }
-                                                layer.close(dIndex);
-                                                data.field.experimentId = new Date().getTime();
-                                                xxDataList.push(data.field);
-                                                insTbSSXM.reload({ data: xxDataList, page: { curr: 1 } });
-                                            }
-                                        } else {  // 后端处理添加修改
-                                            layer.load(2);
-                                            if (!exp) {
-                                                data.field.experimentTypeId = expTpe.experimentTypeId;
-                                            }
-                                            $.post(url, { json: JSON.stringify(data.field) }, function (res) {
-                                                layer.closeAll('loading');
-                                                if (res.code == 200) {
-                                                    layer.close(dIndex);
-                                                    insTbSSXM.reload({ page: { curr: 1 } });
-                                                    layer.msg(res.msg, { icon: 1 });
-                                                } else {
-                                                    layer.msg(res.msg, { icon: 2 });
-                                                }
-                                            }, 'json');
-                                        }
-                                        return false;
-                                    });
-                                }
-                            });
-                        }
 
                     }
                 });
             }
-
+            function doPost(id) {
+                // 上传
+                upload.render({
+                    elem: '#file-btn-upload',
+                    accept: 'file'
+                });
+            }
             // 删除
             function doDel(experimentTypeId) {
                 layer.confirm('确定要删除吗？', {
@@ -393,11 +348,13 @@
                     }, 'json');
                 });
             }
-             // 点击图片放大
-        $(document).off('click.tbImg').on('click.tbImg', '[tb-img]', function () {
-            layer.photos({photos: {data: [{src: $(this).attr('src')}]}, shade: .1, closeBtn: true});
+            // 点击图片放大
+            $(document).off('click.tbImg').on('click.tbImg', '[tb-img]', function () {
+                layer.photos({ photos: { data: [{ src: $(this).attr('src') }] }, shade: .1, closeBtn: true });
+            });
+
         });
-        });
-        
+
     </script>
+
 }

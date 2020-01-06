@@ -34,7 +34,7 @@
                 </li>
             </ul>
             <ul class="layui-nav layui-layout-right">
-                <li class="layui-nav-item" lay-unselect="">
+                <li class="layui-nav-item layui-hide" lay-unselect="">
                     <a ew-event="message" title="消息">
                         <i class="layui-icon layui-icon-notice"></i>
                         <span class="layui-badge-dot"></span><!--小红点-->
@@ -53,7 +53,7 @@
                         <span class="layui-nav-more"></span>
                     </a>
                     <dl class="layui-nav-child">
-                        <dd lay-unselect="">
+                        <dd lay-unselect="" class="layui-hide">
                             <a ew-href="/page/template/user-info.html">个人中心</a>
                         </dd>
                         <dd lay-unselect="">
@@ -64,6 +64,9 @@
                             <a ew-event="logout" data-url="/page/template/login.html">退出</a>
                         </dd>
                     </dl>
+                </li>
+                <li class="layui-nav-item" lay-unselect="">
+                    <a ew-event="" title="主题"><i class="layui-icon layui-icon-more-vertical"></i></a>
                 </li>
                 <li class="layui-nav-item layui-hide" lay-unselect="">
                     <a ew-event="theme" title="主题"><i class="layui-icon layui-icon-more-vertical"></i></a>
@@ -106,7 +109,7 @@
                         <a><i class="layui-icon layui-icon-set"></i>&emsp;<cite>资源管理</cite><span class="layui-nav-more"></span></a>
                         <dl class="layui-nav-child">
                             <dd><a lay-href="/system/file">资源列表</a></dd>
-                            <dd><a lay-href="/system/download">下载资源列表</a></dd>
+                            @*<dd><a lay-href="/system/download">下载资源列表</a></dd>*@
                         </dl>
                     </li>
                     <li class="layui-nav-item layui-hide">

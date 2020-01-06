@@ -31,5 +31,8 @@ namespace Wshare.Models
         public DbSet<T_Comment> T_Comment { get; set; }
         public DbSet<T_User> T_User { get; set; }
         public DbSet<T_Visitors> T_Visitors { get; set; }
+        public DbSet<T_Admin> T_Admin { get; set; }
+        public DbSet<T_Tags> T_Tags { get; set; }
+        public DbSet<T_Files> T_Files { get; set; }
     }
 }

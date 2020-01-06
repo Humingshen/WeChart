@@ -4,7 +4,15 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="WshareModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="WshareModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="T_Admin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LoginId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PassWord" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="T_Agree">
           <Key>
             <PropertyRef Name="Id" />
@@ -21,7 +29,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="varchar" MaxLength="1000" Nullable="false" />
-          <Property Name="SubTitle" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="SubTitle" Type="varchar" MaxLength="1500" Nullable="false" />
           <Property Name="Tags" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="Author" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Created" Type="datetime" Nullable="false" />
@@ -42,17 +50,36 @@
           <Property Name="Code" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="State" Type="int" Nullable="false" />
           <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Tag" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="T_Comment">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" />
           <Property Name="Created" Type="datetime" Nullable="false" />
           <Property Name="ArticleId" Type="int" Nullable="false" />
           <Property Name="Contents" Type="varchar(max)" Nullable="false" />
           <Property Name="State" Type="int" Nullable="false" />
+          <Property Name="Reply" Type="varchar(max)" />
+          <Property Name="Updated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="T_Files">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="1000" />
+          <Property Name="FileName" Type="varchar" MaxLength="100" />
+          <Property Name="Created" Type="datetime" />
+        </EntityType>
+        <EntityType Name="T_Tags">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tag" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="T_User">
           <Key>
@@ -65,8 +92,9 @@
           <Property Name="Province" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="City" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Country" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Headimgurl" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Headimgurl" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="Unionid" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="T_Visitors">
           <Key>
@@ -183,10 +211,13 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="WshareModelStoreContainer">
+          <EntitySet Name="T_Admin" EntityType="Self.T_Admin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Agree" EntityType="Self.T_Agree" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Article" EntityType="Self.T_Article" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Authorize" EntityType="Self.T_Authorize" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Comment" EntityType="Self.T_Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_Files" EntityType="Self.T_Files" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_Tags" EntityType="Self.T_Tags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_User" EntityType="Self.T_User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Visitors" EntityType="Self.T_Visitors" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_T_Agree_T_Comment" Association="Self.FK_T_Agree_T_Comment">
@@ -222,8 +253,7 @@
             <End Role="T_Visitors" EntitySet="T_Visitors" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="WshareModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -245,7 +275,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="SubTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SubTitle" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Tags" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
@@ -269,6 +299,7 @@
           <Property Name="State" Type="Int32" Nullable="false" />
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="T_User" Relationship="Self.FK_T_Authorize_T_User" FromRole="T_Authorize" ToRole="T_User" />
+          <Property Name="Tag" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="T_Comment">
           <Key>
@@ -283,6 +314,8 @@
           <NavigationProperty Name="T_Agree" Relationship="Self.FK_T_Agree_T_Comment" FromRole="T_Comment" ToRole="T_Agree" />
           <NavigationProperty Name="T_Article" Relationship="Self.FK_T_Comment_T_Article" FromRole="T_Comment" ToRole="T_Article" />
           <NavigationProperty Name="T_User" Relationship="Self.FK_T_Comment_T_User" FromRole="T_Comment" ToRole="T_User" />
+          <Property Name="Reply" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Updated" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="T_User">
           <Key>
@@ -295,13 +328,14 @@
           <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Headimgurl" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Headimgurl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Unionid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="T_Agree" Relationship="Self.FK_T_Agree_T_User" FromRole="T_User" ToRole="T_Agree" />
           <NavigationProperty Name="T_Authorize" Relationship="Self.FK_T_Authorize_T_User" FromRole="T_User" ToRole="T_Authorize" />
           <NavigationProperty Name="T_Comment" Relationship="Self.FK_T_Comment_T_User" FromRole="T_User" ToRole="T_Comment" />
           <NavigationProperty Name="T_Visitors" Relationship="Self.FK_T_Visitors_T_User" FromRole="T_User" ToRole="T_Visitors" />
           <NavigationProperty Name="T_Visitors1" Relationship="Self.FK_T_Visitors_T_User1" FromRole="T_User" ToRole="T_Visitors" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="T_Visitors">
           <Key>
@@ -459,7 +493,34 @@
             <End Role="T_User" EntitySet="T_User" />
             <End Role="T_Visitors" EntitySet="T_Visitors" />
           </AssociationSet>
+          <EntitySet Name="T_Admin" EntityType="WshareModel.T_Admin" />
+          <EntitySet Name="T_Tags" EntityType="WshareModel.T_Tags" />
+          <EntitySet Name="T_Files" EntityType="WshareModel.T_Files" />
         </EntityContainer>
+        <EntityType Name="T_Admin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LoginId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PassWord" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="T_Tags">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tag" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="T_Files">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="FileName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -499,6 +560,7 @@
           <EntitySetMapping Name="T_Authorize">
             <EntityTypeMapping TypeName="WshareModel.T_Authorize">
               <MappingFragment StoreEntitySet="T_Authorize">
+                <ScalarProperty Name="Tag" ColumnName="Tag" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
@@ -510,6 +572,8 @@
           <EntitySetMapping Name="T_Comment">
             <EntityTypeMapping TypeName="WshareModel.T_Comment">
               <MappingFragment StoreEntitySet="T_Comment">
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="Reply" ColumnName="Reply" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Created" ColumnName="Created" />
@@ -522,6 +586,7 @@
           <EntitySetMapping Name="T_User">
             <EntityTypeMapping TypeName="WshareModel.T_User">
               <MappingFragment StoreEntitySet="T_User">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Openid" ColumnName="Openid" />
                 <ScalarProperty Name="Nickname" ColumnName="Nickname" />
@@ -542,6 +607,33 @@
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ShareId" ColumnName="ShareId" />
                 <ScalarProperty Name="Created" ColumnName="Created" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Admin">
+            <EntityTypeMapping TypeName="WshareModel.T_Admin">
+              <MappingFragment StoreEntitySet="T_Admin">
+                <ScalarProperty Name="PassWord" ColumnName="PassWord" />
+                <ScalarProperty Name="LoginId" ColumnName="LoginId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Tags">
+            <EntityTypeMapping TypeName="WshareModel.T_Tags">
+              <MappingFragment StoreEntitySet="T_Tags">
+                <ScalarProperty Name="Tag" ColumnName="Tag" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Files">
+            <EntityTypeMapping TypeName="WshareModel.T_Files">
+              <MappingFragment StoreEntitySet="T_Files">
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

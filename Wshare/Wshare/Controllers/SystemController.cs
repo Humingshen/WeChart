@@ -24,6 +24,10 @@ namespace Wshare.Controllers
         {
             return View();
         }
+        public ActionResult ArtEdit(int id)
+        {
+            return View();
+        }
         // GET: Page
         public ActionResult Comment()
         {
@@ -46,6 +50,11 @@ namespace Wshare.Controllers
         }
         // GET: Page
         public ActionResult DownLoad()
+        {
+            return View();
+        }
+        // GET: Page
+        public ActionResult Password()
         {
             return View();
         }

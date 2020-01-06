@@ -16,7 +16,7 @@
     <div class="layui-card">
         <div class="layui-card-body">
             <!-- 表格顶部工具栏 -->
-            <div class="layui-form toolbar">
+            <div class="layui-form toolbar layui-hide">
                 <div class="layui-form-item">
                     <div class="layui-inline">
                         <label class="layui-form-label w-auto">名称：</label>
@@ -119,26 +119,44 @@
             // 渲染表格
             var insTb = tableX.render({
                 elem: '#experimentTypeTable',
-                url: '../../json/syxj_list.json',
+                url: '/api/v1/Authcode',
                 page: true,
                 cellMinWidth: 100,
                 cols: [[
                     { type: 'numbers' },
+                    //{
+                    //    align: 'center', templet: function (d) {
+                    //        // var url = d.imgUrl;
+                    //        var url = 'https://pic.qqtn.com/up/2018-9/15367146917869444.jpg';
+                    //        return '<img src="' + url + '" class="tdImg" tb-img/>';
+                    //    }, title: '头像', width: 90, unresize: false
+                    //},
+                    { field: 'nickName', title: '用户', sort: true },
+                    { field: 'code', title: '下载码', sort: true },
                     {
-                        align: 'center', templet: function (d) {
-                            // var url = d.imgUrl;
-                            var url = 'https://pic.qqtn.com/up/2018-9/15367146917869444.jpg';
-                            return '<img src="' + url + '" class="tdImg" tb-img/>';
-                        }, title: '头像', width: 90, unresize: false
+                        field: 'state', align: 'center', sort: true, templet: function (d) {
+                            var strs = [
+                                '<span class="text-success">有效</span>',
+                                '<span class="text-danger">已使用</span>'
+                            ];
+                            return strs[d.state];
+                        }, title: '状态', width: 100
                     },
-                    { field: 'experimentTypeName', title: '名称', sort: true },
-                    { align: 'center', title: '标签', toolbar: '#tableBar2', minWidth: 140, width: 140 },
                     {
-                        field: 'createTime', title: '创建时间', sort: true, templet: function (d) {
-                            return util.toDateString(d.createTime);
+                        field: 'tag', align: 'center', sort: true, templet: function (d) {
+                            var strs = [
+                                '<span class="text-success">分享</span>',
+                                '<span class="text-danger">打赏</span>'
+                            ];
+                            return strs[d.tag];
+                        }, title: '途径', width: 100
+                    },
+                    {
+                        field: 'created', title: '创建时间', sort: true, templet: function (d) {
+                            return util.toDateString(d.created);
                         }, width: 180
-                    },
-                    { align: 'center', title: '操作', toolbar: '#tableBar', minWidth: 130, width: 130 }
+                    }
+                    //{ align: 'center', title: '操作', toolbar: '#tableBar', minWidth: 130, width: 130 }
                 ]]
             });
 

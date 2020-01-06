@@ -32,6 +32,7 @@ namespace Wshare.Models
         public string Country { get; set; }
         public string Headimgurl { get; set; }
         public string Unionid { get; set; }
+        public System.DateTime CreateTime { get; set; }
     
         public virtual ICollection<T_Agree> T_Agree { get; set; }
         public virtual ICollection<T_Authorize> T_Authorize { get; set; }

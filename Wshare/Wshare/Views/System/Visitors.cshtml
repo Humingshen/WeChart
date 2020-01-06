@@ -16,7 +16,7 @@
     <div class="layui-card">
         <div class="layui-card-body">
             <!-- 表格顶部工具栏 -->
-            <div class="layui-form toolbar">
+            <div class="layui-form toolbar layui-hide">
                 <div class="layui-form-item">
                     <div class="layui-inline">
                         <label class="layui-form-label w-auto">名称：</label>
@@ -119,26 +119,26 @@
             // 渲染表格
             var insTb = tableX.render({
                 elem: '#experimentTypeTable',
-                url: '../../json/syxj_list.json',
+                url: '/api/v1/visitors',
                 page: true,
                 cellMinWidth: 100,
                 cols: [[
                     { type: 'numbers' },
+                    //{
+                    //    align: 'center', templet: function (d) {
+                    //        var url = d.imgUrl;
+                    //        var url = 'https://pic.qqtn.com/up/2018-9/15367146917869444.jpg';
+                    //        return '<img src="' + url + '" class="tdImg" tb-img/>';
+                    //    }, title: '头像', width: 90, unresize: false
+                    //},
+                    { field: 'shareNickName', title: '来自分享', sort: true , width: 120},
+                    { field: 'artTitle', title: '文章' },
+                    { field: 'nickName', title: '访客', sort: true , width: 100},
                     {
-                        align: 'center', templet: function (d) {
-                            // var url = d.imgUrl;
-                            var url = 'https://pic.qqtn.com/up/2018-9/15367146917869444.jpg';
-                            return '<img src="' + url + '" class="tdImg" tb-img/>';
-                        }, title: '头像', width: 90, unresize: false
-                    },
-                    { field: 'experimentTypeName', title: '名称', sort: true },
-                    { align: 'center', title: '标签', toolbar: '#tableBar2', minWidth: 140, width: 140 },
-                    {
-                        field: 'createTime', title: '创建时间', sort: true, templet: function (d) {
-                            return util.toDateString(d.createTime);
+                        field: 'created', title: '访问时间', sort: true, templet: function (d) {
+                            return util.toDateString(d.created);
                         }, width: 180
-                    },
-                    { align: 'center', title: '操作', toolbar: '#tableBar', minWidth: 130, width: 130 }
+                    }
                 ]]
             });
 

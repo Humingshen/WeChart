@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "ArtEdit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style type="text/css">
+    .w-e-text-container{
+    min-height: 600px !important;
+}
+</style>
+    <div style="margin: 15px;">
+
+        <div class="layui-upload" style="margin-top: 10px; ">
+            <button type="button" class="layui-btn" id="test1">上传封面</button>
+            <div class="layui-upload-list">
+                <img class="layui-upload-img" id="demo1" style="width:100px;">
+                <p id="demoText"></p>
+            </div>
+        </div>
+        <div id="div1">
+            <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
+        </div>
+
+        <div style="margin-top: 10px; ">
+            <button id="btnEdtGetData" class="layui-btn layui-btn-sm" type="button">保存草稿</button>
+            <button id="btnEdtSetData" class="layui-btn layui-btn-sm" type="button">发布文章</button>
+        </div>
+
+    </div>
+@section scripts{
+    <script src="~/Content/assets/libs/layui/lay/modules/wangEditor.js"></script>
+    <script>
+        layui.use(['layer', 'form', 'upload', 'fileChoose'], function () {
+            var $ = layui.jquery;
+            var layer = layui.layer;
+            var upload = layui.upload;
+            var E = window.wangEditor
+            var editor = new E('#div1');
+            // 自定义菜单配置
+            editor.customConfig.menus = [
+
+                'head',  // 标题
+                'bold',  // 粗体
+                'fontSize',  // 字号
+                'fontName',  // 字体
+                'italic',  // 斜体
+                'underline',  // 下划线
+                'strikeThrough',  // 删除线
+                'foreColor',  // 文字颜色
+                'backColor',  // 背景颜色
+                'link',  // 插入链接
+                'list',  // 列表
+                'justify',  // 对齐方式
+                'quote',  // 引用
+                'emoticon',  // 表情
+                'image',  // 插入图片
+                'table',  // 表格
+                'video',  // 插入视频
+                'code',  // 插入代码
+                'undo',  // 撤销
+                'redo'  // 重复
+            ];
+            editor.customConfig.uploadImgServer = '/api/upload/';  // 上传图片到服务器
+            editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024;
+            editor.customConfig.uploadImgMaxLength = 5;
+            //editor.customConfig.uploadImgParams = {
+            //    // 如果版本 <=v3.1.0 ，属性值会自动进行 encode ，此处无需 encode
+            //    // 如果版本 >=v3.1.1 ，属性值不会自动 encode ，如有需要自己手动 encode
+            //};
+            //editor.customConfig.uploadImgHeaders = {
+            //    'token': '0'
+            //};
+            //editor.customConfig.uploadFileName = 'yourFileName';
+            // 将 timeout 时间改为 3s
+            editor.customConfig.uploadImgTimeout = 3000;
+            
+            editor.create()
+             
+            //普通图片上传
+            var uploadInst = upload.render({
+                elem: '#test1'
+                , url: '/api/upload/'+'?id=123'
+                ,Headers: {token:"123"}
+                , before: function (obj) {
+                    //预读本地文件示例，不支持ie8
+                    //obj.preview(function (index, file, result) {
+                    //    $('#demo1').attr('src', result); //图片链接（base64）
+                    //});
+                }
+                , done: function (res) {
+                    //如果上传失败
+                    if (res.errno > 0) {
+                        return layer.msg('上传失败');
+                    }
+                    //上传成功
+                        $('#demo1').attr('src', res.data[0]); //图片链接（base64）
+                }
+                , error: function () {
+                    //演示失败状态，并实现重传
+                    var demoText = $('#demoText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function () {
+                        uploadInst.upload();
+                    });
+                }
+            });
+        });
+
+    </script>
+
+}

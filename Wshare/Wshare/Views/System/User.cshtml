@@ -3,7 +3,14 @@
     ViewBag.Title = "User";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
+    <style type="text/css">
+        .tdImg {
+            width: 50px;
+            height: 50px;
+            max-width: none;
+            cursor: zoom-in;
+        }
+    </style>
 <!-- 正文开始 -->
 <div class="layui-fluid">
     <div class="layui-card">
@@ -11,17 +18,17 @@
             <div class="layui-form toolbar">
                 <div class="layui-form-item">
                     <div class="layui-inline">
-                        <label class="layui-form-label w-auto">账&emsp;号：</label>
+                        <label class="layui-form-label w-auto">昵&emsp;称：</label>
                         <div class="layui-input-inline mr0">
-                            <input name="username" class="layui-input" type="text" placeholder="输入账号" />
+                            <input name="nickname" class="layui-input" type="text" placeholder="输入昵称" />
                         </div>
                     </div>
-                    <div class="layui-inline">
+                    @*<div class="layui-inline">
                         <label class="layui-form-label w-auto">用户名：</label>
                         <div class="layui-input-inline mr0">
                             <input name="nickName" class="layui-input" type="text" placeholder="输入用户名" />
                         </div>
-                    </div>
+                    </div>*@
                     <div class="layui-inline">
                         <label class="layui-form-label w-auto">性&emsp;别：</label>
                         <div class="layui-input-inline mr0">
@@ -36,7 +43,7 @@
                         <button class="layui-btn icon-btn" lay-filter="formSubSearchUser" lay-submit>
                             <i class="layui-icon">&#xe615;</i>搜索
                         </button>
-                        <button id="btnAddUser" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
+                        <button id="btnAddUser" class="layui-btn icon-btn layui-hide"><i class="layui-icon">&#xe654;</i>添加</button>
                     </div>
                 </div>
             </div>
@@ -114,22 +121,28 @@
             // 渲染表格
             var insTb = table.render({
                 elem: '#tableUser',
-                url: '../../json/user.json',
+                url: '/api/v1/users',
                 page: true,
                 toolbar: true,
                 cellMinWidth: 100,
                 cols: [[
                     { type: 'numbers', title: '#' },
-                    { field: 'username', sort: true, title: '账号' },
-                    { field: 'nickName', sort: true, title: '用户名' },
-                    { field: 'sex', sort: true, title: '性别' },
+                    {
+                        align: 'center', templet: function (d) {
+                            var url = d.headimgurl;
+                            //var url = 'https://pic.qqtn.com/up/2018-9/15367146917869444.jpg';
+                            return '<img src="' + url + '" class="tdImg" tb-img/>';
+                        }, title: '头像', width: 90, unresize: false
+                    },
+                    { field: 'nickname', sort: true, title: '昵称' , width: 180 },
+                    { field: 'sex', sort: true, title: '性别' , width: 80 },
                     {
                         field: 'createTime', sort: true, templet: function (d) {
                             return util.toDateString(d.createTime);
                         }, title: '创建时间'
                     },
-                    { field: 'state', sort: true, templet: '#tableStateUser', title: '状态' },
-                    { align: 'center', toolbar: '#tableBarUser', title: '操作', minWidth: 200 }
+                    //{ field: 'state', sort: true, templet: '#tableStateUser', title: '状态' },
+                    //{ align: 'center', toolbar: '#tableBarUser', title: '操作', minWidth: 200 }
                 ]]
             });
 
@@ -248,6 +261,10 @@
                 });
             }
 
+            // 放大图片
+            $(document).off('click.tbImg').on('click.tbImg', '[tb-img]', function () {
+                layer.photos({ photos: { data: [{ src: $(this).attr('src') }] }, shade: .2, closeBtn: true });
+            });
         });
     </script>
 }

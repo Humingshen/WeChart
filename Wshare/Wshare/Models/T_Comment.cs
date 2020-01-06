@@ -25,6 +25,8 @@ namespace Wshare.Models
         public int ArticleId { get; set; }
         public string Contents { get; set; }
         public int State { get; set; }
+        public string Reply { get; set; }
+        public Nullable<System.DateTime> Updated { get; set; }
     
         public virtual ICollection<T_Agree> T_Agree { get; set; }
         public virtual T_Article T_Article { get; set; }
