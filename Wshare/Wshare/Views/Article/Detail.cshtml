@@ -19,8 +19,8 @@
     }
 
     .weui-uploader__file {
-        width: 40px;
-        height: 40px;
+        width: 30px;
+        height: 30px;
         margin: 5px;
     }
 </style>
@@ -30,8 +30,8 @@
 <div class="weui-media-box">
     <div class="weui-media-box__hd">
         <h2 style="font-weight:400; line-height:1.4; font-size:22px;">教育是培养新生一代准备从事社会生活的整个过程</h2>
-        <div id="meta_content" class="weui-media-box__info">
-            <a href="javascript:void(0);" style="color:#576b95;">
+        <div id="meta_content" class="weui-media-box__info" style="line-height:24px;">
+            <a href="javascript:void(0);" style="color:#576b95; font-size:15px;">
                 理工毕业设计
             </a> &nbsp;
             <span id="publish_time">今天</span>
@@ -90,6 +90,10 @@
                         <li class="weui-uploader__file" style="background-image:url(https://dss0.baidu.com/73t1bjeh1BF3odCf/it/u=2185168808,2902401411&fm=85&s=7004D314DBE27896157419D80300D0BC)"></li>
                         <li class="weui-uploader__file" style="background-image:url(https://dss0.baidu.com/73t1bjeh1BF3odCf/it/u=2185168808,2902401411&fm=85&s=7004D314DBE27896157419D80300D0BC)"></li>
                         <li class="weui-uploader__file" style="background-image:url(https://dss0.baidu.com/73t1bjeh1BF3odCf/it/u=2185168808,2902401411&fm=85&s=7004D314DBE27896157419D80300D0BC)"></li>
+                        <li class="weui-uploader__file" style="background-image:url(https://dss0.baidu.com/73t1bjeh1BF3odCf/it/u=2185168808,2902401411&fm=85&s=7004D314DBE27896157419D80300D0BC)"></li>
+                        <li class="weui-uploader__file" style="background-image:url(https://dss0.baidu.com/73t1bjeh1BF3odCf/it/u=2185168808,2902401411&fm=85&s=7004D314DBE27896157419D80300D0BC)"></li>
+                        <li class="weui-uploader__file" style="background-image:url(https://dss0.baidu.com/73t1bjeh1BF3odCf/it/u=2185168808,2902401411&fm=85&s=7004D314DBE27896157419D80300D0BC)"></li>
+                        <li class="weui-uploader__file" style="background-image:url(https://dss0.baidu.com/73t1bjeh1BF3odCf/it/u=2185168808,2902401411&fm=85&s=7004D314DBE27896157419D80300D0BC)"></li>
                     </ul>
                 </div>
             </div>
@@ -105,14 +109,38 @@
             </div>
         </div>
 
-        <span class="media_tool_meta meta_extra meta_like" id="like3" style="display:none">
+        <span class="media_tool_meta meta_extra meta_like" id="like3" style=" float:right">
             <button class="like_btn" id="js_like_btn">
                 <span id="js_like_wording">在看</span><span class="like_num" id="likeNum3">222</span>
             </button>
         </span>
+        <div class="rich_media_tool" id="js_toobar3">
+            <div class="weui-flex">
+                <div class="weui-flex__item">
+
+                    <div id="js_read_area3" class="media_tool_meta tips_global_primary meta_primary" style="display: block;">
+                        <span id="readTxt">阅读</span>
+                        <span id="readNum3">10万+</span>
+                    </div>
+                </div>
+
+                <span style="display:none;" class="media_tool_meta meta_extra meta_praise" id="like_old">
+                    <i class="icon_praise_gray"></i><span class="praise_num" id="likeNum_old"></span>
+                </span>
+
+
+                <span style="display: inline;" class="media_tool_meta meta_extra meta_like" id="like3" like="0">
+                    <button class="like_btn" id="js_like_btn">
+                        <span id="js_like_wording">在看</span><span class="like_num" id="likeNum3">113</span>
+                    </button>
+                </span>
+
+
+            </div>
+        </div>
     </div>
 </div>
-<div class="weui-cells" style="background:#f5f5f5">
+<div class="weui-cells" style="background:#eeeeee;margin-top:0px;">
     <div class="weui-cell weui-cell_access weui-cell_example" href="javascript:;" style="align-items:normal;">
         <div class="weui-cell__hd">
             <img class="avatar" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAADs0lEQVRogcVa7ZHjIAx1CSkhJaSElJASXEJKcAcpwSWkhPwHHpTgElxC7sdJnOwQI2TvnmY8O5M16OmDJwHuugMlpXRKKZ2dc5cQwg3A3Xs/AOi999eU0vlIfYeIc+4C4B5jTABmAO/aE2N8AXh476//BXRK6QSgJ9AS3Ey/PQGMBHIAMMYYXwR8beQM4PFr4L331xXwGcCTUuSknYMMm6Qx3vvhx4A75y4SeIzxFUK4aUF/E+/9laLFhkwhhNtRuKWSWXj8vhf4WtYOOiwaAO4C/KMGPKV0CiHcOPfFc9csWtKXo7wX/EN6vQL8TO/XmGiqeZcizkYkK3j2xFzLSeL8nGJMkyGEG/2vXxsXY0xb0ZQp1RwJmfM18FQHZlZUK1Yt3iW6zumrAi8B1UKdUjqJhVddH2LcWYzbTE1psIqdKPwqiyk92PNNrERr5g1g1uqpvitf1ACiiqvzTHk883+v1bWZFcL7m2EVk04A3tYmjYlCw/kyYkV9wvuTNh20KfBNhM5RqW/8+j6HSBNOMWamCJiqsqBqFcMQK306TdCVKvdZmEmcc5dG7F3XdR1V66a2QaR5n38UoXy2AODJrH09p0QLCVBRXKaRlU1Eq9G3jFvrbXFAMY2sbNJCgyWxRpDx5tRl9jEASDtTiCOoom0xbsx6mV8tXd8BLMT53LSlXBjOvYal9z6KhVojsGCv4qpWijUFWHgNtJLHogC2VsPSRJboUddrquQLp4t2takGdF2mtMlIwWNOg0ZZVHDmVev+U3hD7QDpfQsBiLXTf+8vlGIZb638LB8VfC8dttaDPelD46eFvr0VVeRklQjkPteyj5ARzw7fQ6XrSWvvHpA+n2tu7zqgiVX9lLVxrI4XpwS9ZWJtY2ZtHLsubyvL+xYRmuamjsarWmNhwB76LKdfa1FKKZ2oEOZTt5pnOVL0V31ILHeNX3svzflLCTSP0XSVNHZxLxBjfHnvhy3j8W/Pvq1DrIVFmAToovLWjpScJe8F3jIyK/D5nLYaMXH+8sbfy7lhfZVkBd1qDIDn6uBY1/XK80jxTEeCNhjTdo8mwvYG0B99I1MTygRO16dJ/8oTpk2LReRCr90jaCYbzGE0CMSVluXUuyjrSwlrtVboeEpnHZq2tAmZpCFHXIcW7tbmn3BQFgqxrAUTGj8bcM5dBD3/6PXtVykYkrkbwOi9H2j93MnD/LnBx+cJlC7nXwG+Fv5soABs65kAPJxzl9+m56qIT216isADdMlNgM9H6vsDQwYeNVuvb4wAAAAASUVORK5CYII=" style="height:35px">

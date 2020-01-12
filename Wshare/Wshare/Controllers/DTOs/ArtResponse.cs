@@ -22,6 +22,8 @@ namespace Wshare.Controllers.DTOs
         public string Title { get; set; }
         public string SubTitle { get; set; }
         public string Cover { get; set; }
+
+        public string Contents { get; set; }
         public string Tags { get; set; }
         public string Author { get; set; }
         public DateTime Created { get; set; }

@@ -10,12 +10,22 @@ namespace Wshare.Controllers
 {
     public class ArticleController : Controller
     {
+
+        wshareEntities db = new wshareEntities();
+
         // GET: Article
         public ActionResult Detail(int id)
         {
             return View();
         }
 
+        public ActionResult Info(int id)
+        {
+            T_Article obj = db.T_Article.Find(id);
+            ViewBag.Article = obj ?? new T_Article();
+
+            return View();
+        }
 
         // POST: Article/Create
         [HttpPost]

@@ -171,6 +171,7 @@
     <Compile Include="Controllers\JwtController.cs" />
     <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="Controllers\V1Controller.cs" />
+    <Compile Include="Controllers\V2Controller.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -221,6 +222,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\assets\css\login.css" />
     <Content Include="Content\assets\images\head.png" />
     <Content Include="Content\assets\images\homepic1.png" />
     <Content Include="Content\assets\images\homepic2.png" />
@@ -265,6 +267,8 @@
     <Content Include="Content\assets\module\zTree\css\zTreeStyle\img\zTreeStandard.png" />
     <Content Include="Content\assets\module\zTree\css\zTreeStyle\zTreeStyle.css" />
     <Content Include="Content\assets\module\zTree\zTree.js" />
+    <Content Include="Content\StyleSheet1.css" />
+    <Content Include="Content\StyleSheet2.css" />
     <Content Include="Content\upload\t.jpg" />
     <Content Include="Content\weui-1.1.2.css" />
     <Content Include="Content\weui-1.1.2.min.css" />
@@ -285,9 +289,11 @@
       <DependentUpon>Wshare.edmx</DependentUpon>
       <LastGenOutput>Wshare.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\weui-1.1.1.js" />
     <Content Include="Scripts\weui-1.1.1.min.js" />
     <Content Include="page\tpl\tpl-theme.html" />
+    <Content Include="Scripts\zepto.weui.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -390,6 +396,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\System\ArtEdit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Views\System\Login.cshtml" />
+    <Content Include="Views\Article\Info.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

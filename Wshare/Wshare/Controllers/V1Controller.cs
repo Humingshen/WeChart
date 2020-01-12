@@ -21,6 +21,17 @@ namespace Wshare.Controllers
             _context = new wshareEntities();
         }
 
+        [HttpPost]
+        [Route("api/v1/login")]
+        public JsonResult<BaseResponse> Login(LoginRequest model)
+        {
+            var users = from a in _context.T_Admin
+                        where a.LoginId == model.UserName && a.PassWord == model.PassWord
+                        select a;
+                       
+            return Json(new BaseResponse { code = 0, data = users, msg = "", count = users.Count() }, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+        }
+
         [HttpGet]
         [Route("api/v1/users")]
         public JsonResult<BaseResponse> Users(int page=1,int limit=10)
@@ -126,21 +137,40 @@ namespace Wshare.Controllers
         }
 
         [HttpGet]
+        [Route("api/v1/ashow")]
+        public JsonResult<BaseResponse> AShow(int id,int state)
+        {
+            try
+            {
+                var obj = _context.T_Article.Find(id);
+                obj.State = state;
+                _context.SaveChanges();
+                return Json(new BaseResponse() { code = 200, msg = "操作成功！" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new BaseResponse() { code = 500, msg = ex.Message });
+            }
+        }
+
+        [HttpGet]
         [Route("api/v1/comments")]
         public JsonResult<BaseResponse> Comment(int page = 1, int limit = 10)
         {
             var comments = from u in _context.T_Comment
-                       select new CommentResponse()
-                       {
-                           ArticleId = u.ArticleId,
-                           Contents = u.Contents,
-                           Created = u.Created,
-                           Id = u.Id,
-                           Reply = u.Reply,
-                           State = u.State,
-                           Updated = u.Updated,
-                           UserId = u.UserId
-                       };
+                           select new CommentResponse()
+                           {
+                               ArticleId = u.ArticleId,
+                               Contents = u.Contents,
+                               Created = u.Created,
+                               Id = u.Id,
+                               Reply = u.Reply,
+                               State = u.State,
+                               Updated = u.Updated,
+                               UserId = u.UserId,
+                               Headimgurl = u.T_User == null ? "" : u.T_User.Headimgurl,
+                               NickName = u.T_User == null ? "" : u.T_User.Nickname
+                           };
             var query = comments.OrderByDescending(o => o.Id).Skip((page - 1) * limit).Take(limit);
 
             return Json(new BaseResponse { code = 0, data = query, msg = "", count = comments.Count() }, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
@@ -356,6 +386,57 @@ namespace Wshare.Controllers
         [Route("api/v1/article")] 
         public JsonResult<BaseResponse> Article(ArtRequest model)
         {
+            try
+            {
+                T_Article art = _context.T_Article.Find(model.Id);
+                art = art ?? new T_Article();
+
+                if (model.Id == 0)
+                {
+                    art.Title = model.Title;
+                    art.Author = model.Author;
+                    art.Tags = model.Tags;
+                    art.SubTitle = model.SubTitle;
+                    art.Updated = DateTime.Now;
+                    art.State = model.State;
+                    art.Visitors = model.Visitors;
+                    art.Created = model.Created;
+                    art.Cover = "";
+                    art.Contents = "";
+                    art.Source = "";
+                    art.Reading = 0;
+
+                    _context.T_Article.Add(art);
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(model.Contents))
+                    {
+                        art.Contents = model.Contents;
+                        art.Cover = model.Cover ?? art.Cover;
+                    }
+                    else
+                    {
+                        art.Title = model.Title;
+                        art.Author = model.Author;
+                        art.Tags = model.Tags;
+                        art.SubTitle = model.SubTitle;
+                        art.Updated = DateTime.Now;
+                        art.State = model.State;
+                        art.Visitors = model.Visitors;
+                        art.Created = model.Created;
+                        art.Cover = "";
+                        art.Contents = "";
+                        art.Source = "";
+                        art.Reading = 0;
+                    }
+                }
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return Json(new BaseResponse() { code = 500, msg = ex.Message });
+            }
             return Json(new BaseResponse() { code = 200, msg = "操作成功！" });
         }
     }

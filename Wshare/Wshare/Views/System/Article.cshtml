@@ -44,7 +44,7 @@
 <!-- 表格操作列 -->
 <script type="text/html" id="tableBar">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
-    <a class="layui-btn layui-btn-primary layui-btn-xs test1" lay-event="upload">图文</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs " lay-event="upload">图文</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <!-- 表单弹窗 -->
@@ -134,6 +134,12 @@
         </a>
     </span>
 </script>
+
+<!-- 表格状态列 -->
+<script type="text/html" id="tableState">
+    <input type="checkbox" lay-filter="ckState" value="{{d.id}}" lay-skin="switch"
+           lay-text="正常|锁定" {{d.state==1?'checked':''}} />
+</script>
 <!-- 表单弹窗 -->
 <script type="text/html" id="modelExp">
     <form id="modelExpForm" lay-filter="modelExpForm" class="layui-form model-form">
@@ -168,8 +174,6 @@
             var fileChoose = layui.fileChoose;
 
 
-            
-
             // 渲染表格
             var insTb = tableX.render({
                 elem: '#experimentTypeTable',
@@ -187,6 +191,7 @@
                     },
                     { field: 'title', title: '标题', sort: true },
                     { field: 'subTitle', title: '摘要' },
+                    { field: 'state', sort: true, templet: '#tableState', title: '状态', width: 100 },
                     { field: 'tags', title: '标签', minWidth: 140, width: 140 },
                     {
                         field: 'created', title: '创建时间', sort: true, templet: function (d) {
@@ -206,7 +211,21 @@
             $("#btnAdd").click(function () {
                 showEditModel();
             });
-
+            
+            // 修改用户状态
+            form.on('switch(ckState)', function (obj) {
+                layer.load(2);
+                $.get('/api/v1/ashow', { id: obj.elem.value, state: obj.elem.checked ? 1 : 0 }, function (res) {
+                    layer.closeAll('loading');
+                    if (res.code == 200) {
+                        layer.msg(res.msg, { icon: 1 });
+                    } else {
+                        layer.msg(res.msg, { icon: 2 });
+                        $(obj.elem).prop('checked', !obj.elem.checked);
+                        form.render('checkbox');
+                    }
+                }, 'json');
+            });
             // 工具条点击事件
             table.on('tool(experimentTypeTable)', function (obj) {
 
@@ -222,7 +241,7 @@
                     layer.open({
                         type: 2 //Page层类型
                         , area: ['800px', '800px']
-                        , title: '你好，layer。'
+                        , title: data.title
                         , shade: 0.6 //遮罩透明度
                         , maxmin: true //允许全屏最小化
                         , anim: 1 //0-6的动画形式，-1不开启

@@ -18,6 +18,9 @@ namespace Wshare.Controllers.DTOs
         public string Reply { get; set; }
         public DateTime? Updated { get; set; }
 
+        public int Agree { get; set; }
+        public int Agree2 { get; set; }
+
     } 
     
     public class VisitorResponse

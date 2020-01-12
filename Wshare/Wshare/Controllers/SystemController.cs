@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Wshare.Models;
 
 namespace Wshare.Controllers
 {
@@ -13,7 +14,13 @@ namespace Wshare.Controllers
         {
             return View();
         }
-        
+
+        // GET: Page
+        public ActionResult Login()
+        {
+            return View();
+        }
+
         // GET: Page
         public ActionResult Role()
         {
@@ -26,6 +33,7 @@ namespace Wshare.Controllers
         }
         public ActionResult ArtEdit(int id)
         {
+            ViewBag.Art = (new wshareEntities()).T_Article.Find(id);
             return View();
         }
         // GET: Page

@@ -38,8 +38,8 @@ namespace Wshare.Controllers
                     //获取上传文件后缀名
                     string fileExt = filename.Substring(filename.LastIndexOf('.'));
                     string FileName = Guid.NewGuid().ToString() + fileExt;
-                    string FilePath = "Content/upload/" + Tpath + "/";
-                    DirectoryInfo di = new DirectoryInfo(FilePath);
+                    string FilePath = "Content/upload/" + id + "/";
+                    DirectoryInfo di = new DirectoryInfo(path+FilePath);
                     if (!di.Exists) { di.Create(); }
                     try
                     {

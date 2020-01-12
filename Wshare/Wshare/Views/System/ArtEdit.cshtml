@@ -1,28 +1,27 @@
-﻿
+﻿@using Wshare.Models;
 @{
+    T_Article _Article = ViewBag.Art;
     ViewBag.Title = "ArtEdit";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
 }
 <style type="text/css">
-    .w-e-text-container{
-    min-height: 600px !important;
-}
+    .w-e-text-container {
+        min-height: 600px !important;
+    }
 </style>
     <div style="margin: 15px;">
 
         <div class="layui-upload" style="margin-top: 10px; ">
             <button type="button" class="layui-btn" id="test1">上传封面</button>
             <div class="layui-upload-list">
-                <img class="layui-upload-img" id="demo1" style="width:100px;">
+                <img class="layui-upload-img" src="@(_Article.Cover)" id="demo1" style="width:100px;">
                 <p id="demoText"></p>
             </div>
         </div>
-        <div id="div1">
-            <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
-        </div>
+        <div id="div1">@(new HtmlString(_Article.Contents))</div>
 
         <div style="margin-top: 10px; ">
-            <button id="btnEdtGetData" class="layui-btn layui-btn-sm" type="button">保存草稿</button>
             <button id="btnEdtSetData" class="layui-btn layui-btn-sm" type="button">发布文章</button>
         </div>
 
@@ -36,6 +35,8 @@
             var upload = layui.upload;
             var E = window.wangEditor
             var editor = new E('#div1');
+            
+            var id = '@(_Article.Id)';
             // 自定义菜单配置
             editor.customConfig.menus = [
 
@@ -60,7 +61,7 @@
                 'undo',  // 撤销
                 'redo'  // 重复
             ];
-            editor.customConfig.uploadImgServer = '/api/upload/';  // 上传图片到服务器
+            editor.customConfig.uploadImgServer = '/api/upload/?id=' + id;  // 上传图片到服务器
             editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024;
             editor.customConfig.uploadImgMaxLength = 5;
             //editor.customConfig.uploadImgParams = {
@@ -79,8 +80,8 @@
             //普通图片上传
             var uploadInst = upload.render({
                 elem: '#test1'
-                , url: '/api/upload/'+'?id=123'
-                ,Headers: {token:"123"}
+                , url: '/api/upload/' + '?id=' + id
+                , Headers: { token: id }
                 , before: function (obj) {
                     //预读本地文件示例，不支持ie8
                     //obj.preview(function (index, file, result) {
@@ -104,8 +105,19 @@
                     });
                 }
             });
-        });
 
+            $("#btnEdtSetData").click(function () {
+                layer.load(2); 
+                $.post("/api/v1/article", { id: id, Cover: $('#demo1').attr('src'), Contents: editor.txt.html() }, function (res) {
+                    layer.closeAll('loading');
+                    if (res.code == 200) {
+                        layer.msg(res.msg, { icon: 1 });
+                    } else {
+                        layer.msg(res.msg, { icon: 2 });
+                    }
+                }, 'json');
+            });
+        });
     </script>
 
 }
