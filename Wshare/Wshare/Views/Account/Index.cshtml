@@ -80,9 +80,17 @@
             });
 
             $(document).on("click", ".weui-cell_link", function () {
-                $.alert("<b>D20200317-1234</b>", "资源下载码", function () {
-
+                $.modal({
+                    title: "资源下载码",
+                    text: "D20200317-1234",
+                    buttons: [
+                        { text: "激活下载码", onClick: function () { console.log(1) } },
+                        { text: "取消", className: "default", onClick: function () { console.log(3) } },
+                    ]
                 });
+                //$.alert("<b>D20200317-1234</b>", "资源下载码", function () {
+
+                //});
             });
             $(document).on("click", "#sd2", function () {
                 $.confirm("您确定要删除吗?", "确认删除?", function () {

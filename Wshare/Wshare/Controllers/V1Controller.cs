@@ -171,7 +171,7 @@ namespace Wshare.Controllers
                                Headimgurl = u.T_User == null ? "" : u.T_User.Headimgurl,
                                NickName = u.T_User == null ? "" : u.T_User.Nickname
                            };
-            var query = comments.OrderByDescending(o => o.Id).Skip((page - 1) * limit).Take(limit);
+            var query = comments.OrderBy(o => o.State).Skip((page - 1) * limit).Take(limit);
 
             return Json(new BaseResponse { code = 0, data = query, msg = "", count = comments.Count() }, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         }

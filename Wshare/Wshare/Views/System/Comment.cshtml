@@ -65,7 +65,7 @@
 <!-- 表格状态列 -->
 <script type="text/html" id="tableState">
     <input type="checkbox" lay-filter="ckState" value="{{d.id}}" lay-skin="switch"
-           lay-text="正常|锁定" {{d.state==1?'checked':''}} />
+           lay-text="已阅|未读" {{d.state==1?'checked':''}} />
 </script>
 <!-- 表格操作列 -->
 <script type="text/html" id="ssxmTableBar">
@@ -131,7 +131,7 @@
                             return util.toDateString(d.created);
                         }, width: 180
                     },
-                    { field: 'state', sort: true, templet: '#tableState', title: '状态' , width: 100 },
+                    { field: 'state', sort: true, templet: '#tableState', title: '审阅' , width: 100 },
                     { field: 'reply', title: '回复' },
                     {
                         field: 'updated', title: '回复时间', sort: true, templet: function (d) {
