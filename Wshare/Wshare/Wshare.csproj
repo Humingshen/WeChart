@@ -173,6 +173,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\JwtUnit.cs" />
+    <Compile Include="Models\Lib.cs" />
     <Compile Include="Models\T_Admin.cs">
       <DependentUpon>Wshare.tt</DependentUpon>
     </Compile>
