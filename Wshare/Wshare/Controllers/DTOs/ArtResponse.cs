@@ -31,6 +31,18 @@ namespace Wshare.Controllers.DTOs
         public int State { get; set; }
     }
 
+    public class ReqComment
+    {
+        public int ArticleId { get; set; }
+        public string Contents { get; set; }
+    }
+    public class ResArt
+    {
+        public int Id { get; set; }
+        public int Count { get; set; }
+        public string Title { get; set; }
+        public string Cover { get; set; }
+    }
     public class FileRequest
     {
         public int Id { get; set; }

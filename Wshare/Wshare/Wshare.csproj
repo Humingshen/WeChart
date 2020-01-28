@@ -70,6 +70,7 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
@@ -156,8 +157,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="App_Start\WeChat.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\DTOs\ArtResponse.cs" />
     <Compile Include="Controllers\DashBoardController.cs" />
     <Compile Include="Controllers\DTOs\BaseResponse.cs" />
@@ -190,6 +193,9 @@
       <DependentUpon>Wshare.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\T_Files.cs">
+      <DependentUpon>Wshare.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\T_Pay.cs">
       <DependentUpon>Wshare.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\T_Tags.cs">
@@ -308,6 +314,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\images\" />
+    <Folder Include="Views\Auth\" />
     <Folder Include="Views\Jwt\" />
   </ItemGroup>
   <ItemGroup>
@@ -399,6 +406,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\System\Login.cshtml" />
     <Content Include="Views\Article\Info.cshtml" />
+    <Content Include="Views\Article\Pay.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

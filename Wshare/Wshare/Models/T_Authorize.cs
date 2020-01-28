@@ -20,6 +20,7 @@ namespace Wshare.Models
         public int State { get; set; }
         public System.DateTime Created { get; set; }
         public int Tag { get; set; }
+        public Nullable<int> ArticleId { get; set; }
     
         public virtual T_User T_User { get; set; }
     }

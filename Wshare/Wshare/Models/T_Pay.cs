@@ -12,16 +12,17 @@ namespace Wshare.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class T_Agree
+    public partial class T_Pay
     {
         public int Id { get; set; }
-        public int CommentId { get; set; }
-        public Nullable<int> UserId { get; set; }
+        public int UserId { get; set; }
+        public int ArticleId { get; set; }
+        public int Price { get; set; }
         public System.DateTime Created { get; set; }
-        public bool IsAgree { get; set; }
-        public bool IsAgree2 { get; set; }
+        public bool Status { get; set; }
+        public string Remark { get; set; }
     
-        public virtual T_Comment T_Comment { get; set; }
+        public virtual T_Article T_Article { get; set; }
         public virtual T_User T_User { get; set; }
     }
 }

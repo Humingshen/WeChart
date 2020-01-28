@@ -11,7 +11,7 @@
         align-items: normal;
     }
 </style>
-<div class="weui-panel__bd" style="width:90%; padding:10px 5%; overflow-x:auto;">
+<div class="weui-panel__bd hide" style="width:90%; padding:10px 5%; overflow-x:auto;">
     <ul class="weui-media-box__info" style=" min-width:200%;">
         @{
             <li class="weui-media-box__info__meta">全部</li>
@@ -37,7 +37,7 @@
                         <p class="weui-media-box__desc">@item.SubTitle</p>
                         <ul class="weui-media-box__info">
                             <li class="weui-media-box__info__meta">@item.Author</li>
-                            <li class="weui-media-box__info__meta">@item.Created</li>
+                            <li class="weui-media-box__info__meta">@(Lib.DateFormatToString(item.Created))</li>
                             @*<li class="weui-media-box__info__meta weui-media-box__info__meta_extra">其它信息</li>*@
                         </ul>
                     </div>
@@ -45,7 +45,7 @@
             }
         }
     </div>
-    <div class="weui-panel__ft">
+    <div class="weui-panel__ft hide">
         <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
             <div class="weui-cell__bd">查看更多</div>
             <span class="weui-cell__ft"></span>

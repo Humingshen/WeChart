@@ -20,6 +20,8 @@ namespace Wshare.Controllers.DTOs
 
         public int Agree { get; set; }
         public int Agree2 { get; set; }
+        public string Praised { get; set; }
+        public string Praised2 { get; set; }
 
     } 
     

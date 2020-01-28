@@ -59,12 +59,48 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">专业分支</label>
+            <div class="layui-input-block">
+                <select name="tags" lay-vertype="tips" lay-verify="required" required="">
+                    <option value="">请选专业分支</option>
+                    <option value="电气工程">电气工程</option>
+                    <option value="电子信息">电子信息</option>
+                    <option value="通信工程" class="">通信工程</option>
+                    <option value="机械工程" class="">机械工程</option>
+                    <option value="地矿能源" class="">地矿能源</option>
+                    <option value="计算机" class="">计算机</option>
+                    <option value="自动化" class="">自动化</option>
+                    <option value="土木工程" class="">土木工程</option>
+                    <option value="水利水电" class="">水利水电</option>
+                    <option value="其他理工" class="">其他理工</option>
+                </select>
+                <div class="layui-unselect layui-form-select">
+                    <div class="layui-select-title">
+                        <input type="text" placeholder="请选择专业分支" value="" readonly="" class="layui-input layui-unselect"><i class="layui-edge"></i>
+                    </div>
+                    <dl class="layui-anim layui-anim-upbit">
+                        <dd lay-value="" class="layui-select-tips">请选专业分支</dd>
+                        <dd lay-value="电气工程" class="">电气工程</dd>
+                        <dd lay-value="电子信息" class="">电子信息</dd>
+                        <dd lay-value="通信工程" class="">通信工程</dd>
+                        <dd lay-value="机械工程" class="">机械工程</dd>
+                        <dd lay-value="地矿能源" class="">地矿能源</dd>
+                        <dd lay-value="计算机" class="">计算机</dd>
+                        <dd lay-value="自动化" class="">自动化</dd>
+                        <dd lay-value="土木工程" class="">土木工程</dd>
+                        <dd lay-value="水利水电" class="">水利水电</dd>
+                        <dd lay-value="其他理工" class="">其他理工</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        @*<div class="layui-form-item">
             <label class="layui-form-label">标签：</label>
             <div class="layui-input-block">
                 <input name="tags" type="text" class="layui-input"
                        lay-verType="tips" lay-verify="" />
             </div>
-        </div>
+        </div>*@
         <div class="layui-form-item">
             <label class="layui-form-label">作者：</label>
             <div class="layui-input-block">
@@ -195,7 +231,7 @@
                     { field: 'tags', title: '标签', minWidth: 140, width: 140 },
                     {
                         field: 'created', title: '创建时间', sort: true, templet: function (d) {
-                            return util.toDateString(d.createTime);
+                            return util.toDateString(d.created);
                         }, width: 180
                     },
                     { align: 'center', title: '操作', toolbar: '#tableBar', minWidth: 130, width: 180 }

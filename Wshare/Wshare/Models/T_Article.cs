@@ -18,6 +18,7 @@ namespace Wshare.Models
         {
             this.T_Comment = new HashSet<T_Comment>();
             this.T_Visitors = new HashSet<T_Visitors>();
+            this.T_Pay = new HashSet<T_Pay>();
         }
     
         public int Id { get; set; }
@@ -36,5 +37,6 @@ namespace Wshare.Models
     
         public virtual ICollection<T_Comment> T_Comment { get; set; }
         public virtual ICollection<T_Visitors> T_Visitors { get; set; }
+        public virtual ICollection<T_Pay> T_Pay { get; set; }
     }
 }

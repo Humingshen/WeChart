@@ -283,7 +283,7 @@ namespace Wshare.Controllers
 
 
         [HttpGet]
-        [Route("api/v1/Authcode")]
+        [Route("api/v1/authcode")]
         public JsonResult<BaseResponse> Authorize(int page = 1, int limit = 10)
         {
             var visitors = from u in _context.T_Authorize
@@ -400,7 +400,7 @@ namespace Wshare.Controllers
                     art.Updated = DateTime.Now;
                     art.State = model.State;
                     art.Visitors = model.Visitors;
-                    art.Created = model.Created;
+                    art.Created = DateTime.Now;
                     art.Cover = "";
                     art.Contents = "";
                     art.Source = "";

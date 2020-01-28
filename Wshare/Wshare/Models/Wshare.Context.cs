@@ -34,5 +34,6 @@ namespace Wshare.Models
         public DbSet<T_Admin> T_Admin { get; set; }
         public DbSet<T_Tags> T_Tags { get; set; }
         public DbSet<T_Files> T_Files { get; set; }
+        public DbSet<T_Pay> T_Pay { get; set; }
     }
 }

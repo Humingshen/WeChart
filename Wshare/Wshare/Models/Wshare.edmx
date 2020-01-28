@@ -22,6 +22,7 @@
           <Property Name="UserId" Type="int" />
           <Property Name="Created" Type="datetime" Nullable="false" />
           <Property Name="IsAgree" Type="bit" Nullable="false" />
+          <Property Name="IsAgree2" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="T_Article">
           <Key>
@@ -47,6 +48,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" />
+          <Property Name="ArticleId" Type="int" />
           <Property Name="Code" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="State" Type="int" Nullable="false" />
           <Property Name="Created" Type="datetime" Nullable="false" />
@@ -73,6 +75,18 @@
           <Property Name="Title" Type="varchar" MaxLength="1000" />
           <Property Name="FileName" Type="varchar" MaxLength="100" />
           <Property Name="Created" Type="datetime" />
+        </EntityType>
+        <EntityType Name="T_Pay">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ArticleId" Type="int" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="Remark" Type="varchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="T_Tags">
           <Key>
@@ -170,6 +184,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_T_Pay_T_Article">
+          <End Role="T_Article" Type="Self.T_Article" Multiplicity="1" />
+          <End Role="T_Pay" Type="Self.T_Pay" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="T_Pay">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Pay_T_User">
+          <End Role="T_User" Type="Self.T_User" Multiplicity="1" />
+          <End Role="T_Pay" Type="Self.T_Pay" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="T_Pay">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_T_Visitors_T_Article">
           <End Role="T_Article" Type="Self.T_Article" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -217,6 +255,7 @@
           <EntitySet Name="T_Authorize" EntityType="Self.T_Authorize" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Comment" EntityType="Self.T_Comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Files" EntityType="Self.T_Files" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_Pay" EntityType="Self.T_Pay" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Tags" EntityType="Self.T_Tags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_User" EntityType="Self.T_User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Visitors" EntityType="Self.T_Visitors" Schema="dbo" store:Type="Tables" />
@@ -239,6 +278,14 @@
           <AssociationSet Name="FK_T_Comment_T_User" Association="Self.FK_T_Comment_T_User">
             <End Role="T_User" EntitySet="T_User" />
             <End Role="T_Comment" EntitySet="T_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Pay_T_Article" Association="Self.FK_T_Pay_T_Article">
+            <End Role="T_Article" EntitySet="T_Article" />
+            <End Role="T_Pay" EntitySet="T_Pay" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Pay_T_User" Association="Self.FK_T_Pay_T_User">
+            <End Role="T_User" EntitySet="T_User" />
+            <End Role="T_Pay" EntitySet="T_Pay" />
           </AssociationSet>
           <AssociationSet Name="FK_T_Visitors_T_Article" Association="Self.FK_T_Visitors_T_Article">
             <End Role="T_Article" EntitySet="T_Article" />
@@ -268,6 +315,7 @@
           <Property Name="IsAgree" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="T_Comment" Relationship="Self.FK_T_Agree_T_Comment" FromRole="T_Agree" ToRole="T_Comment" />
           <NavigationProperty Name="T_User" Relationship="Self.FK_T_Agree_T_User" FromRole="T_Agree" ToRole="T_User" />
+          <Property Name="IsAgree2" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="T_Article">
           <Key>
@@ -288,6 +336,7 @@
           <Property Name="State" Type="Int32" Nullable="false" />
           <NavigationProperty Name="T_Comment" Relationship="Self.FK_T_Comment_T_Article" FromRole="T_Article" ToRole="T_Comment" />
           <NavigationProperty Name="T_Visitors" Relationship="Self.FK_T_Visitors_T_Article" FromRole="T_Article" ToRole="T_Visitors" />
+          <NavigationProperty Name="T_Pay" Relationship="WshareModel.FK_T_Pay_T_Article" FromRole="T_Article" ToRole="T_Pay" />
         </EntityType>
         <EntityType Name="T_Authorize">
           <Key>
@@ -300,6 +349,7 @@
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="T_User" Relationship="Self.FK_T_Authorize_T_User" FromRole="T_Authorize" ToRole="T_User" />
           <Property Name="Tag" Type="Int32" Nullable="false" />
+          <Property Name="ArticleId" Type="Int32" />
         </EntityType>
         <EntityType Name="T_Comment">
           <Key>
@@ -336,6 +386,7 @@
           <NavigationProperty Name="T_Visitors" Relationship="Self.FK_T_Visitors_T_User" FromRole="T_User" ToRole="T_Visitors" />
           <NavigationProperty Name="T_Visitors1" Relationship="Self.FK_T_Visitors_T_User1" FromRole="T_User" ToRole="T_Visitors" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="T_Pay" Relationship="WshareModel.FK_T_Pay_T_User" FromRole="T_User" ToRole="T_Pay" />
         </EntityType>
         <EntityType Name="T_Visitors">
           <Key>
@@ -496,6 +547,15 @@
           <EntitySet Name="T_Admin" EntityType="WshareModel.T_Admin" />
           <EntitySet Name="T_Tags" EntityType="WshareModel.T_Tags" />
           <EntitySet Name="T_Files" EntityType="WshareModel.T_Files" />
+          <EntitySet Name="T_Pay" EntityType="WshareModel.T_Pay" />
+          <AssociationSet Name="FK_T_Pay_T_Article" Association="WshareModel.FK_T_Pay_T_Article">
+            <End Role="T_Article" EntitySet="T_Article" />
+            <End Role="T_Pay" EntitySet="T_Pay" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Pay_T_User" Association="WshareModel.FK_T_Pay_T_User">
+            <End Role="T_User" EntitySet="T_User" />
+            <End Role="T_Pay" EntitySet="T_Pay" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="T_Admin">
           <Key>
@@ -521,6 +581,44 @@
           <Property Name="FileName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Created" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="T_Pay">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ArticleId" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="Remark" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="T_Article" Relationship="WshareModel.FK_T_Pay_T_Article" FromRole="T_Pay" ToRole="T_Article" />
+          <NavigationProperty Name="T_User" Relationship="WshareModel.FK_T_Pay_T_User" FromRole="T_Pay" ToRole="T_User" />
+        </EntityType>
+        <Association Name="FK_T_Pay_T_Article">
+          <End Type="WshareModel.T_Article" Role="T_Article" Multiplicity="1" />
+          <End Type="WshareModel.T_Pay" Role="T_Pay" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="T_Pay">
+              <PropertyRef Name="ArticleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Pay_T_User">
+          <End Type="WshareModel.T_User" Role="T_User" Multiplicity="1" />
+          <End Type="WshareModel.T_Pay" Role="T_Pay" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="T_Pay">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -530,6 +628,7 @@
           <EntitySetMapping Name="T_Agree">
             <EntityTypeMapping TypeName="WshareModel.T_Agree">
               <MappingFragment StoreEntitySet="T_Agree">
+                <ScalarProperty Name="IsAgree2" ColumnName="IsAgree2" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CommentId" ColumnName="CommentId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -560,6 +659,7 @@
           <EntitySetMapping Name="T_Authorize">
             <EntityTypeMapping TypeName="WshareModel.T_Authorize">
               <MappingFragment StoreEntitySet="T_Authorize">
+                <ScalarProperty Name="ArticleId" ColumnName="ArticleId" />
                 <ScalarProperty Name="Tag" ColumnName="Tag" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -633,6 +733,19 @@
                 <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="FileName" ColumnName="FileName" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Pay">
+            <EntityTypeMapping TypeName="WshareModel.T_Pay">
+              <MappingFragment StoreEntitySet="T_Pay">
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="ArticleId" ColumnName="ArticleId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

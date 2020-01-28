@@ -19,10 +19,40 @@ namespace Wshare.Controllers
             return View();
         }
 
-        public ActionResult Info(int id)
+        // 
+        [WeChat]
+        public ActionResult Pay(int id,int amount)
+        {
+             return View();
+        }
+
+        [WeChat]
+        public ActionResult Info(int id,int? uid)
         {
             T_Article obj = db.T_Article.Find(id);
+            var us = db.T_User.Find(Lib.UserId);
+            if (uid != null)
+            {
+                if (!db.T_Visitors.Any(o => o.ArticleId == id && o.UserId == us.Id && o.ShareId == uid))
+                {
+                    T_Visitors vs = new T_Visitors()
+                    {
+                        ArticleId = id,
+                        Created = DateTime.Now,
+                        ShareId = uid,
+                        UserId = us.Id
+                    };
+                    db.T_Visitors.Add(vs);
+                    obj.Visitors += 1;
+                    db.SaveChanges();
+                }
+            }
+
             ViewBag.Article = obj ?? new T_Article();
+
+            ViewBag.Like = db.T_Pay.Where(o => o.Status && o.ArticleId == id).Count();
+            List<string> zs = db.T_Pay.Where(o => o.Status && o.ArticleId == id).Select(o => o.T_User.Headimgurl).ToList();
+            ViewBag.User = zs ?? new List<string>();
 
             return View();
         }

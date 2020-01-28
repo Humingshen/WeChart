@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Wshare.Models;
 
 namespace Wshare
 {
     public class Lib
     {
+        public static int UserId
+        {
+            get { return Convert.ToInt32(HttpContext.Current.Request.Cookies["user"] == null ? "0" : HttpContext.Current.Request.Cookies["user"].Value); }
+        }
         public static string DateFormatToString(DateTime dt)
         {
             TimeSpan span = (DateTime.Now - dt).Duration();

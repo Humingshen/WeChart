@@ -14,6 +14,57 @@
     <meta name="description" content="@article.Title">
     <meta name="author" content="@article.Author">
     <title>@article.Title</title>
+    <script src="http://res2.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <script type="text/javascript">
+        wx.config({
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: '', // 必填，公众号的唯一标识
+            timestamp: '', // 必填，生成签名的时间戳
+            nonceStr: '', // 必填，生成签名的随机串
+            signature: '',// 必填，签名
+            jsApiList: ['onMenuShareTimeline,onMenuShareAppMessage,chooseWXPay'] // 必填，需要使用的JS接口列表
+        });
+        wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+            wx.checkJsApi({
+                jsApiList: ['onMenuShareTimeline,onMenuShareAppMessage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+                success: function (res) {
+                    // 以键值对的形式返回，可用的api值true，不可用为false
+                    // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+                }
+            });
+            
+            wx.chooseWXPay({
+                timestamp: 0, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                nonceStr: '', // 支付签名随机串，不长于 32 位
+                package: '', // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+                signType: '', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                paySign: '', // 支付签名
+                success: function (res) {
+                    // 支付成功后的回调函数
+                }
+            });
+            wx.onMenuShareTimeline({
+                title: '', // 分享标题
+                link: '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: '', // 分享图标
+                success: function () {
+                    // 用户点击了分享后执行的回调函数
+                }
+            });
+            wx.onMenuShareAppMessage({
+                title: '', // 分享标题
+                desc: '', // 分享描述
+                link: '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: '', // 分享图标
+                type: '', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () {
+                    // 用户点击了分享后执行的回调函数
+                }
+            });
+        });
+
+    </script>
     <!---请求录制 by gabyliu-->
     <link href="~/Content/StyleSheet1.css" rel="stylesheet" />
 
@@ -46,6 +97,23 @@
         ::-webkit-resizer {
             display: none !important;
         }
+
+        .pay-div {
+            margin-left: 3%;
+        }
+
+            .pay-div a {
+                display: block;
+                float: left;
+                padding: 10px 0px;
+                width: 27%;
+                text-align: center;
+                margin: 2%;
+                border: 2px solid #ff6a00;
+                color: #ff6a00;
+                border-radius: 6px;
+                font-weight: bold;
+            }
     </style>
 
     <!--[if lt IE 9]>
@@ -56,6 +124,7 @@
 </head>
 <body id="activity-detail" class="zh_CN   mm_appmsg
  discuss_tab  appmsg_skin_default appmsg_style_default pages_skin_pc">
+    <input id="articleId" type="hidden" value="@article.Id" />
     <div id="js_article" class="rich_media">
         <div id="js_top_ad_area" class="top_banner"></div>
         <div class="rich_media_inner">
@@ -77,24 +146,39 @@
                             @(new HtmlString(article.Contents))
                         </div>
 
+
                         <div class="reward_area tc reward_area_primary reward_area_win reward_avatar_overflow" id="js_reward_area" style="display: block;">
-                            <div class="reward-author" style="display: block;" id="js_reward_author">秦小明</div>
+                            <div class="reward-author" style="        display: block;
+" id="js_reward_author"></div>
                             <p class="reward_tips js_reward_wording">分享和转发，是更大的支持！</p>
                             <p class="reward_button_wrp">
-                                <span id="js_author_reward_qrcode" class="reward_pop_panel">
-                                    <img id="js_author_reward_qrcode_img" src="" alt="赞赏二维码">
-                                    <strong>微信扫一扫赞赏作者</strong>
-                                </span>
-                                <a class="reward_button weui-btn" id="js_reward_link" href="#"><span id="js_reward_link_text">喜欢作者</span></a>
+                                @*<span id="js_author_reward_qrcode" class="reward_pop_panel">
+                                        <img id="js_author_reward_qrcode_img" src="" alt="赞赏二维码">
+                                        <strong>微信扫一扫赞赏作者</strong>
+                                    </span>*@
+                                <a class="reward_button weui-btn" id="js_reward_link" href="javascript:void(0)"><span id="js_reward_link_text">喜欢作者</span></a>
                             </p>
-                            <div id="js_reward_inner" class="reward_area_inner" style="display: block; width: 324px;">
+
+                            <div id="js_reward_inner" class="reward_area_inner" style="        display: block;
+        width: 324px;
+">
                                 <p class="weui-loadmore weui-loadmore_line reward_user_tips" id="js_reward_total_parent">
                                     <span class="weui-loadmore__tips" data-has-event="1">
-                                        <a href="javascript:;" id="js_reward_total">126</a>&nbsp;<span id="js_reward_total_text">人喜欢</span>
+                                        <a href="javascript:;" id="js_reward_total">@ViewBag.Like</a>&nbsp;<span id="js_reward_total_text">人喜欢</span>
                                     </span>
                                 </p>
 
-                                <div id="js_reward_list" class="reward_user_list tl" style="height: 108px;"><span class="reward_user_avatar"><img src="http://wx.qlogo.cn/mmhead/Q3auHgzwzM6BjlvoucVN6libfVuvPShibXIAgM49ASBILGicVEBQavpLw/132"></span><span class="reward_user_avatar"><img src="http://wx.qlogo.cn/mmhead/Q3auHgzwzM4yicCuSOPkurG4uX9GgcQez3jtG7qSx8x0yaocEal2e9g/132"></span><span class="reward_user_avatar"><img src="http://wx.qlogo.cn/mmhead/UDa9R1yl9UY5gIiaicg8Fm7kCxFCDicTygy6PQiaADZ9ZDZfT2QV3E6Enw/132"></span><span class="reward_user_avatar"><img src="http://wx.qlogo.cn/mmhead/6h2MUeZhlicwIvKhibJQNSVVibsKu6zpD5h67kicEL5gDOQ/132"></span><span class="reward_user_avatar"><img src="http://wx.qlogo.cn/mmhead/ia6PTxKATKZ5OOSCnNl9f7tSKxkI8ibqDf8mV8TED7CWs/132"></span><span class="reward_user_avatar"><img src="http://wx.qlogo.cn/mmhead/Q3auHgzwzM5A7ziaX4WdBkmjnIichF8fwoNcibaELicLNVne3ic0jUTiaGSA/132"></span></div>
+                                <div id="js_reward_list" class="reward_user_list tl" style="height: 108px;">
+                                    @foreach (var item in ViewBag.User as List<string>)
+                                    {
+                                        <span class="reward_user_avatar"><img src="@item"></span>
+                                    }
+
+
+                                    @*<span class="reward_user_avatar"><img src="http://wx.qlogo.cn/mmhead/Q3auHgzwzM4yicCuSOPkurG4uX9GgcQez3jtG7qSx8x0yaocEal2e9g/132"></span>*@
+
+                                </div>
+
                                 <div id="js_reward_pagination" class="simple_pagination" style="display: none;">
                                     <button disabled="" class="btn_sp_prev js_reward_pagination_prev">上一页</button>
                                     <span class="sp_page_num_area">
@@ -107,7 +191,7 @@
                     </div>
 
                     <div class="article_modify_area tips_global_primary article_modify_area_primary" style="display:">
-                        文章已于<span id="js_modify_time">@article.Updated</span>修改
+                        文章已于<span id="js_modify_time">@(Lib.DateFormatToString(article.Updated))</span>修改
                     </div>
 
 
@@ -127,7 +211,7 @@
                             </span>
 
 
-                            <span style="display: inline;" class="media_tool_meta meta_extra meta_like" id="like3" like="0">
+                            <span style="display: none;" class="media_tool_meta meta_extra meta_like" id="like3" like="0">
                                 <button class="like_btn" id="js_like_btn">
                                     <span id="js_like_wording">在看</span><span class="like_num" id="likeNum3">@article.Reading</span>
                                 </button>
@@ -135,7 +219,7 @@
                         </div>
                     </div>
 
-                    
+
 
                     <div style="display:none;" id="wow_close_inform">
                         <div class="weui-mask"></div>
@@ -154,11 +238,11 @@
                         <div class="weui-mask_transparent"></div>
                         <div class="weui-toast">
                             <i class="weui-icon-success-no-circle weui-icon_toast"></i>
-                            <p class="weui-toast__content" id="js_toast_msg">已取消</p>
+                            <p class="weui-toast__content" id="js_toast_msg">留言成功</p>
                         </div>
                     </div>
 
-                    
+
 
                     <div id="js_loading" style="display: none;">
                         <div class="weui-mask_transparent"></div>
@@ -179,17 +263,16 @@
                     <div id="js_share_appmsg">
                     </div>
                     <div class="rich_media_extra rich_media_extra_discuss" id="js_cmt_container" style="display: block;">
-                       
+
                         <div class="rich_media_extra rich_media_extra_discuss" id="js_cmt_container" style="display: block;">
                             <!-- pc端文章页留言 -->
 
                             <div class="comment_primary_area" id="js_comment_pc" style="display: none;">
                                 <div class="comment_primary_form" id="js_cmt_addbtn_pc">
                                     <div class="comment_primary_form_hd">
-                                        <img src="http://wx.qlogo.cn/mmopen/Q3auHgzwzM6yLNGdicO7VKnMck6sofX7LnUedx1Uq2f6ia1arTibbZ54cbTLRvnvuw3ng5gZsbhWZk3ZjNfkx6qibA/132" alt="" class="comment_primary_avatar" id="js_avatar_pc">
+                                        <img src="" alt="" class="comment_primary_avatar" id="js_avatar_pc">
                                     </div>
                                     <div class="comment_primary_form_bd">
-                                        <div class="comment_primary_input_default" id="js_cmt_input_pc" style="display: none;">写下你的留言</div>
                                         <div class="comment_primary_input_wrp" id="js_cmt_container_pc" style="display: block;">
                                             <div class="comment_primary_input" id="js_cmt_input" contenteditable="true"></div>
                                             <div class="comment_primary_input_placeholder" id="js_cmt_input_holder">
@@ -200,10 +283,8 @@
                                                     <span class="icon_comment_primary_emotion">
                                                     </span>
                                                 </div>
-                                                <button disabled="disabled" class="reset_btn comment_primary_btn" id="js_cmt_submit">留言</button>                 <!-- 超出字数往comment_primary_counter加comment_primary_counter_warn  -->
-                                                <span class="comment_primary_counter" id="js_length_notice_pc" style="display: none">
-                                                    <em id="js_word_length_pc"></em>                 /                 <span>600</span>
-                                                </span>
+                                                <button class="reset_btn comment_primary_btn" id="js_cmt_submit">留言</button>
+
                                             </div>
                                         </div>
                                     </div>
@@ -212,18 +293,51 @@
 
                             <div class="discuss_mod" id="js_cmt_area" style="display: block;">
                                 <div class="discuss_container" id="js_cmt_main" style="display: block;">
-                                    <div class="mod_title_context">             <strong class="mod_title">精选留言</strong>             <p class="tips_global tr title_bottom_tips" id="js_cmt_nofans1" style="display: none;">作者已设置关注后才可以留言</p>             <!-- 没有付费才给写留言入口 -->                          <p class="discuss_icon_tips tr" id="js_cmt_addbtn1" style="display:">                 <a href="javascript:;" class="discuss_access" id="js_cmt_write1">写留言</a>             </p>                      </div>         <div class="discuss_list_wrp" id="js_cmt_list_container">
+                                    <div class="mod_title_context">
+                                        <strong class="mod_title">精选留言</strong>
+                                        <p class="discuss_icon_tips tr" id="js_cmt_addbtn1" style="display:">
+                                            <a href="javascript:;" class="discuss_access" id="js_cmt_write1">写留言</a>
+                                        </p>
+                                    </div>
+                                    <div class="discuss_list_wrp" id="js_cmt_list_container">
                                         <ul class="discuss_list" id="js_cmt_list">
-                                          
-                                            <li class="js_comment_item discuss_item cid11735125965901135936" id="cid11735125965901135936" data-elected="1" data-friend="0" data-content_id="11735125965901135936" data-hasreport="1">     <div class="discuss_item_hd">              <div class="discuss_opr">           <span class="media_tool_meta meta_praise js_comment_praise " data-status="0" data-content-id="11735125965901135936" data-scene="0">               <i class="icon_praise_gray"></i>               <span class="praise_num" data-num="62" data-like="0">62 </span>           </span>       </div>              <div class="user_info">           <div class="nickname_wrp">                        <strong class="nickname">🌻花轮同学</strong>           </div>           <img class="avatar" src="http://wx.qlogo.cn/mmopen/kIAqI9YuGzNZGLg9hhvcFFca2FibTCEOorJXujhSvTcibicWSKVAVK9kQKfOKAjicI9NPHyoTSFlXF0hSlNY7pnkfoAv4iaJsqAoq/96">       </div>     </div>     <div class="discuss_message">         <span class="discuss_status"></span>         <div class="discuss_message_content">小明哥，请问彪哥的沉没成本是就这一年时间上来说的吗？如果女神玩腻了想找彪哥结婚，这怎么算呢？求指教🤔</div>     </div>                   <div class="reply_result">           <div class="discuss_item_hd">             <div class="discuss_opr">               <span class="media_tool_meta meta_praise js_reply_praise " data-status="0" data-content-id="11735125965901135936" data-reply-id="1" data-scene="0">                 <i class="icon_praise_gray"></i>                 <span class="praise_num" data-num="109" data-like="0">109 </span>               </span>             </div>                          <div class="nickname_wrp">               <div class="nickname">作者</div>             </div>                        </div>           <div class="discuss_message">               <div class="discuss_message_content">如果我是比尔盖茨.....我还会写文章？</div>           </div>             <!-- <p class="discuss_extra_info">2018年11月22日</p> -->         </div>               </li>
-                                          
-                                            <li class="js_comment_item discuss_item cid2446441267614187798" id="cid2446441267614187798" data-elected="1" data-friend="0" data-content_id="2446441267614187798" data-hasreport="1">     <div class="discuss_item_hd">              <div class="discuss_opr">           <span class="media_tool_meta meta_praise js_comment_praise " data-status="0" data-content-id="2446441267614187798" data-scene="0">               <i class="icon_praise_gray"></i>               <span class="praise_num" data-num="35" data-like="0">35 </span>           </span>       </div>              <div class="user_info">           <div class="nickname_wrp">                        <strong class="nickname">👑慈馨👑</strong>           </div>           <img class="avatar" src="http://wx.qlogo.cn/mmopen/wNvtUiawq0Vk8WddVu8tWWhrhApEI9oRdxbePZKdapjRfeF63NxLSS3GpFH9h4ic1W6XvGfkHaAsGrIH8Guxu1yY2zb8aVBoBk/96">       </div>     </div>     <div class="discuss_message">         <span class="discuss_status"></span>         <div class="discuss_message_content">先给钱 后学习 已成习惯 （负债的我 还能给你贡献泡面 你要感恩啊<i class="icon_emotion_single icon_smiley_5"></i></div>     </div>                   <div class="reply_result">           <div class="discuss_item_hd">             <div class="discuss_opr">               <span class="media_tool_meta meta_praise js_reply_praise " data-status="0" data-content-id="2446441267614187798" data-reply-id="1" data-scene="0">                 <i class="icon_praise_gray"></i>                 <span class="praise_num" data-num="88" data-like="0">88 </span>               </span>             </div>                          <div class="nickname_wrp">               <div class="nickname">作者</div>             </div>                        </div>           <div class="discuss_message">               <div class="discuss_message_content">觉得好可以帮忙转发，是更好的支持！另外，要降杠杆啊，水妹！</div>           </div>             <!-- <p class="discuss_extra_info">2018年11月22日</p> -->         </div>               </li>
-                                            
-                                            <li class="js_comment_item discuss_item cid9814690996590477408" id="cid9814690996590477408" data-elected="1" data-friend="0" data-content_id="9814690996590477408" data-hasreport="1">     <div class="discuss_item_hd">              <div class="discuss_opr">           <span class="media_tool_meta meta_praise js_comment_praise " data-status="0" data-content-id="9814690996590477408" data-scene="0">               <i class="icon_praise_gray"></i>               <span class="praise_num" data-num="23" data-like="0">23 </span>           </span>       </div>              <div class="user_info">           <div class="nickname_wrp">                        <strong class="nickname">陌上桑</strong>           </div>           <img class="avatar" src="http://wx.qlogo.cn/mmopen/kIAqI9YuGzNNYgicvVr1vGCST6FibfVanISIRVibApzNYRYfApZNCKl4PrVHbCPQ3eLMS3jtpICVVYM1KG71HmYicmBy4tFKrRx3/96">       </div>     </div>     <div class="discuss_message">         <span class="discuss_status"></span>         <div class="discuss_message_content">多关注机会成本,少纠结沉没成本，默念断舍离，这就把大半柜子的衣服搬上闲鱼。</div>     </div>                    </li>
-                                            
-                                           
-                                            <li class="js_comment_item discuss_item cid3937071377781096516" id="cid3937071377781096516" data-elected="1" data-friend="0" data-content_id="3937071377781096516">     <div class="discuss_item_hd">              <div class="discuss_opr">           <span class="media_tool_meta meta_praise js_comment_praise " data-status="0" data-content-id="3937071377781096516" data-scene="0">               <i class="icon_praise_gray"></i>               <span class="praise_num" data-num="11" data-like="0">11 </span>           </span>       </div>              <div class="user_info">           <div class="nickname_wrp">                        <strong class="nickname">蓬友</strong>           </div>           <img class="avatar" src="http://wx.qlogo.cn/mmopen/PiajxSqBRaEJzN50zAQSegh3WQGTTUDKJ5KaWjiceGkWHmW4vPnMmDhQyAYmtZQREL5knXIZshGy6icrWFIxp19DQ/96">       </div>     </div>     <div class="discuss_message">         <span class="discuss_status"></span>         <div class="discuss_message_content">学习了，观念的不同决定了未来的不同，运气特好和运气特差的除外。</div>     </div>                    </li>
-                                            
+                                            @{
+                                                /*<li class="js_comment_item discuss_item" id="" data-elected="1" data-friend="0" data-content_id="" data-hasreport="1">
+                                                <div class="discuss_item_hd">
+                                                    <div class="discuss_opr">
+                                                        <span class="media_tool_meta meta_praise js_comment_praise praised" data-status="1" data-content-id="4171930497447887281" data-scene="0">               <i class="icon_praise_gray"></i>               <span class="praise_num" data-num="770" data-like="1">770 </span>           </span>
+                                                    </div>
+                                                    <div class="user_info">
+                                                        <div class="nickname_wrp">
+                                                            <strong class="nickname">🌻花轮同学</strong>
+                                                        </div>
+                                                        <img class="avatar" src="http://wx.qlogo.cn/mmopen/kIAqI9YuGzNZGLg9hhvcFFca2FibTCEOorJXujhSvTcibicWSKVAVK9kQKfOKAjicI9NPHyoTSFlXF0hSlNY7pnkfoAv4iaJsqAoq/96">
+                                                    </div>
+                                                </div>
+                                                <div class="discuss_message">
+                                                    <span class="discuss_status"></span>
+                                                    <div class="discuss_message_content">小明哥，请问彪哥的沉没成本是就这一年时间上来说的吗？如果女神玩腻了想找彪哥结婚，这怎么算呢？求指教🤔</div>
+                                                </div>
+                                                <div class="reply_result">
+                                                    <div class="discuss_item_hd">
+                                                        <div class="discuss_opr">
+                                                            <span class="media_tool_meta meta_praise js_reply_praise " data-status="0" data-content-id="11735125965901135936" data-reply-id="1" data-scene="0">
+                                                                <i class="icon_praise_gray"></i>
+                                                                <span class="praise_num" data-num="109" data-like="0">109 </span>
+                                                            </span>
+                                                        </div>
+                                                        <div class="nickname_wrp">
+                                                            <div class="nickname">作者</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="discuss_message">
+                                                        <div class="discuss_message_content">如果我是比尔盖茨.....我还会写文章？</div>
+                                                    </div>
+                                                    <!-- <p class="discuss_extra_info">2018年11月22日</p> -->
+                                                </div>
+                                            </li> */
+                                            }
+
                                         </ul>
                                     </div>
                                 </div>
@@ -233,7 +347,11 @@
                                 <div class="weui-dialog__wrp weui-transition_opacity-hide" id="js_delete_panel">
                                     <div class="weui-mask"></div>
                                     <div class="weui-dialog">
-                                        <div class="weui-dialog__bd">删除该留言吗?</div>         <div class="weui-dialog__ft">           <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default" id="js_delete_cancel">取消</a>           <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" id="js_delete_confirm">删除</a>         </div>
+                                        <div class="weui-dialog__bd">删除该留言吗?</div>
+                                        <div class="weui-dialog__ft">
+                                            <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default" id="js_delete_cancel">取消</a>
+                                            <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" id="js_delete_confirm">删除</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -244,13 +362,6 @@
 
             </div>
         </div>
-        <div style="display: none;">
-            <div class="weui-mask_transparent"></div>
-            <div class="weui-toast">
-                <i class="weui-loading weui-icon_toast"></i>
-                <p class="weui-toast__content js_loading_content">发送中</p>
-            </div>
-        </div>
         <div>
             <!-- 发表留言 -->
             <div class="weui-webview-nav" style="display:none;" id="js_fake_bar">
@@ -258,14 +369,174 @@
                 <button class="weui-webview-nav__btn_forward weui-webview-nav__btn_disabled" disabled="disabled">forward</button>
             </div>
         </div>
+
+    </div>
+    <div id="player" style="display:none;">
+        <div id="js_pay_bg" style=" background:#404040; opacity:0.6;position:fixed; top:0px; width:100%; height:100%; "></div>
+        <div id="js_pay" style=" position:fixed; top:20%; width:94%; margin:0px 3%;   background:#FFF; border-radius:6px;">
+            <div class="mod_title_context" style="padding:15px;">
+                <strong class="mod_title" style="font-size:18px; color:#000;">喜欢作者</strong>
+                <p class="discuss_icon_tips tr" id="js_cmt_addbtn1" style="display:">
+                    <a href="javascript:;" class="discuss_access" id="js_payclose">X</a>
+                </p>
+            </div>
+            <div id="pay-gd">
+                <div class="pay-div ">
+                    <a href="/Article/Pay/@article.Id?amount=5">￥5</a>
+                    <a href="/Article/Pay/@article.Id?amount=15">￥15</a>
+                    <a href="/Article/Pay/@article.Id?amount=25">￥25</a>
+                    <a href="/Article/Pay/@article.Id?amount=35">￥35</a>
+                    <a href="/Article/Pay/@article.Id?amount=45">￥45</a>
+                    <a href="/Article/Pay/@article.Id?amount=55">￥55</a>
+                </div>
+                <div id="pay_other" style="clear:both; line-height:60px;text-align:center; color:#0736a5">其他金额</div>
+            </div>
+            <div id="payo" style="display:none;">
+                <div style="text-align:center; font-size:26px;">
+                    ￥ <input id="pay_n" name="amount" type="number" placeholder="0.00" style="width:100px; font-size:35px; border:0px" />
+                    <div id="pay_gd" style="clear:both; line-height:60px;font-size:14px; text-align:center; color:#0736a5">固定金额</div>
+                </div>
+                <div id="aaa" style="clear:both; line-height:60px;text-align:center; color:#ff6a00; font-size:18px; border-top:1px solid #cacaca;"><a href="" id="pay-one" onclick="return Pay()">确定</a></div>
+
+            </div>
+        </div>
     </div>
     <script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/weui-1.1.1.min.js"></script>
+    <script src="~/Scripts/zepto.weui.js"></script>
+    <script src="~/Content/assets/libs/layui/layui.js"></script>
+    <script src="~/Content/assets/js/common.js"></script>
     <script type="text/javascript">
+
+        // 分享链接生成 就oK
+
+        var page = 1;
+        var limit = 30;
+
         $(document).ready(function () {
             $("#js_like_btn").click(function () { alert(1); });
-            $("#js_cmt_show_all").click(function () { $("#js_loading").show(); });
-            $("#js_cmt_write1").click(function () { if ($(this).text() == "写留言") { $(this).text("取消");} else { $(this).text("写留言"); }  $("#js_comment_pc").toggle(); });
+            $("#js_cmt_show_all").click(function () { $("#js_loading").show();LoadCom(); });
+            $("#js_cmt_write1").click(function () { if ($(this).text() == "写留言") { $(this).text("取消"); } else { $(this).text("写留言"); } $("#js_comment_pc").toggle(); });
+
+            $("#js_reward_link").click(function () {
+                $("#player").show();
+            });
+            $("#js_payclose").click(function () { $("#player").hide(); });
+            $("#pay_other").click(function () { $("#payo").show(); $("#pay-gd").hide(); });
+            $("#pay_gd").click(function () { $("#payo").hide(); $("#pay-gd").show(); });
+            $("#js_cmt_input").click(function () { $("#js_cmt_input_holder").hide(); });
+            $("#js_cmt_submit").click(function () { PostCom(); });
+            $("#js_cmt_input").blur(function () { if ($(this).text().length == 0) { $("#js_cmt_input_holder").show(); } });
+            LoadCom();
+
         });
+
+        function PostCom() {
+            $.post("/api/v2/comment", { contents: $("#js_cmt_input").text(), articleId: $("#articleId").val() },
+                function (obj) {
+                    if (obj.code == 0) {
+                        $("#js_cmt_input").text("");
+                        $("#js_cmt_input_holder").show();
+                        $("#js_cmt_write1").click();
+                        //$("#js_cmt_list").html("");
+                        //page = 1;
+                        //LoadCom();
+                        $("#js_like_toast").show();
+                        setTimeout(function () { $("#js_like_toast").hide(); }, 2000)
+                    }
+                });
+        }
+
+        function LoadCom() {
+            $.get("/api/v2/comments", { articleId: $("#articleId").val(), page: page, limit: limit }, function (obj) {
+                if (obj.code == 0) {
+                    var html = "";
+                    if (obj.data.length > 0) {
+                        var item;
+                        for (var i = 0; i < obj.data.length; i++) {
+                            item = obj.data[i];
+                            html += "<li class=\"js_comment_item discuss_item\" id=\"\" data-elected=\"1\" data-friend=\"1\" data-content_id=\"\" data-hasreport=\"1\">";
+                            html += "<div class=\"discuss_item_hd\">";
+                            html += "<div class=\"discuss_opr\">";
+                            html += " <span class=\"media_tool_meta meta_praise js_comment_praise " + item.praised + "\" id='com" + item.id + "' data-status=\"1\" data-content-id=\"" + item.id + "\" data-scene=\"0\">";
+                            html += "<i class=\"icon_praise_gray\"></i> ";
+                            html += "<span class=\"praise_num\" id='cn" + item.id + "' data-num=\"" + item.agree + "\" data-like=\"1\"> " + item.agree + "</span>";
+                            html += " </span> </div>";
+                            html += " <div class=\"user_info\">";
+                            html += " <div class=\"nickname_wrp\">";
+                            html += "<strong class=\"nickname\">" + item.nickName + "</strong>";
+                            html += "</div>";
+                            html += "<img class=\"avatar\" src=\"" + item.headimgurl + "\">";
+                            html += "</div>";
+                            html += "</div>";
+                            html += "<div class=\"discuss_message\">";
+                            html += "<span class=\"discuss_status\"></span>";
+                            html += "<div class=\"discuss_message_content\">" + item.contents + "</div>";
+                            html += "</div>";
+                            if (item.reply.length > 0) {
+                                html += "<div class=\"reply_result\">";
+                                html += "<div class=\"discuss_item_hd\">";
+                                html += "<div class=\"discuss_opr\">";
+                                html += "<span class=\"media_tool_meta meta_praise js_reply_praise " + item.praised2 + "\"  id='rep" + item.id + "' data-status=\"1\" data-content-id=\"" + item.id + "\" data-reply-id=\"1\" data-scene=\"0\">";
+                                html += "<i class=\"icon_praise_gray\"></i> ";
+                                html += "<span class=\"praise_num\" id='rn" + item.id + "' data-num=\"" + item.agree2 + "\" data-like=\"1\"> " + item.agree2 + " </span>";
+                                html += "</span>";
+                                html += "</div>";
+                                html += "<div class=\"nickname_wrp\">";
+                                html += "<div class=\"nickname\">作者</div>";
+                                html += "</div>";
+                                html += "</div>";
+                                html += "<div class=\"discuss_message\">";
+                                html += "<div class=\"discuss_message_content\">" + item.reply + "</div>";
+                                html += "</div>";
+                                html += "</div>";
+                            }
+                            html += "</li>";
+                        }
+                        $("#js_cmt_list").append(html);
+                        $("#js_loading").hide();
+                        page += 1;
+                        if (obj.data.length == limit) {
+                            $("#js_cmt_show_all").show();
+                        } else {
+                            $("#js_cmt_show_all").hide();
+                        }
+
+                        $(".js_comment_praise").unbind("click").click(function () {
+                            Agree($(this).attr("data-content-id"), 0);
+                        });
+                        $(".js_reply_praise").unbind("click").click(function () {
+                            Agree($(this).attr("data-content-id"), 1);
+                        });
+                    } else {
+                        $("#js_loading").hide();
+                        $("#js_cmt_show_all").hide();
+                    }
+                }
+            });
+        }
+
+        function Agree(id,index) {
+            $.get("/api/v2/agree", { commentId: id, index: index }, function (obj) {
+                if (obj.code == 0) {
+                    if (index == 0) {
+                        $("#com" + id).toggleClass("praised");
+                        $("#cn" + id).text(obj.data);
+                    } else {
+                        $("#rep" + id).toggleClass("praised");
+                        $("#rn" + id).text(obj.data);
+                    }
+                }
+            });
+        }
+
+        function Pay(obj) {
+            if (parseInt($("#pay_n").val()) > 0) {
+                $("#pay-one").attr("href", "/Article/Pay/@(article.Id)?amount=" + $("#pay_n").val());
+                return true;
+            }
+            return false;
+        }
     </script>
 </body>
 </html>

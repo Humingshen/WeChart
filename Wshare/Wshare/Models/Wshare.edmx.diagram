@@ -5,12 +5,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="03aef7ecf5494a7bacf9c8c7f0c3b67c" Name="Diagram1">
-        <EntityTypeShape EntityType="WshareModel.T_Agree" Width="1.5" PointX="3" PointY="6.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WshareModel.T_Article" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WshareModel.T_Authorize" Width="1.5" PointX="3" PointY="9.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WshareModel.T_Comment" Width="1.5" PointX="6" PointY="6.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="WshareModel.T_User" Width="1.5" PointX="0.75" PointY="5.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="WshareModel.T_Visitors" Width="1.5" PointX="3" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WshareModel.T_Agree" Width="1.5" PointX="3" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WshareModel.T_Article" Width="1.5" PointX="0.75" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WshareModel.T_Authorize" Width="1.5" PointX="3" PointY="22.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WshareModel.T_Comment" Width="1.5" PointX="3" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WshareModel.T_User" Width="1.5" PointX="0.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WshareModel.T_Visitors" Width="1.5" PointX="6" PointY="8.375" IsExpanded="true" />
         <AssociationConnector Association="WshareModel.FK_T_Agree_T_Comment" ManuallyRouted="false" />
         <AssociationConnector Association="WshareModel.FK_T_Agree_T_User" ManuallyRouted="false" />
         <AssociationConnector Association="WshareModel.FK_T_Comment_T_Article" ManuallyRouted="false" />
@@ -19,9 +19,12 @@
         <AssociationConnector Association="WshareModel.FK_T_Comment_T_User" ManuallyRouted="false" />
         <AssociationConnector Association="WshareModel.FK_T_Visitors_T_User" ManuallyRouted="false" />
         <AssociationConnector Association="WshareModel.FK_T_Visitors_T_User1" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="WshareModel.T_Admin" Width="1.5" PointX="5.375" PointY="0.75" />
-        <EntityTypeShape EntityType="WshareModel.T_Tags" Width="1.5" PointX="5.375" PointY="3.75" />
-        <EntityTypeShape EntityType="WshareModel.T_Files" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="WshareModel.T_Admin" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="WshareModel.T_Tags" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="WshareModel.T_Files" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="WshareModel.T_Pay" Width="1.5" PointX="3" PointY="8.25" />
+        <AssociationConnector Association="WshareModel.FK_T_Pay_T_Article" />
+        <AssociationConnector Association="WshareModel.FK_T_Pay_T_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
