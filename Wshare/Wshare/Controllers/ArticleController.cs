@@ -23,12 +23,42 @@ namespace Wshare.Controllers
         [WeChat]
         public ActionResult Pay(int id,int amount)
         {
-             return View();
+            T_Pay pay = new T_Pay()
+            {
+                Created = DateTime.Now,
+                ArticleId = id,
+                Price = amount,
+                Remark = "",
+                Status = false,
+                UserId = Lib.UserId,
+            };
+            db.T_Pay.Add(pay);
+            db.SaveChanges();
+
+            ViewBag.ID = pay.Id;
+            ViewBag.Amount = amount;
+            return View();
         }
 
         [WeChat]
         public ActionResult Info(int id,int? uid)
         {
+            var model = new WXShareModel();
+            model.appId = WeiXinCommon._AppId;
+            model.nonceStr = Guid.NewGuid().ToString().Replace("-", "");
+            model.timestamp = Convert.ToInt64(WeiXinCommon.GenerateTimeStamp());
+
+            if (Request.Cookies["ticket"] == null)
+            {
+                HttpCookie cookie = new HttpCookie("ticket");
+                cookie.Value = model.GetJsApiTicket(model.GetAccessToken()).ticket + "";
+                Response.AppendCookie(cookie);
+            }
+            model.ticket = Request.Cookies["ticket"] + "";
+            model.url = WeiXinCommon.Url + "/article/" + id + "?uid=" + Lib.UserId;
+            model.MakeSign();
+            ViewBag.Model = model;
+
             T_Article obj = db.T_Article.Find(id);
             var us = db.T_User.Find(Lib.UserId);
             if (uid != null)

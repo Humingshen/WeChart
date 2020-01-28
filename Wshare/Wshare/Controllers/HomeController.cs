@@ -14,13 +14,6 @@ namespace Wshare.Controllers
         [WeChat]
         public ActionResult Index(string k)
         {
-            //List<string> tags = (from a in db.T_Article
-            //                     where a.State == 1
-            //                     group a by a.Tags
-            //                     into t
-            //                     select t.Key
-            //                     ).ToList();
-
             List<T_Article> list = (from a in db.T_Article
                                     where a.State == 1 && (a.Tags == k || string.IsNullOrEmpty(k))
                                     orderby a.Id descending

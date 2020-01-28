@@ -53,6 +53,10 @@
     <Reference Include="JWT, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\JWT.5.3.1\lib\net46\JWT.dll</HintPath>
     </Reference>
+    <Reference Include="LitJSON, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\LitJSON.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -172,6 +176,7 @@
     <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="Controllers\V1Controller.cs" />
     <Compile Include="Controllers\V2Controller.cs" />
+    <Compile Include="Controllers\WeiXinPayController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -208,6 +213,7 @@
       <DependentUpon>Wshare.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserInfo.cs" />
+    <Compile Include="Models\WeiXinCommon.cs" />
     <Compile Include="Models\Wshare.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -223,6 +229,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Wshare.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\WXShareModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -316,6 +323,7 @@
     <Folder Include="Content\images\" />
     <Folder Include="Views\Auth\" />
     <Folder Include="Views\Jwt\" />
+    <Folder Include="Views\WeiXinPay\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
