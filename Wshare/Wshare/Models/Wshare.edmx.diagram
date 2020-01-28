@@ -25,6 +25,7 @@
         <EntityTypeShape EntityType="WshareModel.T_Pay" Width="1.5" PointX="3" PointY="8.25" />
         <AssociationConnector Association="WshareModel.FK_T_Pay_T_Article" />
         <AssociationConnector Association="WshareModel.FK_T_Pay_T_User" />
+        <EntityTypeShape EntityType="WshareModel.AccessToken" Width="1.5" PointX="5.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

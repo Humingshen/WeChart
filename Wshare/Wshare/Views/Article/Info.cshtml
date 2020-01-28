@@ -16,19 +16,20 @@
     <meta name="description" content="@article.Title">
     <meta name="author" content="@article.Author">
     <title>@article.Title</title>
-    <script src="http://res2.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
     <script type="text/javascript">
         wx.config({
-            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: '@(model.appId)', // 必填，公众号的唯一标识
             timestamp: '@(model.timestamp)', // 必填，生成签名的时间戳
             nonceStr: '@(model.nonceStr)', // 必填，生成签名的随机串
             signature: '@(model.signature)',// 必填，签名
-            jsApiList: ['onMenuShareTimeline,onMenuShareAppMessage,chooseWXPay'] // 必填，需要使用的JS接口列表
+            jsApiList: ['onMenuShareTimeline',
+                'onMenuShareAppMessage'] // 必填，需要使用的JS接口列表
         });
         wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
             wx.checkJsApi({
-                jsApiList: ['onMenuShareTimeline,onMenuShareAppMessage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+                jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
                 success: function (res) {
                     // 以键值对的形式返回，可用的api值true，不可用为false
                     // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
@@ -37,17 +38,17 @@
 
             wx.onMenuShareTimeline({
                 title: '@(article.Title)', // 分享标题
-                link: 'http://www.meiyu.com/article/info/@(article.Id)?uid=@(Lib.UserId)', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                imgUrl: 'http://www.meiyu.com@(article.Cover)', // 分享图标
+                link: 'http://edu.meiyu.com/article/info/@(article.Id)?uid=@(Lib.UserId)', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: 'http://edu.meiyu.com@(article.Cover)', // 分享图标
                 success: function () {
                     // 用户点击了分享后执行的回调函数
                 }
             });
             wx.onMenuShareAppMessage({
-                title: '@(article.Title)', // 分享标题
+                title: '理工毕业设计', // 分享标题
                 desc: '@(article.Title)', // 分享描述
-                link: 'http://www.meiyu.com/article/info/@(article.Id)?uid=@(Lib.UserId)', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                imgUrl: 'http://www.meiyu.com@(article.Cover)', // 分享图标
+                link: 'http://edu.meiyu.com/article/info/@(article.Id)?uid=@(Lib.UserId)', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: 'http://edu.meiyu.com@(article.Cover)', // 分享图标
                 type: 'link', // 分享类型,music、video或link，不填默认为link
                 dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
                 success: function () {
@@ -262,7 +263,7 @@
                             <div class="comment_primary_area" id="js_comment_pc" style="display: none;">
                                 <div class="comment_primary_form" id="js_cmt_addbtn_pc">
                                     <div class="comment_primary_form_hd">
-                                        <img src="" alt="" class="comment_primary_avatar" id="js_avatar_pc">
+                                        <img src="@(ViewBag.Headimgurl)" alt="" class="comment_primary_avatar" id="js_avatar_pc">
                                     </div>
                                     <div class="comment_primary_form_bd">
                                         <div class="comment_primary_input_wrp" id="js_cmt_container_pc" style="display: block;">

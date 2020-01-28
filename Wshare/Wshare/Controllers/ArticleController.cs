@@ -43,20 +43,31 @@ namespace Wshare.Controllers
         [WeChat]
         public ActionResult Info(int id,int? uid)
         {
+            var token = db.AccessToken.Find(1);
+            var ticket = db.AccessToken.Find(2);
+
             var model = new WXShareModel();
             model.appId = WeiXinCommon._AppId;
-            model.nonceStr = Guid.NewGuid().ToString().Replace("-", "");
+            model.nonceStr = Guid.NewGuid().ToString().Replace("-", "").ToLower();
             model.timestamp = Convert.ToInt64(WeiXinCommon.GenerateTimeStamp());
 
-            if (Request.Cookies["ticket"] == null)
+            if (ticket.Created.AddSeconds(6200) < DateTime.Now)
             {
-                HttpCookie cookie = new HttpCookie("ticket");
-                cookie.Value = model.GetJsApiTicket(model.GetAccessToken()).ticket + "";
-                Response.AppendCookie(cookie);
+                if (token.Created.AddSeconds(6200) < DateTime.Now)
+                {
+                    token.access_token = model.GetAccessToken();
+                    token.Created = DateTime.Now;
+                }
+                ticket.access_token = model.GetJsApiTicket(token.access_token).ticket;
+                ticket.Created = DateTime.Now;
+                db.SaveChanges();
             }
-            model.ticket = Request.Cookies["ticket"] + "";
-            model.url = WeiXinCommon.Url + "/article/" + id + "?uid=" + Lib.UserId;
-            model.MakeSign();
+            
+            model.ticket = ticket.access_token;
+            model.url = WeiXinCommon.Url + Request.Url.PathAndQuery;
+            model.MakeSign(); 
+            //WeiXinCommon.WriteErrorLog( model.url);
+
             ViewBag.Model = model;
 
             T_Article obj = db.T_Article.Find(id);
@@ -78,8 +89,8 @@ namespace Wshare.Controllers
                 }
             }
 
+            ViewBag.Headimgurl = us.Headimgurl;
             ViewBag.Article = obj ?? new T_Article();
-
             ViewBag.Like = db.T_Pay.Where(o => o.Status && o.ArticleId == id).Count();
             List<string> zs = db.T_Pay.Where(o => o.Status && o.ArticleId == id).Select(o => o.T_User.Headimgurl).ToList();
             ViewBag.User = zs ?? new List<string>();

@@ -21,11 +21,11 @@ namespace Wshare.Models
         /// <summary>
         /// 公众号APPID
         /// </summary>
-        public static readonly string _AppId = "wx1111111111111111";
+        public static readonly string _AppId = "wx3b571edd4c6f73fd";
         /// <summary>
         /// 开发者密码
         /// </summary>
-        public static readonly string _AppSecret = "c9xxxxxxxxxxxxxx";
+        public static readonly string _AppSecret = "4331ff5209ed57d274d4d4a0bea7edb4";
         /// <summary>
         /// 支付商户ID
         /// </summary>
@@ -35,7 +35,7 @@ namespace Wshare.Models
         /// </summary>
         public static readonly string _Key = "dddddddddddddddddddddsfsdfsdfsdf";
 
-        public static readonly string Url = "http://www.meiyu.com";
+        public static readonly string Url = "http://edu.meiyu.com";
 
         /// <summary>
         /// 字典转换成JSON字符串 JSAPI支付时用到
@@ -43,6 +43,17 @@ namespace Wshare.Models
         /// <param name="D"></param>
         /// <returns></returns>
         public static string ToJson(Dictionary<String, string> D)
+        {
+            string jsonStr = JsonMapper.ToJson(D);
+            return jsonStr;
+
+        }
+        /// <summary>
+        /// 字典转换成JSON字符串 JSAPI支付时用到
+        /// </summary>
+        /// <param name="D"></param>
+        /// <returns></returns>
+        public static string ToJson(Dictionary<String, object> D)
         {
             string jsonStr = JsonMapper.ToJson(D);
             return jsonStr;
@@ -79,7 +90,7 @@ namespace Wshare.Models
         {
             lock (_Syn)
             {
-                string logDir = "C:\\RunLog\\";
+                string logDir = "D:\\RunLog\\";
                 if (!System.IO.Directory.Exists(logDir))
                 {
                     System.IO.Directory.CreateDirectory(logDir);

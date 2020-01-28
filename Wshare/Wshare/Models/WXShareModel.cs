@@ -27,7 +27,7 @@ namespace Wshare.Models
             string1Builder.Append("jsapi_ticket=").Append(ticket).Append("&")
                          .Append("noncestr=").Append(nonceStr).Append("&")
                          .Append("timestamp=").Append(timestamp).Append("&")
-                         .Append("url=").Append(url.IndexOf("#") >= 0 ? url.Substring(0, url.IndexOf("#")) : url);
+                         .Append("url=").Append(url);
             var string1 = string1Builder.ToString();
             signature = Sha1(string1, Encoding.Default);
 
@@ -47,38 +47,20 @@ namespace Wshare.Models
         /// <summary>
         /// 获取access_token
         /// </summary>
-        public  string GetAccessToken()
+        public string GetAccessToken()
         {
-            string access_token = HttpContext.Current.Application["access_token"] + "";
-            DateTime access_token_created;
-            DateTime.TryParse(HttpContext.Current.Application["access_token_created"] + "", out access_token_created);
-            //获取session 中的 access_token
-            TokenResult tr;
-            if (string.IsNullOrWhiteSpace(access_token) || access_token_created.AddSeconds(7200)<DateTime.Now) //尚未保存过access_token
-            {
-                tr = GetAccessToken(WeiXinCommon._AppId, WeiXinCommon._AppSecret);
-                HttpContext.Current.Application["access_token"] = tr.access_token;
-                HttpContext.Current.Application["access_token_created"] = tr.created;
-                return tr.access_token;
-            }
-            //更新access_token
-            return access_token;
-        }
-        /// <summary>
-        /// 获取access_token
-        /// </summary>
-        private TokenResult GetAccessToken(string appid, string secret)
-        {
-            string strJson = HttpRequestUtil.RequestUrl(string.Format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}", appid, secret));
+            string strJson = HttpRequestUtil.RequestUrl(string.Format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}", WeiXinCommon._AppId, WeiXinCommon._AppSecret));
+            WeiXinCommon.WriteErrorLog(strJson);
             var obj = JsonConvert.DeserializeObject<TokenResult>(strJson);
-            obj.created = DateTime.Now;
-            return obj;
+            return obj.access_token;
         }
+        
 
         public jsapiTicketModel GetJsApiTicket(string accessToken)
         {
             var url = string.Format("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={0}&type=jsapi", accessToken);
             string strJson = HttpRequestUtil.RequestUrl(url);
+            WeiXinCommon.WriteErrorLog(strJson);
             return JsonConvert.DeserializeObject<jsapiTicketModel>(strJson);
         }
     }

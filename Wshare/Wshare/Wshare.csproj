@@ -180,6 +180,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccessToken.cs">
+      <DependentUpon>Wshare.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\JwtUnit.cs" />
     <Compile Include="Models\Lib.cs" />
     <Compile Include="Models\T_Admin.cs">
@@ -321,7 +324,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\images\" />
-    <Folder Include="Views\Auth\" />
     <Folder Include="Views\Jwt\" />
     <Folder Include="Views\WeiXinPay\" />
   </ItemGroup>
@@ -415,6 +417,8 @@
     <Content Include="Views\System\Login.cshtml" />
     <Content Include="Views\Article\Info.cshtml" />
     <Content Include="Views\Article\Pay.cshtml" />
+    <Content Include="Views\Auth\Index.cshtml" />
+    <Content Include="Views\Auth\Error.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

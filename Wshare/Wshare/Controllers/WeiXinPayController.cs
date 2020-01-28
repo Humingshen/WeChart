@@ -110,7 +110,7 @@ namespace Wshare.Controllers
                 dicSign.Add("out_trade_no", tradeNo);
                 dicSign.Add("total_fee", money);
                 dicSign.Add("spbill_create_ip", clientIP);
-                dicSign.Add("notify_url", System.Configuration.ConfigurationManager.AppSettings["SiteURL"] + "/WeiXinPay/Notify");
+                dicSign.Add("notify_url", WeiXinCommon.Url + "/WeiXinPay/Notify");
                 dicSign.Add("trade_type", "JSAPI");
                 dicSign.Add("product_id", productId);
                 dicSign.Add("openid", WXOpenID);
@@ -123,7 +123,7 @@ namespace Wshare.Controllers
                 dic.Add("out_trade_no", tradeNo);
                 dic.Add("total_fee", money);
                 dic.Add("spbill_create_ip", clientIP);
-                dic.Add("notify_url", System.Configuration.ConfigurationManager.AppSettings["SiteURL"] + "/My/Notify");
+                dic.Add("notify_url", WeiXinCommon.Url + "/My/Notify");
                 dic.Add("trade_type", "JSAPI");
                 dic.Add("product_id", productId);
                 dic.Add("openid", WXOpenID);

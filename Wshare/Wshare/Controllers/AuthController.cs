@@ -12,59 +12,69 @@ namespace Wshare.Controllers
 {
     public class AuthController : Controller
     {
-        public string AppId = "";
-        public string AppSecret = "";
+        public string AppId = "wx3b571edd4c6f73fd";
+        public string AppSecret = "4331ff5209ed57d274d4d4a0bea7edb4";
 
         wshareEntities _context = new wshareEntities();
         // GET: Auth
         public ActionResult Index()
         {
-            var us = _context.T_User.FirstOrDefault();
+            //var us = _context.T_User.FirstOrDefault();
 
-            HttpCookie cookie = new HttpCookie("user");
-            cookie.Value = us.Id + "";
-            Response.AppendCookie(cookie);
+            //HttpCookie cookie = new HttpCookie("user");
+            //cookie.Value = us.Id + "";
+            //Response.AppendCookie(cookie);
 
-            return Redirect(Request["url"]);
+            //return Redirect(Request["url"]);
             if (!string.IsNullOrEmpty(Request["code"]))
             {
-                //根据appid，secret，code取到用户的全部信息  
-                Dictionary<string, object> dic = GetUserInfoByCode(AppId, AppSecret, Request["code"].ToString());
-                if (dic.ContainsKey("errcode"))
+                try
                 {
-                    return Redirect("/Auth/Error?Msg=" + dic["errmsg"].ToString());
-                }
-                string openid = dic["openid"]+"";
-                //根据微信唯一标识openid  去数据库判断是否存在  
-
-                //1.不存在就新增  
-                if (!_context.T_User.Any(o => o.Openid == openid))
-                {
-                    var user = new T_User()
+                    //WeiXinCommon.WriteErrorLog(Request["code"]);
+                    //根据appid，secret，code取到用户的全部信息  
+                    Dictionary<string, object> dic = GetUserInfoByCode(AppId, AppSecret, Request["code"].ToString());
+                    if (dic.ContainsKey("errcode"))
                     {
-                        Headimgurl = dic["headimgurl"].ToString(),
-                        CreateTime = DateTime.Now,
-                        City = dic["city"].ToString(),
-                        Country = dic["country"].ToString(),
-                        Nickname = dic["nickname"].ToString(),
-                        Openid = dic["openid"].ToString(),
-                        Province = dic["province"].ToString(),
-                        Sex = dic["sex"].ToString(),
-                        Unionid = dic["unionid"].ToString(),
-                    };
-                    _context.T_User.Add(user);
-                    _context.SaveChanges();
+                        return Redirect("/Auth/Error?Msg=" + dic["errmsg"].ToString());
+                    }
+                    string openid = dic["openid"] + "";
+                    //根据微信唯一标识openid  去数据库判断是否存在  
+
+                    //1.不存在就新增  
+                    if (!_context.T_User.Any(o => o.Openid == openid))
+                    {
+                        var user = new T_User()
+                        {
+                            Headimgurl = dic["headimgurl"].ToString(),
+                            CreateTime = DateTime.Now,
+                            City = dic["city"].ToString(),
+                            Country = dic["country"].ToString(),
+                            Nickname = dic["nickname"].ToString(),
+                            Openid = dic["openid"].ToString(),
+                            Province = dic["province"].ToString(),
+                            Sex = dic["sex"].ToString(),
+                            Unionid = ""/// dic["unionid"].ToString(),
+                        };
+                        _context.T_User.Add(user);
+                        _context.SaveChanges();
+                    }
+                    var u = _context.T_User.Where(i => i.Openid == openid).FirstOrDefault();
+                    HttpCookie cookie = new HttpCookie("userid");
+                    cookie.Value = u.Id + "";
+                    cookie.Expires = DateTime.Now.AddHours(24);
+                    Response.AppendCookie(cookie);
+                    return Redirect(Request["url"]);
                 }
-                var u = _context.T_User.Where(i => i.Openid == openid).FirstOrDefault();
-                //HttpCookie cookie = new HttpCookie("user");
-                //cookie.Value = u.Id + "";
-                //Response.AppendCookie(cookie);
-                return Redirect(Request["url"]);
+                catch (Exception ex)
+                {
+                    //WeiXinCommon.WriteErrorLog(ex.Message);
+                    return Redirect("/Auth/Error?Msg=" + ex.Message);
+                }
             }
             else
             {
                 string redirect_uri = HttpUtility.UrlEncode("http://" + Request.Url.Authority + Request.Url.PathAndQuery);
-                return Redirect(string.Format("https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope={2}&state=STATE#wechat_redirect", AppId, redirect_uri, "snsapi_userinfo"));
+                return Redirect(string.Format("https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope={2}&state=STATE#wechat_redirect&connect_redirect=1", AppId, redirect_uri, "snsapi_userinfo"));
             }
         }
 
@@ -84,7 +94,11 @@ namespace Wshare.Controllers
         {
             JavaScriptSerializer Jss = new JavaScriptSerializer();
             string url = string.Format("https://api.weixin.qq.com/sns/oauth2/access_token?appid={0}&secret={1}&code={2}&grant_type=authorization_code", Appid, Appsecret, Code);
+
+            //WeiXinCommon.WriteErrorLog(url);
             string ReText = WebRequestPostOrGet(url, "");//post/get方法获取信息  
+
+            //WeiXinCommon.WriteErrorLog(ReText);
             Dictionary<string, object> DicText = (Dictionary<string, object>)Jss.DeserializeObject(ReText);
             if (!DicText.ContainsKey("openid"))
             {
@@ -92,7 +106,10 @@ namespace Wshare.Controllers
             }
             else
             {
+                //WeiXinCommon.WriteErrorLog(DicText["access_token"]+"");
                 Dictionary<string, object> respDic = (Dictionary<string, object>)Jss.DeserializeObject(WebRequestPostOrGet("https://api.weixin.qq.com/sns/userinfo?access_token=" + DicText["access_token"] + "&openid=" + DicText["openid"] + "&lang=zh_CN", ""));
+
+                //WeiXinCommon.WriteErrorLog(WeiXinCommon.ToJson(respDic));
                 return respDic;
             }
         }
