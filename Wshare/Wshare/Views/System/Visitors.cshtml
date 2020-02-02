@@ -120,6 +120,7 @@
             var insTb = tableX.render({
                 elem: '#experimentTypeTable',
                 url: '/api/v1/visitors',
+                headers: { 'Authorization': localStorage.getItem("token") },
                 page: true,
                 cellMinWidth: 100,
                 cols: [[

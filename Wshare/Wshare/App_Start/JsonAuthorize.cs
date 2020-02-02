@@ -7,7 +7,7 @@ using Wshare.Models;
 
 namespace Wshare
 {
-    public class CheckLogin : AuthorizeAttribute
+    public class JsonAuthorizeAttribute : AuthorizeAttribute
     {
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
@@ -28,7 +28,7 @@ namespace Wshare
 
             //举个例子  生成jwtToken 存入redis中    
             //这个地方用jwtToken当作key 获取实体val   然后看看jwtToken根据redis是否一样
-            if (userinfo.UserName == "admin" && userinfo.Pwd == "123")
+            if (userinfo != null)
                 return true;
 
             httpContext.Response.StatusCode = 403;

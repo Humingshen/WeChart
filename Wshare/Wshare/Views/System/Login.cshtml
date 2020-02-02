@@ -25,14 +25,14 @@
 <body>
     <div class="login-wrapper">
         <div class="login-header">
-            <img src="/Content/assets/images/logo.png"> 后台开发框架
+            <img src="/Content/assets/images/logo.png"> 理工毕业设计
         </div>
         <div class="login-body">
             <div class="layui-card">
                 <div class="layui-card-header">
                     <i class="layui-icon layui-icon-engine"></i>&nbsp;&nbsp;用户登录
                 </div>
-                <form class="layui-card-body layui-form layui-form-pane">
+                <form id="form1" class="layui-card-body layui-form layui-form-pane">
                     <div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-username"></i></label>
                         <div class="layui-input-block">
@@ -47,7 +47,7 @@
                                    lay-verType="tips" lay-verify="required" required />
                         </div>
                     </div>
-                    <div class="layui-form-item">
+                    @*<div class="layui-form-item">
                         <label class="layui-form-label"><i class="layui-icon layui-icon-vercode"></i></label>
                         <div class="layui-input-block">
                             <div class="layui-row inline-block">
@@ -64,16 +64,16 @@
                     <div class="layui-form-item">
                         <a href="javascript:;" class="layui-link">帐号注册</a>
                         <a href="javascript:;" class="layui-link pull-right">忘记密码？</a>
-                    </div>
+                    </div>*@
                     <div class="layui-form-item">
                         <button lay-filter="login-submit" class="layui-btn layui-btn-fluid" lay-submit>登 录</button>
                     </div>
-                    <div class="layui-form-item login-other">
+                    @*<div class="layui-form-item login-other">
                         <label>第三方登录</label>
                         <a href="javascript:;"><i class="layui-icon layui-icon-login-qq"></i></a>
                         <a href="javascript:;"><i class="layui-icon layui-icon-login-wechat"></i></a>
                         <a href="javascript:;"><i class="layui-icon layui-icon-login-weibo"></i></a>
-                    </div>
+                    </div>*@
                 </form>
             </div>
         </div>
@@ -100,10 +100,11 @@
             // 表单提交
             form.on('submit(login-submit)', function (obj) {
                 layer.load(2);
-                $.post("/api/v1/login",obj, function (res) {
+                $.post("/api/v1/login", obj.field, function (res) {
                     layer.closeAll('loading');
                     if (res.code == 200) {
                         layer.msg('登录成功', { icon: 1, time: 1500 }, function () {
+                            localStorage.setItem("token", res.data);
                             location.replace('/dashBoard')
                         });
                     } else {

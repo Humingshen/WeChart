@@ -17,6 +17,8 @@ namespace Wshare.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public string FileName { get; set; }
-        public Nullable<System.DateTime> Created { get; set; }
+        public System.DateTime Created { get; set; }
+        public int Download { get; set; }
+        public string Extension { get; set; }
     }
 }

@@ -30,6 +30,17 @@
                         </button>
                         <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
                     </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label w-auto">资源站：</label>
+                        <div class="layui-input-inline mr0">
+                            <input id="url-down" class="layui-input" type="text" value="http://xxxxxx/Home/LoadFile" />
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn icon-btn" onclick="LoadFile()">
+                            <i class="layui-icon">&#xe615;</i>  同步资源
+                        </button>
+                    </div>
                 </div>
             </div>
             <table class="layui-table" id="experimentTypeTable" lay-filter="experimentTypeTable"></table>
@@ -115,13 +126,14 @@
             var insTb = tableX.render({
                 elem: '#experimentTypeTable',
                 url: '/api/v1/files',
+                headers: { 'Authorization': localStorage.getItem("token") },
                 page: true,
                 cellMinWidth: 100,
                 cols: [[
                     { type: 'numbers' },
-                    
+
                     { field: 'title', title: '名称', sort: true },
-                    { field: 'fileName', title: '文件名', sort: true  ,width: 180},
+                    { field: 'fileName', title: '文件名', sort: true, width: 180 },
                     {
                         field: 'created', title: '创建时间', sort: true, templet: function (d) {
                             return util.toDateString(d.created);
@@ -202,16 +214,24 @@
                         // 表单提交事件
                         form.on('submit(modelExpTypeSubmit)', function (data) {
                             layer.load(2);
-                            $.post(url, data.field, function (res) {
-                                layer.closeAll('loading');
-                                if (res.code == 200) {
-                                    layer.close(dIndex);
-                                    insTb.reload({ page: { curr: 1 } });
-                                    layer.msg(res.msg, { icon: 1 });
-                                } else {
-                                    layer.msg(res.msg, { icon: 2 });
+                            $.ajax({
+                                headers: {
+                                    'Authorization': localStorage.getItem("token")
+                                },
+                                type: "post",
+                                url: url,
+                                data: data.field,
+                                success: function (res) {
+                                    layer.closeAll('loading');
+                                    if (res.code == 200) {
+                                        layer.close(dIndex);
+                                        insTb.reload({ page: { curr: 1 } });
+                                        layer.msg(res.msg, { icon: 1 });
+                                    } else {
+                                        layer.msg(res.msg, { icon: 2 });
+                                    }
                                 }
-                            }, 'json');
+                            });
                             return false;
                         });
                     }
@@ -226,24 +246,35 @@
                 }, function (i) {
                     layer.close(i);
                     layer.load(2);
-                    $.post('/api/v1/fileDel', {
-                        id: id
-                    }, function (res) {
-                        layer.closeAll('loading');
-                        if (res.code == 200) {
-                            layer.msg(res.msg, { icon: 1 });
-                            insTb.reload({ page: { curr: 1 } });
-                        } else {
-                            layer.msg(res.msg, { icon: 2 });
+                    $.ajax({
+                        headers: {
+                            'Authorization': localStorage.getItem("token")
+                        },
+                        type: "post",
+                        url: "/api/v1/fileDel",
+                        data: { id: id },
+                        success: function (res) {
+                            layer.closeAll('loading');
+                            if (res.code == 200) {
+                                layer.msg(res.msg, { icon: 1 });
+                                insTb.reload({ page: { curr: 1 } });
+                            } else {
+                                layer.msg(res.msg, { icon: 2 });
+                            }
                         }
-                    }, 'json');
+                    });
+
                 });
             }
-             // 点击图片放大
-        $(document).off('click.tbImg').on('click.tbImg', '[tb-img]', function () {
-            layer.photos({photos: {data: [{src: $(this).attr('src')}]}, shade: .1, closeBtn: true});
+            // 点击图片放大
+            $(document).off('click.tbImg').on('click.tbImg', '[tb-img]', function () {
+                layer.photos({ photos: { data: [{ src: $(this).attr('src') }] }, shade: .1, closeBtn: true });
+            });
         });
-        });
+
+        function LoadFile() {
+            window.location.href = document.getElementById("url-down").value;
+        }
 
     </script>
 }

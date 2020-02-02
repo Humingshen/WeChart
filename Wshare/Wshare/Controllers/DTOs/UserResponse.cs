@@ -25,7 +25,13 @@ namespace Wshare.Controllers.DTOs
     {
         public string UserName { get; set; }
         public string PassWord { get; set; }
-        public string Code { get; set; }
+        //public string Code { get; set; }
+
+    }public class PassRequest
+    {
+        public string OldPsw { get; set; }
+        public string NewPsw { get; set; }
+        //public string Code { get; set; }
 
     }
 }

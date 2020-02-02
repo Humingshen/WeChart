@@ -114,6 +114,7 @@
             var insTb = tableX.render({
                 elem: '#experimentTypeTable',
                 url: '/api/v1/comments',
+                headers: { 'Authorization': localStorage.getItem("token") },
                 page: true,
                 cellMinWidth: 100,
                 cols: [[
@@ -155,16 +156,24 @@
             // 修改用户状态
             form.on('switch(ckState)', function (obj) {
                 layer.load(2);
-                $.get('/api/v1/cshow', { id: obj.elem.value, state: obj.elem.checked ? 1 : 0 }, function (res) {
-                    layer.closeAll('loading');
-                    if (res.code == 200) {
-                        layer.msg(res.msg, { icon: 1 });
-                    } else {
-                        layer.msg(res.msg, { icon: 2 });
-                        $(obj.elem).prop('checked', !obj.elem.checked);
-                        form.render('checkbox');
+                $.ajax({
+                    headers: {
+                        'Authorization': localStorage.getItem("token")
+                    },
+                    type: "GET",
+                    url: "/api/v1/cshow",
+                    data: { id: obj.elem.value, state: obj.elem.checked ? 1 : 0 },
+                    success: function (res) {
+                        layer.closeAll('loading');
+                        if (res.code == 200) {
+                            layer.msg(res.msg, { icon: 1 });
+                        } else {
+                            layer.msg(res.msg, { icon: 2 });
+                            $(obj.elem).prop('checked', !obj.elem.checked);
+                            form.render('checkbox');
+                        }
                     }
-                }, 'json');
+                });
             });
 
             // 工具条点击事件
@@ -195,19 +204,26 @@
                         // 表单提交事件
                         form.on('submit(modelExpTypeSubmit)', function (data) {
                             layer.load(2);
-                            $.post(url, data.field, function (res) {
-                                layer.closeAll('loading');
-                                if (res.code == 200) {
-                                    layer.close(dIndex);
-                                    insTb.reload({ page: { curr: 1 } });
-                                    layer.msg(res.msg, { icon: 1 });
-                                } else {
-                                    layer.msg(res.msg, { icon: 2 });
+                            $.ajax({
+                                headers: {
+                                    'Authorization': localStorage.getItem("token")
+                                },
+                                type: "POST",
+                                url: url,
+                                data: data.field,
+                                success: function (res) {
+                                    layer.closeAll('loading');
+                                    if (res.code == 200) {
+                                        layer.close(dIndex);
+                                        insTb.reload({ page: { curr: 1 } });
+                                        layer.msg(res.msg, { icon: 1 });
+                                    } else {
+                                        layer.msg(res.msg, { icon: 2 });
+                                    }
                                 }
-                            }, 'json');
+                            });
                             return false;
                         });
-
                     }
                 });
             }
@@ -220,17 +236,23 @@
                 }, function (i) {
                     layer.close(i);
                     layer.load(2);
-                    $.post('/api/v1/cdel', {
-                        id: id
-                    }, function (res) {
-                        layer.closeAll('loading');
-                        if (res.code == 200) {
-                            layer.msg(res.msg, { icon: 1 });
-                            insTb.reload({ page: { curr: 1 } });
-                        } else {
-                            layer.msg(res.msg, { icon: 2 });
+                    $.ajax({
+                        headers: {
+                            'Authorization': localStorage.getItem("token")
+                        },
+                        type: "POST",
+                        url: "/api/v1/cdel",
+                        data: { id: id },
+                        success: function (res) {
+                            layer.closeAll('loading');
+                            if (res.code == 200) {
+                                layer.msg(res.msg, { icon: 1 });
+                                insTb.reload({ page: { curr: 1 } });
+                            } else {
+                                layer.msg(res.msg, { icon: 2 });
+                            }
                         }
-                    }, 'json');
+                    });
                 });
             }
             // 点击图片放大

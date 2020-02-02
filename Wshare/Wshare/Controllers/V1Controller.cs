@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Results;
 using Wshare.Controllers.DTOs;
@@ -25,13 +26,45 @@ namespace Wshare.Controllers
         [Route("api/v1/login")]
         public JsonResult<BaseResponse> Login(LoginRequest model)
         {
-            var users = from a in _context.T_Admin
+            var users = (from a in _context.T_Admin
                         where a.LoginId == model.UserName && a.PassWord == model.PassWord
-                        select a;
-                       
-            return Json(new BaseResponse { code = 0, data = users, msg = "", count = users.Count() }, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+                        select a);
+            if (users.Count() > 0)
+            {
+                var u = users.FirstOrDefault();
+                var payload = new Dictionary<string, object>
+                {
+                    { "Id",u.Id },
+                    { "UserName", u.LoginId },
+                    { "Pwd", "" }
+                };
+                return Json(new BaseResponse { code = 200, data = JwtUnit.SetJwtEncode(payload), msg = "", count = 0 }, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+            }
+            return Json(new BaseResponse { code = 0, data = "", msg = "登录失败，账号或密码错误！", count = 0 }, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         }
+        [HttpPost]
+        [Route("api/v1/pass")]
+        public JsonResult<BaseResponse> Pass(PassRequest model)
+        {
+            var user = JwtUnit.GetJwtDecode(HttpContext.Current.Request.Headers["Authorization"]);
+            var admin = _context.T_Admin.Find(user.Id);
 
+            if (admin.PassWord == model.OldPsw)
+            {
+                admin.PassWord = model.NewPsw;
+                _context.SaveChanges(); 
+                
+                return Json(new BaseResponse { code = 200, data = "", msg = "密码修改成功！", count = 0 }, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+            }
+            else
+            {
+                return Json(new BaseResponse { code = 0, data = "", msg = "密码验证失败！", count = 0 }, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+            }
+            
+          
+            
+        }
+        [JsonFilter]
         [HttpGet]
         [Route("api/v1/users")]
         public JsonResult<BaseResponse> Users(int page=1,int limit=10)
@@ -52,7 +85,22 @@ namespace Wshare.Controllers
             
             return Json(new BaseResponse { code = 0, data = query, msg = "", count = users.Count() }, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         }
+        [JsonFilter]
+        [HttpGet]
+        [Route("api/v1/system")]
+        public JsonResult<BaseResponse> System()
+        {
+            var users = _context.T_User.ToList();
+            int total = users.Count();
+            int day = users.Where(i => i.CreateTime.Day == DateTime.Now.Day && i.CreateTime.Year == DateTime.Now.Year && i.CreateTime.Month == DateTime.Now.Month).Count();
+            int month = users.Where(i =>i.CreateTime.Year == DateTime.Now.Year && i.CreateTime.Month == DateTime.Now.Month).Count();
+            int week = users.Where(i => i.CreateTime.DayOfWeek == DateTime.Now.DayOfWeek).Count();
+            int art = _context.T_Article.Count();
+            int comment = _context.T_Comment.Count();
 
+            return Json(new BaseResponse { code = 0, data = new { total = total, day = day, month = month, week = week, art = art, comment = comment }, msg = "", count = 0 }, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+        }
+        [JsonFilter]
         [HttpGet]
         [Route("api/v1/users")]
         public JsonResult<BaseResponse> Users(string nickname,string sex,int page= 1, int limit = 10)
@@ -83,6 +131,7 @@ namespace Wshare.Controllers
             return Json(new BaseResponse { code = 0, data = query, msg = "", count = count }, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         }
 
+        [JsonFilter]
         [HttpGet]
         [Route("api/v1/articles")]
         public JsonResult<BaseResponse> Article(int page = 1, int limit = 10)
@@ -105,6 +154,7 @@ namespace Wshare.Controllers
             return Json(new BaseResponse { code = 0, data = query, msg = "", count = arts.Count() }, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         }
 
+        [JsonFilter]
         [HttpGet]
         [Route("api/v1/articles")]
         public JsonResult<BaseResponse> Article(string keyword, int page = 1, int limit = 10)
@@ -136,6 +186,7 @@ namespace Wshare.Controllers
             return Json(new BaseResponse { code = 0, data = query, msg = "", count = count }, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         }
 
+        [JsonFilter]
         [HttpGet]
         [Route("api/v1/ashow")]
         public JsonResult<BaseResponse> AShow(int id,int state)
@@ -153,6 +204,7 @@ namespace Wshare.Controllers
             }
         }
 
+        [JsonFilter]
         [HttpGet]
         [Route("api/v1/comments")]
         public JsonResult<BaseResponse> Comment(int page = 1, int limit = 10)
@@ -176,6 +228,7 @@ namespace Wshare.Controllers
             return Json(new BaseResponse { code = 0, data = query, msg = "", count = comments.Count() }, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         }
 
+        [JsonFilter]
         [HttpGet]
         [Route("api/v1/comments")]
         public JsonResult<BaseResponse> Comment(string keyword, int page = 1, int limit = 10)
@@ -208,6 +261,7 @@ namespace Wshare.Controllers
             return Json(new BaseResponse { code = 0, data = query, msg = "", count = count }, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         }
 
+        [JsonFilter]
         [HttpGet]
         [Route("api/v1/cshow")]
         public JsonResult<BaseResponse> CShow(int id,int state)
@@ -225,6 +279,7 @@ namespace Wshare.Controllers
             }
         }
 
+        [JsonFilter]
         [HttpPost]
         [Route("api/v1/creply")]
         public JsonResult<BaseResponse> CReply(ReplyRequest model)
@@ -243,6 +298,7 @@ namespace Wshare.Controllers
             }
         }
 
+        [JsonFilter]
         [HttpPost]
         [Route("api/v1/cdel")]
         public JsonResult<BaseResponse> CDel(ReplyRequest model)
@@ -260,6 +316,7 @@ namespace Wshare.Controllers
             }
         }
 
+        [JsonFilter]
         [HttpGet]
         [Route("api/v1/visitors")]
         public JsonResult<BaseResponse> Visitor(int page = 1, int limit = 10)
@@ -282,6 +339,7 @@ namespace Wshare.Controllers
         }
 
 
+        [JsonFilter]
         [HttpGet]
         [Route("api/v1/authcode")]
         public JsonResult<BaseResponse> Authorize(int page = 1, int limit = 10)
@@ -301,6 +359,7 @@ namespace Wshare.Controllers
             return Json(new BaseResponse { code = 0, data = query, msg = "", count = visitors.Count() }, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         }
 
+        [JsonFilter]
         [HttpGet]
         [Route("api/v1/files")]
         public JsonResult<BaseResponse> Files(int page = 1, int limit = 10)
@@ -311,7 +370,8 @@ namespace Wshare.Controllers
 
             return Json(new BaseResponse { code = 0, data = query, msg = "", count = files.Count() }, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         }
-        
+
+        [JsonFilter]
         [HttpGet]
         [Route("api/v1/files")]
         public JsonResult<BaseResponse> Files(string keyword,int page = 1, int limit = 10)
@@ -332,6 +392,7 @@ namespace Wshare.Controllers
             return Json(new BaseResponse { code = 0, data = query, msg = "", count = count }, new Newtonsoft.Json.JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
         }
 
+        [JsonFilter]
         [HttpPost]
         [Route("api/v1/files")]
         public JsonResult<BaseResponse> Files(FileRequest model)
@@ -365,6 +426,7 @@ namespace Wshare.Controllers
             }
         }
 
+        [JsonFilter]
         [HttpPost]
         [Route("api/v1/fileDel")]
         public JsonResult<BaseResponse> FileDel(FileRequest model)
@@ -381,7 +443,25 @@ namespace Wshare.Controllers
                 return Json(new BaseResponse() { code = 500, msg = ex.Message });
             }
         }
-        
+
+        [JsonFilter]
+        [HttpPost]
+        [Route("api/v1/articleDel")]
+        public JsonResult<BaseResponse> ArticleDel(ArtRequest model)
+        {
+            try
+            {
+                var obj = _context.T_Article.Find(model.Id);
+                _context.T_Article.Remove(obj);
+                _context.SaveChanges();
+                return Json(new BaseResponse() { code = 200, msg = "操作成功！" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new BaseResponse() { code = 500, msg = ex.Message });
+            }
+        }
+        [JsonFilter]
         [HttpPost]
         [Route("api/v1/article")] 
         public JsonResult<BaseResponse> Article(ArtRequest model)

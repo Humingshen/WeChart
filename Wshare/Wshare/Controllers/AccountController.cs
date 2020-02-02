@@ -13,6 +13,7 @@ namespace Wshare.Controllers
         wshareEntities db = new wshareEntities();
 
         // GET: Account
+        [WeChat]
         public ActionResult Index()
         {
             var us = db.T_User.Find(Lib.UserId);

@@ -122,6 +122,7 @@
             var insTb = table.render({
                 elem: '#tableUser',
                 url: '/api/v1/users',
+                headers: { 'Authorization': localStorage.getItem("token") },
                 page: true,
                 toolbar: true,
                 cellMinWidth: 100,

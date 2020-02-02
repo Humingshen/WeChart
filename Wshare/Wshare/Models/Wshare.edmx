@@ -81,9 +81,11 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Title" Type="varchar" MaxLength="1000" />
-          <Property Name="FileName" Type="varchar" MaxLength="100" />
-          <Property Name="Created" Type="datetime" />
+          <Property Name="Title" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="FileName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Download" Type="int" Nullable="false" />
+          <Property Name="Extension" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="T_Pay">
           <Key>
@@ -588,9 +590,11 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="FileName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="Title" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FileName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="Download" Type="Int32" Nullable="false" />
+          <Property Name="Extension" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="T_Pay">
           <Key>
@@ -750,6 +754,8 @@
           <EntitySetMapping Name="T_Files">
             <EntityTypeMapping TypeName="WshareModel.T_Files">
               <MappingFragment StoreEntitySet="T_Files">
+                <ScalarProperty Name="Extension" ColumnName="Extension" />
+                <ScalarProperty Name="Download" ColumnName="Download" />
                 <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="FileName" ColumnName="FileName" />
                 <ScalarProperty Name="Title" ColumnName="Title" />

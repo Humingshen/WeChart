@@ -1,0 +1,335 @@
+﻿@using DownSite.Models;
+@{
+    ViewBag.Title = "论文吧";
+
+    List<T_Files> sfs = ViewBag.sFiles as List<T_Files>;
+    var fs = ViewBag.Files as List<T_Files>;
+    fs = fs == null ? new List<T_Files>() : fs;
+}
+
+<style type="text/css">
+    ul,li,h4{ margin:0px; padding:0px;}
+    a{ text-decoration:none; color:#5b5656}
+#home .content-wrap{ margin:100px 0;}
+#home .logo a{background:url() no-repeat; width:250px; height:67px;display:block; margin-bottom:40px;}
+.fm{ width:631px;overflow:hidden;}
+.s_inp_wr{border:1px solid #dcdcdc; background:#FFF; display:inline-block;vertical-align:top;width:532px; _float:left; margin-right:0;overflow:hidden;}
+.s_inp{ width:519px;height:22px;font:16px/18px arial;line-height:22px\9;margin:6px 0 6px 7px;padding:0;background:transparent;border:0; outline:0;-webkit-appearance:none}
+.s_btn_wr{width:97px;height:34px;display:inline-block;vertical-align:top; float:right;}
+.s_btn{cursor:pointer; width:100px; border:0; height:36px; background:#0152D9; color:#FFF; font-size:15px; font-weight:bold;border-radius:0;-webkit-appearance: none;}
+    .navico_list {text-align:left; width:620px; margin:25px auto; border:0px solid #ccc;}
+    .navico_list li {
+        display: block;
+        float: left;
+        width: 200px;
+        margin:3px;
+        font-size:14px;
+        cursor:pointer;
+    }
+        .navico_list li i{ display:block; width:30px; float:left;}
+        .navico_list li a{ display:block; width:130px; float:left; overflow:hidden;}
+        .navico_list li span{ display:block; width:40px; float:right; color:#666;}
+        .navico_list h4 {
+            margin: 10px 0px;
+        }
+        /*双十二隐藏部分*/
+        .active-ban-sy {
+            top: 0px;
+            left: 0px;
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            z-index: 1000;
+            opacity: 0.5;
+            background: #222;
+        }
+    .service-modal {
+        position: fixed;
+        width: 370px;
+        display: none;
+        z-index: 9999;
+        -webkit-transition: all 0.3s ease;
+        -ms-transition: all 0.3s ease;
+        -moz-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        -webkit-transform: translate(0, calc(-50% - 40px));
+        -ms-transform: translate(0, calc(-50% - 40px));
+        -moz-transform: translate(0, calc(-50% - 40px));
+        transform: translate(0, calc(-50% - 40px));
+        left: calc(50% - 185px);
+        top: 50%;
+        height: 252px;
+    }
+
+    .service-modal.active {
+        opacity: 1;
+        filter: alpha(opacity=100);
+        -webkit-transform: translate(0, -50%);
+        -ms-transform: translate(0, -50%);
+        -moz-transform: translate(0, -50%);
+        transform: translate(0, -50%);
+    }
+
+    .service-modal .modal-main {
+        position: relative;
+        width: 100%;
+        display: block;
+        box-sizing: border-box;
+        box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
+        background: #fff;
+        border: 1px solid #d0d1d2;
+    }
+
+        .service-modal .modal-main > .sem-top {
+            position: relative;
+            width: 100%;
+            height: 64px;
+            line-height: 64px;
+            box-sizing: border-box;
+            padding-left: 50px;
+            color: #222;
+            font-size: 20px;
+            font-weight: normal;
+            text-align: left;
+            border-bottom: 1px solid #d0d1d2;
+        }
+
+            .service-modal .modal-main > .sem-top .close {
+                width: 40px;
+                height: 40px;
+                display: block;
+                border: none;
+                outline: none;
+                text-align: center;
+                position: absolute;
+                right: 20px;
+                cursor: pointer;
+                top: calc(50% - 20px);
+                background: center no-repeat url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAPCAMAAADarb8dAAAAS1BMVEUAAACIkaaIkaaIkaaIkaaIkaaIkaaIkaaIkaaIkaaIkaaIkaaIkaaIkaaIkaaIkaaIkaaIkaaIkaaIkaaIkaaIkaaIkaaIkaaIkaaTRp9kAAAAGHRSTlMAB/gaDfDXy8Czq6V1ZUk8MRO+1Fm/VlW2QlyfAAAAcklEQVQI121PWw6AIAwrbCLiG1+9/0mVEIxG+9UuTddC/IQbU1BEVmPRY8UAcbRD1oPlIsBc065J75b1nIh6sgd6Mmq2mobsOrIxJcy0vNAmXS6OdAC+jv8M3coXr0DucSSy5h6yPJs6QXhvidDwXOvlBGd3BtaWvk7vAAAAAElFTkSuQmCC");
+            }
+
+        .service-modal .modal-main .sem-body {
+            height: 120px;
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 25px 0 0 135px;
+            background: url("/Content/w.jpg") no-repeat 25px center;
+            background-size:90px 90px;
+        }
+
+            .service-modal .modal-main .sem-body h4 {
+                line-height: 42px;
+                font-size: 22px;
+                color: #222;
+                font-weight: normal;
+                letter-spacing: 1px;
+                text-align: left;
+            }
+
+            .service-modal .modal-main .sem-body p {
+                line-height: 24px;
+                color: #aaa;
+                font-size: 14px;
+                text-align: left;
+            }
+
+        .service-modal .modal-main .sem-bot {
+            height: 40px;
+            line-height: 40px;
+            display: block;
+            text-align: center;
+            margin: 5px auto 20px;
+        }
+
+            .service-modal .modal-main .sem-bot .sem-btn {
+                width: 160px;
+                height: 40px;
+                display: inline-block;
+                text-align: center;
+                border-radius: 3px;
+                cursor: pointer;
+                background: #fff;
+                color: #8891a6;
+                font-size: 14px;
+                box-sizing: border-box;
+                border: 1px solid #d0d1d2;
+                -webkit-transition: all 0.3s ease;
+                -ms-transition: all 0.3s ease;
+                -moz-transition: all 0.3s ease;
+                transition: all 0.3s ease;
+            }
+
+                .service-modal .modal-main .sem-bot .sem-btn:hover {
+                    color: #333;
+                    background: #eee;
+                }
+
+                .service-modal .modal-main .sem-bot .sem-btn.submit {
+                    background: #0095ff;
+                    color: #fff;
+                    border: 1px solid #0095ff;
+                }
+
+                    .service-modal .modal-main .sem-bot .sem-btn.submit:hover {
+                        background: #0077cc;
+                        border: 1px solid #0077cc;
+                    }
+    .doc-ico, .docx-ico, .pdf-ico, .pot-ico, .pps-ico, .ppt-ico, .pptx-ico, .rtf-ico, .txt-ico, .xls-ico, .xlsx-ico, .zt-ico {
+        background-image: url(/Content/ico.png);
+        background-repeat: no-repeat;
+        width: 17px;
+        height: 17px;
+        display: block;
+        float: left;
+        overflow: hidden
+    }
+    .doc-ico, .docx-ico, .upload-doc a.doc-ico, .upload-doc a.docx-ico {
+        background-position: 0 -215px
+    }
+
+    .pdf-ico, .upload-doc a.pdf-ico {
+        background-position: 0 -271px
+    }
+
+    .txt-ico, .upload-doc a.txt-ico {
+        background-position: 0 -327px
+    }
+
+    .ppt-ico, .pptx-ico, .upload-doc a.ppt-ico, .upload-doc a.pptx-ico {
+        background-position: 0 -300px
+    }
+
+    .upload-doc a.xls-ico, .upload-doc a.xlsx-ico, .xls-ico, .xlsx-ico {
+        background-position: 0 -242px
+    }
+
+    .pot-ico, .upload-doc a.pot-ico {
+        background-position: 0 -354px
+    }
+
+    .pps-ico, .upload-doc a.pps-ico {
+        background-position: 0 -410px
+    }
+
+    .rtf-ico, .upload-doc a.rtf-ico {
+        background-position: 0 -383px
+    }
+
+    .upload-doc a.zt-ico, .zt-ico {
+        background-position: -62px -567px
+    }
+
+    .upload-inf {
+        float: left;
+        width: 100%
+    }
+</style>
+<div class="active-ban-sy" style="display: none;"></div>
+<div class="service-modal active" style="display: none;">
+    <div class="modal-main">
+        <div class="sem-top">
+            <span>关注公众号可获取下载码</span>
+            <button class="close"></button>
+        </div>
+        <div class="sem-body">
+            <h4>
+                <input type="text" id="down_code" placeholder="输入您的下载码" value="" style="width:200px; border:1px solid #f2f2f2;padding:5px; border-radius:5px;">
+            </h4>
+            <p>开放下载:&nbsp; 2020年03月</p>
+        </div>
+        <div class="sem-bot">
+            <a class="sem-btn cancel nav-combtn-active reg_modal reg_li_base close">取消下载</a>
+            <a class="sem-btn submit close" href="javascript:void(0)">确认下载</a>
+
+        </div>
+    </div>
+</div>
+
+<div id="content" style="padding-bottom:80px;">
+    <div class="content-wrap">
+        <center>
+            <div class="logo">
+                <a href="" title=""><img src="~/Content/logo.png" /></a>
+            </div>
+            <form class="fm" action="" method="GET">
+                <span class="s_btn_wr"><input type="submit" value="资源搜索" class="s_btn" id="s_btn"></span><span class="s_inp_wr"><input class="s_inp" name="q"  placeholder="关键词搜索" ></span>
+            </form>
+            <div class="navico_list">
+                @if (sfs != null)
+                {
+                    <h4>搜索结果</h4>
+                    <ul>
+                        @foreach (var item in sfs)
+                        {
+                            <li data-id="@item.Id"><i class="doc-ico"></i> <a>@item.FileName</a> <span>@item.Download 次</span></li>
+                        }
+                    </ul>
+
+                    if (sfs.Count == 0)
+                    {
+                        <div style="color:red;">未发现相关下载内容</div>
+                    }
+
+                    <div style=" clear:both;"></div>
+                }
+
+                <h4>相关下载推荐</h4>
+                <ul>
+                    @foreach (var item in fs)
+                    {
+                        <li data-id="@item.Id"><i class="doc-ico"></i> <a>@item.FileName</a> <span>@item.Download 次</span></li>
+                    }
+                </ul>
+                <div style=" clear:both;"></div>
+            </div>
+            <div id="ad_640" style="display:none">
+            </div>
+        </center>
+    </div>
+</div>
+<div style=" text-align:center; font-size:14px; display:none">©2019 MBAlib.com, All rights reserved. 闽ICP备06041084号</div>
+
+<script type="text/javascript">
+    var fileid = 0;
+    $(document).ready(function () {
+        $(".navico_list li").click(function () {
+            fileid = $(this).attr("data-id");
+            $(".active-ban-sy").show();
+            $(".service-modal").show();
+        });
+        $(".close").click(function () {
+            $(".active-ban-sy").hide();
+            $(".service-modal").hide();
+        });
+
+        $(".submit").click(function () {
+            var code = $("#down_code").val();
+            // 检查权限
+            $.getJSON("/Home/Down?code=" + code, "", function (res) {
+                if (res.code == 0) {
+                    window.location.href = ("/Home/DownLoad/?code=" + code + "&id=" + fileid);
+                } else {
+                    alert(res.msg);
+                }
+            });
+        });
+    });
+    $(function () {
+       
+        var keyword=GetQueryString('q');
+        if(keyword){
+            $("input[name='q']").val(keyword);
+        }
+        function GetQueryString(name)
+        {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)return  decodeURI(r[2]); return null;
+        }
+    })
+</script>

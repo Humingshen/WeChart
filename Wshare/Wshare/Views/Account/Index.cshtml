@@ -7,8 +7,12 @@
 }
 <style type="text/css">
 </style>
-<div class="weui-panel">
-    <div class="weui-mark-title">&nbsp; &nbsp;分享获取下载码</div>
+
+<div class="weui-article">
+    1.将本专业分支下任一篇文章分享至朋友圈，阅读数达到10以上，即可点击获取下载码。（注意：分享的文章必须是专业分支下的，且转发至群聊无效，后台会自动识别，无法获取下载码）<br />
+    2.获取下载码以后，登录网站lunwenba.com（论文吧），搜索需要的程序源码，根据提示输入下载码即可免费下载。（注意：5月份统一开启下载，下载之前先在公众号里点击“激活下载码”，随即在网站上输入下载码，即可下载）
+</div>
+
     <div class="weui-cells" style="border:0px;">
         @if (arts.Count == 0)
         {
@@ -44,11 +48,7 @@
         }
 
     </div>
-</div>
 
-<div class="weui-article">
-    如何下载如何下载如何下载如何下载如何下载如何下载如何下载如何下载如何下载如何下载如何下载如何下载如何下载如何下载如何下载如何下载如何下载如何下载如何下载如何下载如何下载如何下载如何下载如何下载
-</div>
 @*<script type="text/javascript" src="https://weui.shanliwawa.top/js/lottie.js"></script>
     <lottie-player src="~/Content/lottie.json" background="transparent" speed="1" style="width:250px; height: 250px;" loop="" autoplay=""></lottie-player>*@
 
@@ -87,15 +87,14 @@
 
             $(document).on("click", ".weui-cell_link", function () {
                 var artid = $(this).attr("data-id");
-                $.get("/api/v2/code", { articleId: artid }, function (obj) { 
+                $.get("/api/v2/code", { articleId: artid }, function (obj) {
                     if (obj.code == 0) {
                         $.modal({
                             title: "资源下载码",
                             text: obj.data.code,
                             buttons: [
                                 {
-                                    text: (obj.data.state == 0 ? "激活下载码" : obj.data.state == 1 ? "已激活" : "已使用"), onClick: function ()
-                                    {
+                                    text: (obj.data.state == 0 ? "激活下载码" : obj.data.state == 1 ? "已激活" : "已使用"), onClick: function () {
                                         if (obj.data.state == 0) {
                                             ActiveCode(obj.data.id);
                                         }
@@ -105,10 +104,10 @@
                             ]
                         });
                     } else {
-                         $.toast(obj.msg, 2000);
+                        $.toast(obj.msg, 2000);
                     }
                 });
-                
+
             });
             $(document).on("click", "#sd2", function () {
                 $.confirm("您确定要删除吗?", "确认删除?", function () {

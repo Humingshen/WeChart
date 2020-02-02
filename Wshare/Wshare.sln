@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wshare", "Wshare\Wshare.csproj", "{A07484F1-949B-4E2B-B0F0-C92AFE9164ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DownSite", "DownSite\DownSite.csproj", "{C58EC265-F9A5-4DC9-8E5A-F9AD7B1E617E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{A07484F1-949B-4E2B-B0F0-C92AFE9164ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A07484F1-949B-4E2B-B0F0-C92AFE9164ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A07484F1-949B-4E2B-B0F0-C92AFE9164ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C58EC265-F9A5-4DC9-8E5A-F9AD7B1E617E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C58EC265-F9A5-4DC9-8E5A-F9AD7B1E617E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C58EC265-F9A5-4DC9-8E5A-F9AD7B1E617E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C58EC265-F9A5-4DC9-8E5A-F9AD7B1E617E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C340AAAD-A758-404A-B30F-DBA59AB9D6E1}
 	EndGlobalSection
 EndGlobal

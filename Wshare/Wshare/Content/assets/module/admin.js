@@ -670,7 +670,8 @@ layui.define(["layer"], function (f) {
                 title: "温馨提示",
                 skin: "layui-layer-admin"
             }, function () {
-                location.replace(n ? n : "/")
+                    localStorage.removeItem("token");
+                    location.replace(n ? n : "/");
             })
         },
         open: function () {

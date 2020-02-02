@@ -108,14 +108,23 @@
 
             $("#btnEdtSetData").click(function () {
                 layer.load(2); 
-                $.post("/api/v1/article", { id: id, Cover: $('#demo1').attr('src'), Contents: editor.txt.html() }, function (res) {
-                    layer.closeAll('loading');
-                    if (res.code == 200) {
-                        layer.msg(res.msg, { icon: 1 });
-                    } else {
-                        layer.msg(res.msg, { icon: 2 });
+                $.ajax({
+                    headers: {
+                        'Authorization': localStorage.getItem("token")
+                    },
+                    type: "POST",
+                    url: "/api/v1/article",
+                    dataType: "JSON",
+                    data: { id: id, Cover: $('#demo1').attr('src'), Contents: editor.txt.html() },
+                    success: function (res) {
+                        layer.closeAll('loading');
+                        if (res.code == 200) {
+                            layer.msg(res.msg, { icon: 1 });
+                        } else {
+                            layer.msg(res.msg, { icon: 2 });
+                        }
                     }
-                }, 'json');
+                });
             });
         });
     </script>
