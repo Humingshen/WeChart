@@ -36,5 +36,7 @@ namespace Wshare.Models
         public DbSet<T_Files> T_Files { get; set; }
         public DbSet<T_Pay> T_Pay { get; set; }
         public DbSet<AccessToken> AccessToken { get; set; }
+        public DbSet<T_TiXian> T_TiXian { get; set; }
+        public DbSet<T_Share> T_Share { get; set; }
     }
 }

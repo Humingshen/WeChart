@@ -13,7 +13,7 @@ namespace Wshare.Controllers
     public class AuthController : Controller
     {
         public string AppId = "wx3b571edd4c6f73fd";
-        public string AppSecret = "4331ff5209ed57d274d4d4a0bea7edb4";
+        public string AppSecret = "95dcc9f577c1362c08e4bd9e0d9d3183";
 
         wshareEntities _context = new wshareEntities();
         // GET: Auth
@@ -21,9 +21,10 @@ namespace Wshare.Controllers
         {
             //var us = _context.T_User.FirstOrDefault();
 
-            //HttpCookie cookie = new HttpCookie("user");
-            //cookie.Value = us.Id + "";
-            //Response.AppendCookie(cookie);
+            //HttpCookie cookie1 = new HttpCookie("userid");
+            //cookie1.Value = us.Id + "";
+
+            //Response.AppendCookie(cookie1);
 
             //return Redirect(Request["url"]);
             if (!string.IsNullOrEmpty(Request["code"]))
@@ -54,12 +55,16 @@ namespace Wshare.Controllers
                             Province = dic["province"].ToString(),
                             Sex = dic["sex"].ToString(),
                             Unionid = ""/// dic["unionid"].ToString(),
+                            ,
+                            IsEnable = false,
+                            PayRemark = "",
+                            Score = 0
                         };
                         _context.T_User.Add(user);
                         _context.SaveChanges();
                     }
                     var u = _context.T_User.Where(i => i.Openid == openid).FirstOrDefault();
-                    HttpCookie cookie = new HttpCookie("userid");
+                    HttpCookie cookie = new HttpCookie("uid");
                     cookie.Value = u.Id + "";
                     cookie.Expires = DateTime.Now.AddHours(24);
                     Response.AppendCookie(cookie);
@@ -113,7 +118,7 @@ namespace Wshare.Controllers
                 return respDic;
             }
         }
-        
+
         #region Post/Get提交调用抓取  
         /// <summary>  
         /// Post/get 提交调用抓取  

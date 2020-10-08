@@ -11,7 +11,7 @@ namespace Wshare
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (filterContext.HttpContext.Request.Cookies["userid"] == null)
+            if (filterContext.HttpContext.Request.Cookies["uid"] == null)
             {
 
                 filterContext.Result = new RedirectToRouteResult(

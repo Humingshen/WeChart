@@ -30,6 +30,7 @@
         function jsApiCall() {
             WeixinJSBridge.invoke('getBrandWCPayRequest', _wxJsApiParam,
                 function (res) {
+                    window.location.href = "/article/info/" +@(ViewBag.ArticleId);
                     if (res.err_msg == "get_brand_wcpay_request:cancel") {
                         $.messager.alert('提示信息', '支付已经取消！', 'info');
                         return false;
@@ -44,7 +45,7 @@
             $.post("/WeiXinPay/Pay",
                 {
                     OrderID: @ViewBag.ID, //本地订单号
-                    TotalFee: @ViewBag.Amount //费用 分做单位
+                    TotalFee: @(ViewBag.Amount * 100) //费用 分做单位
                 },
                 function (json) {
                     if (json.ret == -1) {
@@ -62,7 +63,7 @@
     </script>
 </head>
 <body>
-    <div> 
+    <div style="text-align:center; display:none;"> 
         支付中……<br />
         @ViewBag.ID
     </div>

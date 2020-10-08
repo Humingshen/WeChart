@@ -62,6 +62,8 @@
           <Property Name="State" Type="int" Nullable="false" />
           <Property Name="Created" Type="datetime" Nullable="false" />
           <Property Name="Tag" Type="int" Nullable="false" />
+          <Property Name="Updated" Type="datetime" />
+          <Property Name="FileId" Type="int" />
         </EntityType>
         <EntityType Name="T_Comment">
           <Key>
@@ -99,12 +101,33 @@
           <Property Name="Status" Type="bit" Nullable="false" />
           <Property Name="Remark" Type="varchar(max)" Nullable="false" />
         </EntityType>
+        <EntityType Name="T_Share">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="FromId" Type="int" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="IsBuy" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="T_Tags">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Tag" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_TiXian">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Score" Type="int" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Updated" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="T_User">
           <Key>
@@ -120,6 +143,9 @@
           <Property Name="Headimgurl" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="Unionid" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="IsEnable" Type="bit" Nullable="false" />
+          <Property Name="Score" Type="int" Nullable="false" />
+          <Property Name="PayRemark" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="T_Visitors">
           <Key>
@@ -219,6 +245,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_T_Share_T_Share">
+          <End Role="T_Share" Type="Self.T_Share" Multiplicity="1" />
+          <End Role="T_Share1" Type="Self.T_Share" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="T_Share">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="T_Share1">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_TiXian_T_User">
+          <End Role="T_User" Type="Self.T_User" Multiplicity="1" />
+          <End Role="T_TiXian" Type="Self.T_TiXian" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="T_TiXian">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_T_Visitors_T_Article">
           <End Role="T_Article" Type="Self.T_Article" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -268,7 +318,9 @@
           <EntitySet Name="T_Comment" EntityType="Self.T_Comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Files" EntityType="Self.T_Files" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Pay" EntityType="Self.T_Pay" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_Share" EntityType="Self.T_Share" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Tags" EntityType="Self.T_Tags" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_TiXian" EntityType="Self.T_TiXian" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_User" EntityType="Self.T_User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Visitors" EntityType="Self.T_Visitors" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_T_Agree_T_Comment" Association="Self.FK_T_Agree_T_Comment">
@@ -298,6 +350,14 @@
           <AssociationSet Name="FK_T_Pay_T_User" Association="Self.FK_T_Pay_T_User">
             <End Role="T_User" EntitySet="T_User" />
             <End Role="T_Pay" EntitySet="T_Pay" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Share_T_Share" Association="Self.FK_T_Share_T_Share">
+            <End Role="T_Share" EntitySet="T_Share" />
+            <End Role="T_Share1" EntitySet="T_Share" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_TiXian_T_User" Association="Self.FK_T_TiXian_T_User">
+            <End Role="T_User" EntitySet="T_User" />
+            <End Role="T_TiXian" EntitySet="T_TiXian" />
           </AssociationSet>
           <AssociationSet Name="FK_T_Visitors_T_Article" Association="Self.FK_T_Visitors_T_Article">
             <End Role="T_Article" EntitySet="T_Article" />
@@ -362,6 +422,8 @@
           <NavigationProperty Name="T_User" Relationship="Self.FK_T_Authorize_T_User" FromRole="T_Authorize" ToRole="T_User" />
           <Property Name="Tag" Type="Int32" Nullable="false" />
           <Property Name="ArticleId" Type="Int32" />
+          <Property Name="Updated" Type="DateTime" Precision="3" />
+          <Property Name="FileId" Type="Int32" />
         </EntityType>
         <EntityType Name="T_Comment">
           <Key>
@@ -399,6 +461,10 @@
           <NavigationProperty Name="T_Visitors1" Relationship="Self.FK_T_Visitors_T_User1" FromRole="T_User" ToRole="T_Visitors" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="T_Pay" Relationship="WshareModel.FK_T_Pay_T_User" FromRole="T_User" ToRole="T_Pay" />
+          <Property Name="IsEnable" Type="Boolean" Nullable="false" />
+          <Property Name="Score" Type="Int32" Nullable="false" />
+          <Property Name="PayRemark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="T_TiXian" Relationship="WshareModel.FK_T_TiXian_T_User" FromRole="T_User" ToRole="T_TiXian" />
         </EntityType>
         <EntityType Name="T_Visitors">
           <Key>
@@ -569,6 +635,16 @@
             <End Role="T_Pay" EntitySet="T_Pay" />
           </AssociationSet>
           <EntitySet Name="AccessToken" EntityType="WshareModel.AccessToken" />
+          <EntitySet Name="T_TiXian" EntityType="WshareModel.T_TiXian" />
+          <AssociationSet Name="FK_T_TiXian_T_User" Association="WshareModel.FK_T_TiXian_T_User">
+            <End Role="T_User" EntitySet="T_User" />
+            <End Role="T_TiXian" EntitySet="T_TiXian" />
+          </AssociationSet>
+          <EntitySet Name="T_Share" EntityType="WshareModel.T_Share" />
+          <AssociationSet Name="FK_T_Share_T_Share" Association="WshareModel.FK_T_Share_T_Share">
+            <End Role="T_Share" EntitySet="T_Share" />
+            <End Role="T_Share1" EntitySet="T_Share" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="T_Admin">
           <Key>
@@ -643,6 +719,54 @@
           <Property Name="expires_in" Type="Int32" Nullable="false" />
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
+        <EntityType Name="T_TiXian">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Score" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Updated" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="T_User" Relationship="WshareModel.FK_T_TiXian_T_User" FromRole="T_TiXian" ToRole="T_User" />
+        </EntityType>
+        <Association Name="FK_T_TiXian_T_User">
+          <End Type="WshareModel.T_User" Role="T_User" Multiplicity="1" />
+          <End Type="WshareModel.T_TiXian" Role="T_TiXian" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="T_TiXian">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="T_Share">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="FromId" Type="Int32" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsBuy" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="T_Share1" Relationship="WshareModel.FK_T_Share_T_Share" FromRole="T_Share" ToRole="T_Share1" />
+          <NavigationProperty Name="T_Share2" Relationship="WshareModel.FK_T_Share_T_Share" FromRole="T_Share1" ToRole="T_Share" />
+        </EntityType>
+        <Association Name="FK_T_Share_T_Share">
+          <End Type="WshareModel.T_Share" Role="T_Share" Multiplicity="1" />
+          <End Type="WshareModel.T_Share" Role="T_Share1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="T_Share">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="T_Share1">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -683,6 +807,8 @@
           <EntitySetMapping Name="T_Authorize">
             <EntityTypeMapping TypeName="WshareModel.T_Authorize">
               <MappingFragment StoreEntitySet="T_Authorize">
+                <ScalarProperty Name="FileId" ColumnName="FileId" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
                 <ScalarProperty Name="ArticleId" ColumnName="ArticleId" />
                 <ScalarProperty Name="Tag" ColumnName="Tag" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -710,6 +836,9 @@
           <EntitySetMapping Name="T_User">
             <EntityTypeMapping TypeName="WshareModel.T_User">
               <MappingFragment StoreEntitySet="T_User">
+                <ScalarProperty Name="PayRemark" ColumnName="PayRemark" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="IsEnable" ColumnName="IsEnable" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Openid" ColumnName="Openid" />
@@ -782,6 +911,29 @@
                 <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="expires_in" ColumnName="expires_in" />
                 <ScalarProperty Name="access_token" ColumnName="access_token" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_TiXian">
+            <EntityTypeMapping TypeName="WshareModel.T_TiXian">
+              <MappingFragment StoreEntitySet="T_TiXian">
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Share">
+            <EntityTypeMapping TypeName="WshareModel.T_Share">
+              <MappingFragment StoreEntitySet="T_Share">
+                <ScalarProperty Name="IsBuy" ColumnName="IsBuy" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="FromId" ColumnName="FromId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

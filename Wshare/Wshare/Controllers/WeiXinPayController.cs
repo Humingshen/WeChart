@@ -58,7 +58,46 @@ namespace Wshare.Controllers
             #endregion
             return js;
         }
+        public JsonResult Buy(String uid)
+        {
 
+            int tuid;
+            int.TryParse(uid, out tuid);
+
+            var share = new T_Share()
+            {
+                Created = DateTime.Now,
+                FromId = tuid,
+                UserId = Lib.UserId,
+                IsBuy = false,
+            };
+            db.T_Share.Add(share);
+            db.SaveChanges();
+
+            JsonResult js = new JsonResult();
+            #region 创建订单
+            #region 1。调用统一支付接口形成预订单
+
+            WeiXinCommon.WriteErrorLog("调用统一支付接口形成预订单");
+            ResponseUnifiedorder WxOrder = XmlHelper.Deserialize(typeof(ResponseUnifiedorder), CreateOrder1((19900).ToString(), share.Id+"")) as ResponseUnifiedorder;
+            //添加数据库方法 将微信返回的预订单号和本地订单关联起来 
+            #endregion
+            #region 2。生成订单及JSAPI提交参数
+            WeiXinCommon.WriteErrorLog("生成订单及JSAPI提交参数");
+            if (null != WxOrder)
+            {
+                string param = GetJsApiParameters(WxOrder);
+                WeiXinCommon.WriteErrorLog("GetJsApiParameters:" + param);
+                js.Data = new { ret = -1, msg = "创建微信订单成功！", data = param };
+            }
+            else
+            {
+                js.Data = new { ret = 3, msg = "创建微信订单失败" };
+            }
+            #endregion
+            #endregion
+            return js;
+        }
         /// <summary>
         /// 获取用户的真正IP
         /// </summary>
@@ -82,6 +121,62 @@ namespace Wshare.Controllers
             return result;
 
         }
+        /// <summary>
+        /// 调用统一下单接口生成微信预支付订单
+        /// </summary>
+        /// <param name="money"></param>
+        /// <param name="tradeNo"></param>
+        /// <returns></returns>
+        public string CreateOrder1(string money, string tradeNo)
+        {
+            string clientIP = GetIP();
+            string WXOpenID = db.T_User.Find(Lib.UserId).Openid;
+            string data = string.Empty;
+            try
+            {
+                ///接口参数
+                SortedList<string, string> dic = new SortedList<string, string>();
+                //签名参数
+                SortedList<string, string> dicSign = new SortedList<string, string>();
+                string nonceStr = Guid.NewGuid().ToString().Replace("-", "");
+                string productId = DateTime.Now.Ticks.ToString();
+                dicSign.Add("appid", WeiXinCommon._AppId);
+                dicSign.Add("mch_id", WeiXinCommon._MerIdPay);
+
+                dicSign.Add("nonce_str", nonceStr);
+                dicSign.Add("body", "知识付费");
+                dicSign.Add("out_trade_no", tradeNo);
+                dicSign.Add("total_fee", money);
+                dicSign.Add("spbill_create_ip", clientIP);
+                dicSign.Add("notify_url", WeiXinCommon.Url + "/WeiXinPay/Notify");
+                dicSign.Add("trade_type", "JSAPI");
+                dicSign.Add("product_id", productId);
+                dicSign.Add("openid", WXOpenID);
+
+                dic.Add("appid", WeiXinCommon._AppId);
+                dic.Add("mch_id", WeiXinCommon._MerIdPay);
+
+                dic.Add("nonce_str", nonceStr);
+                dic.Add("sign", WeiXinCommon.Sign(dicSign, WeiXinCommon._Key));
+                dic.Add("body", "知识付费");
+                dic.Add("out_trade_no", tradeNo);
+                dic.Add("total_fee", money);
+                dic.Add("spbill_create_ip", clientIP);
+                dic.Add("notify_url", WeiXinCommon.Url + "/WeiXinPay/Notify");
+                dic.Add("trade_type", "JSAPI");
+                dic.Add("product_id", productId);
+                dic.Add("openid", WXOpenID);
+
+                data = WeiXinCommon.sendPost("https://api.mch.weixin.qq.com/pay/unifiedorder", WeiXinCommon.DictionaryToXml(dic));
+                WeiXinCommon.WriteErrorLog("CreateOrder:" + data);
+            }
+            catch (Exception ex)
+            {
+                WeiXinCommon.WriteErrorLog("CreateOrder" + ex.Message);
+            }
+            return data;
+        }
+
 
         /// <summary>
         /// 调用统一下单接口生成微信预支付订单
@@ -92,7 +187,7 @@ namespace Wshare.Controllers
         public string CreateOrder(string money, string tradeNo)
         {
             string clientIP = GetIP();
-            string WXOpenID = "";
+            string WXOpenID = db.T_User.Find(Lib.UserId).Openid;
             string data = string.Empty;
             try
             {
@@ -114,6 +209,7 @@ namespace Wshare.Controllers
                 dicSign.Add("trade_type", "JSAPI");
                 dicSign.Add("product_id", productId);
                 dicSign.Add("openid", WXOpenID);
+
                 dic.Add("appid", WeiXinCommon._AppId);
                 dic.Add("mch_id", WeiXinCommon._MerIdPay);
 
@@ -123,10 +219,11 @@ namespace Wshare.Controllers
                 dic.Add("out_trade_no", tradeNo);
                 dic.Add("total_fee", money);
                 dic.Add("spbill_create_ip", clientIP);
-                dic.Add("notify_url", WeiXinCommon.Url + "/My/Notify");
+                dic.Add("notify_url", WeiXinCommon.Url + "/WeiXinPay/Notify");
                 dic.Add("trade_type", "JSAPI");
                 dic.Add("product_id", productId);
                 dic.Add("openid", WXOpenID);
+
                 data = WeiXinCommon.sendPost("https://api.mch.weixin.qq.com/pay/unifiedorder", WeiXinCommon.DictionaryToXml(dic));
                 WeiXinCommon.WriteErrorLog("CreateOrder:" + data);
             }
@@ -136,6 +233,8 @@ namespace Wshare.Controllers
             }
             return data;
         }
+
+
 
         /// <summary>
         /// 生成JSAPI参数
@@ -208,13 +307,39 @@ namespace Wshare.Controllers
                     res.Add("return_code", "SUCCESS");
                     res.Add("return_msg", "OK");
                     string msg = "";
-                    //数据库操作根据 订单号去除数据库订单 判断状态 置订单状态值
-                    var pay = db.T_Pay.Find(query.out_trade_no);
-                    if (!pay.Status)
+
+                    if (query.out_trade_no.Length >= 8)
                     {
-                        pay.Status = true;
-                        db.SaveChanges();
+                        // 支付
+                        var share = db.T_Share.Find(Convert.ToInt32(query.out_trade_no));
+                        if (!share.IsBuy)
+                        {
+                            share.IsBuy = true;
+                            var user = db.T_User.Find(share.UserId);
+                            user.IsEnable = true;
+                            user.PayRemark = query.out_trade_no;
+
+                            if (share.FromId != 0)
+                            {
+                                var tuser = db.T_User.Find(share.FromId);
+                                tuser.Score = tuser.Score + 100;
+                            }
+
+                            db.SaveChanges();
+                        }
                     }
+                    else
+                    {
+                        // 打赏
+                        //数据库操作根据 订单号去除数据库订单 判断状态 置订单状态值
+                        var pay = db.T_Pay.Find(query.out_trade_no);
+                        if (!pay.Status)
+                        {
+                            pay.Status = true;
+                            db.SaveChanges();
+                        }
+                    }
+
                     //Dal.OrderDal orderdal = new Dal.OrderDal();
                     //Modal.View_OrderInfo orderinfo = orderdal.getOrderViewByOrderID(query.out_trade_no);
                     //if (orderinfo.Status == (int)SysEnum.OrderStatus.待支付)
@@ -241,7 +366,7 @@ namespace Wshare.Controllers
             catch (Exception ex)
             {
                 //若transaction_id不存在，则立即返回结果给微信支付后台
-                WeiXinCommon.WriteErrorLog("出现异常！");
+                WeiXinCommon.WriteErrorLog("出现异常！" + ex.Message);
                 SortedList<string, string> res = new SortedList<string, string>();
                 res.Add("return_code", "FAIL");
                 res.Add("return_msg", "出现异常");

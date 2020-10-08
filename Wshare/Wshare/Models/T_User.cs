@@ -22,6 +22,7 @@ namespace Wshare.Models
             this.T_Visitors = new HashSet<T_Visitors>();
             this.T_Visitors1 = new HashSet<T_Visitors>();
             this.T_Pay = new HashSet<T_Pay>();
+            this.T_TiXian = new HashSet<T_TiXian>();
         }
     
         public int Id { get; set; }
@@ -34,6 +35,9 @@ namespace Wshare.Models
         public string Headimgurl { get; set; }
         public string Unionid { get; set; }
         public System.DateTime CreateTime { get; set; }
+        public bool IsEnable { get; set; }
+        public int Score { get; set; }
+        public string PayRemark { get; set; }
     
         public virtual ICollection<T_Agree> T_Agree { get; set; }
         public virtual ICollection<T_Authorize> T_Authorize { get; set; }
@@ -41,5 +45,6 @@ namespace Wshare.Models
         public virtual ICollection<T_Visitors> T_Visitors { get; set; }
         public virtual ICollection<T_Visitors> T_Visitors1 { get; set; }
         public virtual ICollection<T_Pay> T_Pay { get; set; }
+        public virtual ICollection<T_TiXian> T_TiXian { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace Wshare
     {
         public static int UserId
         {
-            get { return Convert.ToInt32(HttpContext.Current.Request.Cookies["userid"] == null ? "0" : HttpContext.Current.Request.Cookies["userid"].Value); }
+            get { return Convert.ToInt32(HttpContext.Current.Request.Cookies["uid"] == null ? "0" : HttpContext.Current.Request.Cookies["uid"].Value); }
         }
         public static string DateFormatToString(DateTime dt)
         {

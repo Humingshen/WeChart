@@ -25,17 +25,17 @@ namespace Wshare.Models
         /// <summary>
         /// 开发者密码
         /// </summary>
-        public static readonly string _AppSecret = "4331ff5209ed57d274d4d4a0bea7edb4";
+        public static readonly string _AppSecret = "95dcc9f577c1362c08e4bd9e0d9d3183";
         /// <summary>
         /// 支付商户ID
         /// </summary>
-        public static readonly string _MerIdPay = "153423423423";
+        public static readonly string _MerIdPay = "1487052762";
         /// <summary>
         /// 支付签名API密钥
         /// </summary>
-        public static readonly string _Key = "dddddddddddddddddddddsfsdfsdfsdf";
+        public static readonly string _Key = "95dcc9f577c1362c08e4bd9e0d9d3183";
 
-        public static readonly string Url = "http://edu.meiyu.com";
+        public static readonly string Url = "http://edu.lunwenba.com";
 
         /// <summary>
         /// 字典转换成JSON字符串 JSAPI支付时用到
@@ -90,7 +90,7 @@ namespace Wshare.Models
         {
             lock (_Syn)
             {
-                string logDir = "D:\\RunLog\\";
+                string logDir = "C:\\RunLog\\";
                 if (!System.IO.Directory.Exists(logDir))
                 {
                     System.IO.Directory.CreateDirectory(logDir);

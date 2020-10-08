@@ -38,8 +38,8 @@
 
             wx.onMenuShareTimeline({
                 title: '@(article.Title)', // 分享标题
-                link: 'http://edu.meiyu.com/article/info/@(article.Id)?uid=@(Lib.UserId)', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                imgUrl: 'http://edu.meiyu.com@(article.Cover)', // 分享图标
+                link: 'http://edu.lunwenba.com/article/info/@(article.Id)?uid=@(Lib.UserId)', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: 'http://edu.lunwenba.com@(article.Cover)', // 分享图标
                 success: function () {
                     // 用户点击了分享后执行的回调函数
                 }
@@ -47,8 +47,8 @@
             wx.onMenuShareAppMessage({
                 title: '理工毕业设计', // 分享标题
                 desc: '@(article.Title)', // 分享描述
-                link: 'http://edu.meiyu.com/article/info/@(article.Id)?uid=@(Lib.UserId)', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                imgUrl: 'http://edu.meiyu.com@(article.Cover)', // 分享图标
+                link: 'http://edu.lunwenba.com/article/info/@(article.Id)?uid=@(Lib.UserId)', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: 'http://edu.lunwenba.com@(article.Cover)', // 分享图标
                 type: 'link', // 分享类型,music、video或link，不填默认为link
                 dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
                 success: function () {
@@ -134,15 +134,11 @@
                             </span>
                             <em id="publish_time" class="rich_media_meta rich_media_meta_text">@(Lib.DateFormatToString(article.Created))</em>
                         </div>
-
-                        <div class="rich_media_content " id="js_content" style="visibility: visible;">
+                        <div class="rich_media_content " id="js_content" style="visibility: visible; border:0px solid #ccc;">
                             @(new HtmlString(article.Contents))
                         </div>
-
-
-                        <div class="reward_area tc reward_area_primary reward_area_win reward_avatar_overflow" id="js_reward_area" style="display: block;">
-                            <div class="reward-author" style="        display: block;
-" id="js_reward_author"></div>
+                        <div class="reward_area tc reward_area_primary reward_area_win reward_avatar_overflow" id="js_reward_area" style="display: block; border:0px solid #CCC;">
+                            <div class="reward-author" style="display: block;" id="js_reward_author"></div>
                             <p class="reward_tips js_reward_wording">分享和转发，是更大的支持！</p>
                             <p class="reward_button_wrp">
                                 @*<span id="js_author_reward_qrcode" class="reward_pop_panel">
@@ -152,22 +148,19 @@
                                 <a class="reward_button weui-btn" id="js_reward_link" href="javascript:void(0)"><span id="js_reward_link_text">喜欢作者</span></a>
                             </p>
 
-                            <div id="js_reward_inner" class="reward_area_inner" style="display: block; ">
+                            <div id="js_reward_inner" class="reward_area_inner" style=" ">
                                 <p class="weui-loadmore weui-loadmore_line reward_user_tips" id="js_reward_total_parent">
                                     <span class="weui-loadmore__tips" data-has-event="1">
                                         <a href="javascript:;" id="js_reward_total">@ViewBag.Like</a>&nbsp;<span id="js_reward_total_text">人喜欢</span>
                                     </span>
                                 </p>
 
-                                <div id="js_reward_list" class="reward_user_list tl" style="height: 108px;">
+                                <div id="js_reward_list" class="reward_user_list tl" style="text-align:center;">
+                                    @*style="height: 108px;"*@
                                     @foreach (var item in ViewBag.User as List<string>)
                                     {
                                         <span class="reward_user_avatar"><img src="@item"></span>
                                     }
-
-
-                                    @*<span class="reward_user_avatar"><img src="http://wx.qlogo.cn/mmhead/Q3auHgzwzM4yicCuSOPkurG4uX9GgcQez3jtG7qSx8x0yaocEal2e9g/132"></span>*@
-
                                 </div>
 
                                 <div id="js_reward_pagination" class="simple_pagination" style="display: none;">
@@ -271,8 +264,8 @@
                                             </div>
                                             <div class="comment_primary_tool" id="js_comment_tool_pc">
                                                 <div class="comment_primary_emotion_wrp" id="js_emotion_wrp_pc">
-                                                    <span class="icon_comment_primary_emotion">
-                                                    </span>
+                                                    @*<span class="icon_comment_primary_emotion">
+                                                    </span>*@
                                                 </div>
                                                 <button class="reset_btn comment_primary_btn" id="js_cmt_submit">留言</button>
 
@@ -374,17 +367,17 @@
             <div id="pay-gd">
                 <div class="pay-div ">
                     <a href="/Article/Pay/@article.Id?amount=5">￥5</a>
-                    <a href="/Article/Pay/@article.Id?amount=15">￥15</a>
-                    <a href="/Article/Pay/@article.Id?amount=25">￥25</a>
-                    <a href="/Article/Pay/@article.Id?amount=35">￥35</a>
-                    <a href="/Article/Pay/@article.Id?amount=45">￥45</a>
-                    <a href="/Article/Pay/@article.Id?amount=55">￥55</a>
+                    <a href="/Article/Pay/@article.Id?amount=10">￥10</a>
+                    <a href="/Article/Pay/@article.Id?amount=20">￥20</a>
+                    <a href="/Article/Pay/@article.Id?amount=30">￥30</a>
+                    <a href="/Article/Pay/@article.Id?amount=50">￥50</a>
+                    <a href="/Article/Pay/@article.Id?amount=100">￥100</a>
                 </div>
                 <div id="pay_other" style="clear:both; line-height:60px;text-align:center; color:#0736a5">其他金额</div>
             </div>
             <div id="payo" style="display:none;">
                 <div style="text-align:center; font-size:26px;">
-                    ￥ <input id="pay_n" name="amount" type="number" placeholder="0.00" style="width:100px; font-size:35px; border:0px" />
+                    ￥ <input id="pay_n" name="amount" type="number" placeholder="0" style="width:100px; font-size:35px; border:0px" />
                     <div id="pay_gd" style="clear:both; line-height:60px;font-size:14px; text-align:center; color:#0736a5">固定金额</div>
                 </div>
                 <div id="aaa" style="clear:both; line-height:60px;text-align:center; color:#ff6a00; font-size:18px; border-top:1px solid #cacaca;"><a href="" id="pay-one" onclick="return Pay()">确定</a></div>

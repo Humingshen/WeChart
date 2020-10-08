@@ -12,18 +12,15 @@ namespace Wshare.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class T_Authorize
+    public partial class T_Share
     {
         public int Id { get; set; }
-        public Nullable<int> UserId { get; set; }
-        public string Code { get; set; }
-        public int State { get; set; }
+        public int UserId { get; set; }
+        public int FromId { get; set; }
         public System.DateTime Created { get; set; }
-        public int Tag { get; set; }
-        public Nullable<int> ArticleId { get; set; }
-        public Nullable<System.DateTime> Updated { get; set; }
-        public Nullable<int> FileId { get; set; }
+        public bool IsBuy { get; set; }
     
-        public virtual T_User T_User { get; set; }
+        public virtual T_Share T_Share1 { get; set; }
+        public virtual T_Share T_Share2 { get; set; }
     }
 }

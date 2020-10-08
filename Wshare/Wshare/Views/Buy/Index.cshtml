@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "购买资源";
+}
+
+    <div style=" border:0px solid #ccc;">
+        <img src="~/Content/buy.jpg" style="width:100%" />
+    </div>
+<div style="text-align:center; position:fixed; bottom:0px; width:100%; height:50px;">
+    <a id="pay" href="javascript:void(0)" style="border:none; background:#ff0000; display:block; font-size:16px; width:80%; line-height:40px; color:#FFF; margin: 0px 10%; border-radius:20px;">立即付款 ￥199.00 &nbsp;  <span style="text-decoration:line-through; color:#ffd800">￥299.00</span></a>
+</div>
+
+<script src="~/Scripts/jquery.min.js"></script>
+<script type="text/javascript">
+        var _wxJsApiParam;
+        function callpay() {
+            if (typeof WeixinJSBridge == "undefined") {
+                if (document.addEventListener) {
+                    document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+                }
+                else if (document.attachEvent) {
+                    document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                    document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+                }
+            }
+            else {
+                jsApiCall();
+            }
+        }
+        //调用微信JS api 支付
+        function jsApiCall() {
+            WeixinJSBridge.invoke('getBrandWCPayRequest', _wxJsApiParam,
+                function (res) {
+                    if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                        window.location.href = "/Buy/";
+                        $.messager.alert('提示信息', '支付已经取消！', 'info');
+                        return false;
+                    } else if (res.err_msg == "get_brand_wcpay_request:ok") {
+                        window.location.href = "/Group";
+                        //支付成功 
+                        $.messager.alert('提示信息', '支付成功！', 'info');
+                    }
+                });
+        }
+
+    function Pay() {
+        var tuid = localStorage.getItem("uid") + "";
+
+        $.ajax({
+            type: "POST",
+            url: "/WeiXinPay/Buy",
+            data: { "uid": tuid },
+            dataType: "json",
+            success: function (res) {
+                if (res.ret == -1) {
+                    _wxJsApiParam = eval('(' + res.data + ')');
+                    callpay();
+                }
+                else {
+                    alert(res.msg);
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                /*错误信息处理*/
+                layer.closeAll('loading');
+                if (xhr.responseText)
+                    layer.msg(xhr.responseText, { icon: 2 });
+            }
+        });
+    }
+    $(document).ready(function () {
+        $("#pay").click(function () {
+            Pay(); return false;
+        });
+    });
+</script>

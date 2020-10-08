@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "正在访问……";
+}
+
+<script type="text/javascript">
+    var uid = @(ViewBag.UserId);
+
+    window.onload = function () {
+
+        localStorage.setItem("uid", uid);
+
+        // 转跳到微信官方发布链接
+        window.location.href = "https://mp.weixin.qq.com/s?__biz=MjM5MTg5NzU4OQ==&mid=2247483723&idx=1&sn=dc6d60e6bf0fea987e5e72710ae110a0&chksm=a6afc3d191d84ac72fd7c788cd57a1281b31bacc7ba8a3151e0dafa790340e5ad59e1203ac3a&token=366507730&lang=zh_CN#rd";
+    }
+</script>

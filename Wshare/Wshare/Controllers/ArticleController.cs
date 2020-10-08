@@ -34,7 +34,7 @@ namespace Wshare.Controllers
             };
             db.T_Pay.Add(pay);
             db.SaveChanges();
-
+            ViewBag.ArticleId = id;
             ViewBag.ID = pay.Id;
             ViewBag.Amount = amount;
             return View();
